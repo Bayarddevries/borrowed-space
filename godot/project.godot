@@ -20,6 +20,10 @@ config/icon="res://assets/sprites/icon.svg"
 
 Persist="*res://scripts/persist.gd"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/gut/plugin.cfg")
+
 [display]
 
 window/size/viewport_width=1280

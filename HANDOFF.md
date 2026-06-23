@@ -23,11 +23,11 @@ Current state. Verified-working features. Known issues. Updated at the end of ev
 
 ## Project state
 
-- **Phase:** 2e (narrative-data shape) — committed; 2f next (test harness)
+- **Phase:** 2f (test harness — GUT) — committed; 2g next (autoload glue)
 - **Last commit:** see git log
 - **Repo:** https://github.com/Bayarddevries/borrowed-space (private)
 - **Working tree:** clean as of last verification
-- **Headline achievement:** github.com/Bayarddevries/borrowed-space is live with phase 1 docs + phase 2 plan. Phase 2a–2e committed.
+- **Headline achievement:** github.com/Bayarddevries/borrowed-space is live with phase 1 docs + phase 2 plan. Phase 2a–2f committed. **9/9 GUT tests pass.**
 
 ## Verified-working
 
@@ -40,14 +40,15 @@ Current state. Verified-working features. Known issues. Updated at the end of ev
 - ✅ ROADMAP.md drafted with phase boundaries and sub-deliverables.
 - ✅ Godot 4.6.2.stable imports the project cleanly with `--headless --import`.
 - ✅ Placeholder scenes (run_start, overworld, station, combat) + scripts (captain, crew, ai, ink_runner, tool/dice) committed.
-- ✅ **Phase 2d Persistence singleton (`godot/scripts/persist.gd`) works** — registered as autoload `Persist`. Round-trip verified via test/smoke_test_persist.gd.
-- ✅ **Phase 2e Narrative-data shape**: 3 JSON files in `narrative/data/`: `captain-origins.json` (5 genships × 2 fragments), `npc-archetypes.json` (5 archetypes, 21 variants total), `ledger.json` (initial-empty schema mirroring PERSISTENCE.md §layer 4). Loadable via `godot/scripts/narrative_data.gd`. Smoke-tested via `godot/test/smoke_test_narrative_data.gd`. Trait IDs validated against TRAITS.md T-pool. Genship IDs cross-referenced across files.
+- ✅ **Phase 2d Persistence singleton (`godot/scripts/persist.gd`) works** — registered as autoload `Persist`. Round-trip verified via test/test_persist.gd.
+- ✅ **Phase 2e Narrative-data shape**: 3 JSON files in `narrative/data/`. Loadable, smoke-tested.
+- ✅ **Phase 2f Test harness (GUT 9.6.0)**: GUT addon vendored at `godot/addons/gut/`. Tests live in `godot/test/` with `test_*.gd` prefix. `scripts/test.sh` shell wrapper around `gut_cmdln.gd`. **9/9 tests pass** (1 placeholder + 4 narrative-data + 4 persist).
 
 
 ## In-progress
 
-- ⏳ Phase 2f: Test harness (formal GUT setup; smoke tests exist already).
-- ⏳ Phase 2g: Sample playable run (Phase 2's ONLY product).
+- ⏳ Phase 2g: Autoload glue (signals: data → ink-layer → persist → ai on beat end).
+- ⏳ Phase 2 final: Sample playable run (Phase 2's ONLY product).
 
 ---
 
