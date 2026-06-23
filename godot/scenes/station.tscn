@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://d3f7yw8p5n2vh"]
+
+[node name="Station" type="Node"]
+
+[node name="Label" type="Label" parent="."]
+offset_left = 480.0
+offset_top = 320.0
+offset_right = 800.0
+offset_bottom = 400.0
+text = "Station — placeholder. Will host station beats in Phase 2g."

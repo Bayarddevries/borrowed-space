@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://b8rwx8uk6tstg"]
+
+[node name="RunStart" type="Node"]
+
+[node name="Label" type="Label" parent="."]
+offset_left = 480.0
+offset_top = 320.0
+offset_right = 800.0
+offset_bottom = 400.0
+text = "RunStart — placeholder. Phase 2c will bind ink_runner.gd here."
