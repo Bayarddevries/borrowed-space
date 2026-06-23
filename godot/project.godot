@@ -16,6 +16,10 @@ run/main_scene="res://scenes/run_start.tscn"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://assets/sprites/icon.svg"
 
+[autoload]
+
+Persist="*res://scripts/persist.gd"
+
 [display]
 
 window/size/viewport_width=1280

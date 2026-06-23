@@ -40,20 +40,37 @@ Current state. Verified-working features. Known issues. Updated at the end of ev
 - ✅ GitHub Issues opened for Phase 2 sub-deliverables #1 through #7.
 - ✅ AGENTS.md drafted with cross-agent workflow + commit-message convention.
 - ✅ ROADMAP.md drafted with phase boundaries and sub-deliverables.
+- ✅ Godot 4.6.2.stable imports the project cleanly with `--headless --import`.
+- ✅ Placeholder scenes (run_start, overworld, station, combat) + scripts (captain, crew, ai, ink_runner, tool/dice) committed.
+- ✅ **Phase 2d Persistence singleton (`godot/scripts/persist.gd`) works** — registered as autoload `Persist`. Round-trip verified via test/smoke_test_persist.gd.
 
 ---
 
 ## In-progress
 
-- ⏳ Phase 2a: HANDOFF, TODO, ISSUES draft files (this set being written).
+- ⏳ Phase 2e: Narrative-data shape (3 JSON files).
+- ⏳ Phase 2f: Test harness (formal GUT setup; smoke test exists already).
+- ⏳ Phase 2g: Sample playable run (Phase 2's ONLY product).
 
 ---
 
 ## Known issues
 
 - ⚠️ Some docs use placeholder names like `[G1-NorthAmerica PLACEHOLDER]`. **Rename pass** at end of phase 1 has not been run yet. Defer to a separate issue.
-- ⚠️ Phase 1 has not been "read" by the player-of-record yet. Bias-check on the project's tone has not been formally done. **Read pass** to land before phase 2 scaffolding.
-- ⚠️ Godot 4 project tree does not exist yet. Phase 2b is the first code commit.
+- ⚠️ Phase 1 has not been "read" by the player-of-record yet. Bias-check on the project's tone has not been formally done. **Read pass** to land before phase 3+.
+- ⚠️ Godot CLI smoke runs print warnings the first time (no save file yet). The persist load_state handles this gracefully.
+- ⚠️ `load()` was renamed to `load_state()` in persist.gd to avoid conflict with the built-in `ResourceLoader.load()`. Module 1 (State machine) consumers must use the renamed API.
+
+---
+
+## What to read first (next agent)
+
+1. `docs/VISION.md`
+2. `docs/ROADMAP.md`
+3. `AGENTS.md`
+4. Current GitHub issue assigned to you
+5. Relevant docs/wiki links from the issue body
+6. If working on persistence: read `godot/scripts/persist.gd` to understand the autoload pattern.
 
 ---
 
