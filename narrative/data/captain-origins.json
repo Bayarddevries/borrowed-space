@@ -1,0 +1,127 @@
+{
+  "_meta": {
+    "purpose": "Origin matrix the player picks from at run-start. Pre-game setup, no lore.",
+    "version": "0.1-draft",
+    "note": "5 genships (NAC/ED/RRA/AC + SAA). Playable text-first runs ship with N=2 country fragments per genship — extend later. Zero-lite lore; identifiers and structural flags only.",
+    "schema": {
+      "genship_id": "string — genship ID (matches WORLD_BIBLE.md)",
+      "genship_label": "string — display-label, placeholder",
+      "first_ship_class": "string — flagship tier per canon (TIER-1 / TIER-2 / TIER-COAL)",
+      "country_fragments": "array of country-fragment objects; count variable per genship",
+      "country_fragment": {
+        "id": "string — fragment ID, unique",
+        "label": "string — display label, placeholder",
+        "h_tier_default": "int — captain He-3 literacy tier at run-start (1 lowest, 4 covert)",
+        "starting_suspicion": "int — base suspicion meter (0 safe, higher = precarious)",
+        "tag_pool": "array of string — trait-bag tags the Ink layer pulls from (couples with TRAITS.md personality pool)"
+      }
+    }
+  },
+  "origins": [
+    {
+      "genship_id": "NAC",
+      "genship_label": "[G1-NorthAmerica PLACEHOLDER]",
+      "first_ship_class": "TIER-1",
+      "country_fragments": [
+        {
+          "id": "NAC-charter",
+          "label": "[NAC-charter PLACEHOLDER]",
+          "h_tier_default": 2,
+          "starting_suspicion": 1,
+          "tag_pool": ["t-P-D", "t-P-K", "t-P-L"]
+        },
+        {
+          "id": "NAC-volunteer",
+          "label": "[NAC-volunteer PLACEHOLDER]",
+          "h_tier_default": 3,
+          "starting_suspicion": 0,
+          "tag_pool": ["t-P-A", "t-P-B", "t-P-I"]
+        }
+      ]
+    },
+    {
+      "genship_id": "ED",
+      "genship_label": "[G2-EuropeanUnion PLACEHOLDER]",
+      "first_ship_class": "TIER-1",
+      "country_fragments": [
+        {
+          "id": "ED-urban",
+          "label": "[ED-urban PLACEHOLDER]",
+          "h_tier_default": 2,
+          "starting_suspicion": 1,
+          "tag_pool": ["t-P-E", "t-P-J", "t-P-K"]
+        },
+        {
+          "id": "ED-rural",
+          "label": "[ED-rural PLACEHOLDER]",
+          "h_tier_default": 2,
+          "starting_suspicion": 2,
+          "tag_pool": ["t-P-G", "t-P-F", "t-P-I"]
+        }
+      ]
+    },
+    {
+      "genship_id": "RRA",
+      "genship_label": "[G3-Russia PLACEHOLDER]",
+      "first_ship_class": "TIER-1",
+      "country_fragments": [
+        {
+          "id": "RRA-energo",
+          "label": "[RRA-energo PLACEHOLDER]",
+          "h_tier_default": 3,
+          "starting_suspicion": 0,
+          "tag_pool": ["t-P-C", "t-P-K", "t-P-H"]
+        },
+        {
+          "id": "RRA-relocated",
+          "label": "[RRA-relocated PLACEHOLDER]",
+          "h_tier_default": 1,
+          "starting_suspicion": 2,
+          "tag_pool": ["t-P-F", "t-P-I", "t-P-L"]
+        }
+      ]
+    },
+    {
+      "genship_id": "AC",
+      "genship_label": "[G4-AsiaCoalition PLACEHOLDER]",
+      "first_ship_class": "TIER-1",
+      "country_fragments": [
+        {
+          "id": "AC-coastal",
+          "label": "[AC-coastal PLACEHOLDER]",
+          "h_tier_default": 2,
+          "starting_suspicion": 1,
+          "tag_pool": ["t-P-A", "t-P-D", "t-P-F"]
+        },
+        {
+          "id": "AC-inland",
+          "label": "[AC-inland PLACEHOLDER]",
+          "h_tier_default": 2,
+          "starting_suspicion": 1,
+          "tag_pool": ["t-P-B", "t-P-J", "t-P-L"]
+        }
+      ]
+    },
+    {
+      "genship_id": "SAA",
+      "genship_label": "[G5-SouthAtlanticAccord PLACEHOLDER]",
+      "first_ship_class": "TIER-COAL",
+      "country_fragments": [
+        {
+          "id": "SAA-coalition",
+          "label": "[SAA-coalition PLACEHOLDER]",
+          "h_tier_default": 3,
+          "starting_suspicion": 0,
+          "tag_pool": ["t-P-A", "t-P-C", "t-P-K"]
+        },
+        {
+          "id": "SAA-refugee",
+          "label": "[SAA-refugee PLACEHOLDER]",
+          "h_tier_default": 1,
+          "starting_suspicion": 3,
+          "tag_pool": ["t-P-I", "t-P-G", "t-P-F"]
+        }
+      ]
+    }
+  ]
+}

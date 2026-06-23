@@ -24,6 +24,24 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) but adapted for s
 
 ## [Unreleased] — Phase 1 + 2a
 
+### Phase 2e — narrative-data shape (commit pending)
+- 3 JSON files in narrative/data/: captain-origins.json (5 genships × 2 fragments), npc-archetypes.json (5 archetypes, 21 variants), ledger.json (mirrors PERSISTENCE.md §layer 4)
+- godot/scripts/narrative_data.gd — GDScript loader stub for the three files; resolves paths via globalize_path since narrative/ is outside the Godot project root
+- godot/test/smoke_test_narrative_data.gd — SceneTree-based smoke test (5/5 genships, 21 variants distributed)
+- All trait IDs in tag_pool match TRAITS.md T-pool; genship_affinity cross-references valid
+- Zero lore; identifiers + structural flags only
+
+### Phase 2d — persistence singleton (commit pending prior)
+- godot/scripts/persist.gd — autoload singleton with save/load_state/reset/patch
+- renamed `load()` → `load_state()` to avoid conflict with `ResourceLoader.load()`
+- save uses JSON round-trip on user://persist.json
+- godot/test/smoke_test_persist.gd — verified pass
+
+### Phase 2c — Godot project layout (commits prior)
+- project.godot scaffold
+- godot/scripts/persist.gd.uid and others
+- godot/scenes/* placeholders: run_start, overworld, station, combat/
+
 ### Phase 2a — scaffold conventions (commit `e525942`)
 - ROADMAP.md drafted
 - Cross-links to BIAS_GUARDRAILS and ROADMAP in every world-building doc

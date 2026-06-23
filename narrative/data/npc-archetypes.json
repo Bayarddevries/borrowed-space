@@ -1,0 +1,210 @@
+{
+  "_meta": {
+    "purpose": "Variant generator pools per NPC archetype. Drawn per-run; same archetype can yield different variants across runs (per NPCS.md §recurring-NPC).",
+    "version": "0.1-draft",
+    "note": "Zero lore; identifiers + structural flags + first-line question scaffolding only. 6-8 variants per archetype per spec. Each archetype declares a first-line 'question to the captain' (NPCS.md locked) but the *text* lives in Ink, not here.",
+    "schema": {
+      "archetype_id": "string — fixed archetype slot (NPC1, NPC2, NPC3, NPC-T, NPC-AI)",
+      "display_label": "string — placeholder label only; final naming rights Bayard's",
+      "anchor_stage": "enum [early, mid, late, constant] — phase-of-encounter",
+      "first_question": "string — the question this archetype asks the captain (voice-fragment, not lore)",
+      "variants": "array of variant objects; pool size 6-8 per spec",
+      "variant": {
+        "variant_id": "string — unique within archetype (e.g., NPC1-1)",
+        "passive_traits": "array of string — captain-side trait IDs that *highlight* this variant for first meeting",
+        "trust_seed": "int — initial held-trust arc vector (NPCS.md §state-vector)",
+        "voice_fragments": "array of string — placeholder voice-cue IDs the Ink layer reads",
+        "genship_affinity": "array of string — genship IDs this variant is *familiar* with (first-meeting memo mechanics)"
+      }
+    }
+  },
+  "archetypes": [
+    {
+      "archetype_id": "NPC-T",
+      "display_label": "[NPC-T-Trustee PLACEHOLDER]",
+      "anchor_stage": "constant",
+      "first_question": "[voice-frag: NPC-T-Q1 PLACEHOLDER]",
+      "variants": [
+        {
+          "variant_id": "NPC-T-1",
+          "passive_traits": ["t-P-A", "t-P-I"],
+          "trust_seed": 1,
+          "voice_fragments": ["voice-T-direct", "voice-T-slow"],
+          "genship_affinity": ["NAC", "ED", "RRA", "AC"]
+        },
+        {
+          "variant_id": "NPC-T-2",
+          "passive_traits": ["t-P-C"],
+          "trust_seed": 2,
+          "voice_fragments": ["voice-T-essay", "voice-T-break"],
+          "genship_affinity": ["NAC", "ED", "RRA", "AC", "SAA"]
+        }
+      ]
+    },
+    {
+      "archetype_id": "NPC-AI",
+      "display_label": "[NPC-AI-ShipAI PLACEHOLDER]",
+      "anchor_stage": "constant",
+      "first_question": "[voice-frag: NPC-AI-Q1 PLACEHOLDER]",
+      "variants": [
+        {
+          "variant_id": "NPC-AI-1",
+          "passive_traits": [],
+          "trust_seed": 3,
+          "voice_fragments": ["voice-AI-butler", "voice-AI-quiet"],
+          "genship_affinity": ["NAC", "ED", "RRA", "AC", "SAA"]
+        }
+      ]
+    },
+    {
+      "archetype_id": "NPC1",
+      "display_label": "[NPC1-Sherpa PLACEHOLDER]",
+      "anchor_stage": "early",
+      "first_question": "[voice-frag: NPC1-Q1 PLACEHOLDER]",
+      "variants": [
+        {
+          "variant_id": "NPC1-1",
+          "passive_traits": ["t-P-F", "t-P-I"],
+          "trust_seed": 2,
+          "voice_fragments": ["voice-sh-worker", "voice-sh-domestic"],
+          "genship_affinity": ["NAC"]
+        },
+        {
+          "variant_id": "NPC1-2",
+          "passive_traits": ["t-P-K", "t-P-E"],
+          "trust_seed": 3,
+          "voice_fragments": ["voice-sh-trade", "voice-sh-careful"],
+          "genship_affinity": ["ED"]
+        },
+        {
+          "variant_id": "NPC1-3",
+          "passive_traits": ["t-P-G"],
+          "trust_seed": 1,
+          "voice_fragments": ["voice-sh-exit", "voice-sh-quiet"],
+          "genship_affinity": ["RRA"]
+        },
+        {
+          "variant_id": "NPC1-4",
+          "passive_traits": ["t-P-D", "t-P-A"],
+          "trust_seed": 2,
+          "voice_fragments": ["voice-sh-quick", "voice-sh-detached"],
+          "genship_affinity": ["AC"]
+        },
+        {
+          "variant_id": "NPC1-5",
+          "passive_traits": ["t-P-I", "t-P-C"],
+          "trust_seed": 4,
+          "voice_fragments": ["voice-sh-anchor", "voice-sh-fam"],
+          "genship_affinity": ["SAA"]
+        },
+        {
+          "variant_id": "NPC1-6",
+          "passive_traits": ["t-P-L"],
+          "trust_seed": 2,
+          "voice_fragments": ["voice-sh-bilingual", "voice-sh-warm"],
+          "genship_affinity": ["SAA", "ED"]
+        }
+      ]
+    },
+    {
+      "archetype_id": "NPC2",
+      "display_label": "[NPC2-Engineer PLACEHOLDER]",
+      "anchor_stage": "mid",
+      "first_question": "[voice-frag: NPC2-Q1 PLACEHOLDER]",
+      "variants": [
+        {
+          "variant_id": "NPC2-1",
+          "passive_traits": ["t-P-J", "t-P-K"],
+          "trust_seed": 2,
+          "voice_fragments": ["voice-en-sparse", "voice-en-trade"],
+          "genship_affinity": ["NAC", "RRA"]
+        },
+        {
+          "variant_id": "NPC2-2",
+          "passive_traits": ["t-P-A", "t-P-I"],
+          "trust_seed": 3,
+          "voice_fragments": ["voice-en-watchful", "voice-en-quiet"],
+          "genship_affinity": ["ED"]
+        },
+        {
+          "variant_id": "NPC2-3",
+          "passive_traits": ["t-P-C"],
+          "trust_seed": 4,
+          "voice_fragments": ["voice-en-cost", "voice-en-decide"],
+          "genship_affinity": ["AC"]
+        },
+        {
+          "variant_id": "NPC2-4",
+          "passive_traits": ["t-P-F", "t-P-G"],
+          "trust_seed": 1,
+          "voice_fragments": ["voice-en-tired", "voice-en-exit"],
+          "genship_affinity": ["RRA"]
+        },
+        {
+          "variant_id": "NPC2-5",
+          "passive_traits": ["t-P-E", "t-P-I"],
+          "trust_seed": 2,
+          "voice_fragments": ["voice-en-trade", "voice-en-spare"],
+          "genship_affinity": ["SAA"]
+        },
+        {
+          "variant_id": "NPC2-6",
+          "passive_traits": ["t-P-D", "t-P-K"],
+          "trust_seed": 2,
+          "voice_fragments": ["voice-en-fast", "voice-en-math"],
+          "genship_affinity": ["ED", "AC"]
+        }
+      ]
+    },
+    {
+      "archetype_id": "NPC3",
+      "display_label": "[NPC3-Gatekeeper PLACEHOLDER]",
+      "anchor_stage": "late",
+      "first_question": "[voice-frag: NPC3-Q1 PLACEHOLDER]",
+      "variants": [
+        {
+          "variant_id": "NPC3-1",
+          "passive_traits": ["t-P-A"],
+          "trust_seed": 1,
+          "voice_fragments": ["voice-gk-measured", "voice-gk-quiz"],
+          "genship_affinity": ["NAC"]
+        },
+        {
+          "variant_id": "NPC3-2",
+          "passive_traits": ["t-P-C", "t-P-I"],
+          "trust_seed": 2,
+          "voice_fragments": ["voice-gk-quiet", "voice-gk-cost"],
+          "genship_affinity": ["ED"]
+        },
+        {
+          "variant_id": "NPC3-3",
+          "passive_traits": ["t-P-K"],
+          "trust_seed": 2,
+          "voice_fragments": ["voice-gk-trade", "voice-gk-formal"],
+          "genship_affinity": ["RRA", "AC"]
+        },
+        {
+          "variant_id": "NPC3-4",
+          "passive_traits": ["t-P-G"],
+          "trust_seed": 3,
+          "voice_fragments": ["voice-gk-exit", "voice-gk-soft"],
+          "genship_affinity": ["AC"]
+        },
+        {
+          "variant_id": "NPC3-5",
+          "passive_traits": ["t-P-I"],
+          "trust_seed": 4,
+          "voice_fragments": ["voice-gk-soft", "voice-gk-knew"],
+          "genship_affinity": ["SAA"]
+        },
+        {
+          "variant_id": "NPC3-6",
+          "passive_traits": ["t-P-F"],
+          "trust_seed": 1,
+          "voice_fragments": ["voice-gk-tired", "voice-gk-formal"],
+          "genship_affinity": ["RRA"]
+        }
+      ]
+    }
+  ]
+}

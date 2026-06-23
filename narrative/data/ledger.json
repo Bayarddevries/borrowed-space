@@ -1,0 +1,82 @@
+{
+  "_meta": {
+    "purpose": "Initial empty schema for the persisted cross-run ledger. Mirrored into Persist.get_state() and written to disk on save(). Per PERSISTENCE.md §layer 4 + §Ledger.",
+    "version": "0.1-draft",
+    "note": "Zero lore. This is the *shape* of the running ledger file. New captains append; nothing rewrites prior entries. AI-managed: cross-run aggregation happens in INK_BEAT writes, not here.",
+    "schema": {
+      "save_slot": "string — currently 'default' until slots land",
+      "created_utc": "ISO-8601 timestamp",
+      "last_save_utc": "ISO-8601 timestamp",
+      "run_counts": {
+        "started": "int — total runs begun",
+        "ended": "int — total runs completed (any outcome)",
+        "active_captain_n": "int — current captain number, monotonic"
+      },
+      "captains": "array of captain-record objects (append-only)",
+      "captain_record": {
+        "captain_n": "int — the captain's monotonic number",
+        "genship_id": "string — matches captain-origins.json genship_id",
+        "country_fragment_id": "string — matches captain-origins.json country_fragment id",
+        "t_slots": "array of 3 strings — trait IDs (TRAITS.md T-pool)",
+        "h_tier_peak": "int — peak H-tier reached this run (1-4)",
+        "b_status": "string — blessing status: 'active' | 'withdrawn' | 'not-granted'",
+        "l_status": "string — latent reveal status: 'dormant' | 'unfolding' | 'resolved' | 'not-applicable'",
+        "outcome": "string — final outcome tag from a closed enum",
+        "discoveries": "array of strings — discovery IDs surfaced this run",
+        "casualties": "array of crew-casualty objects (append-only within run)",
+        "crew_casualty": {
+          "variant_id": "string — matches npc-archetypes.json variant_id",
+          "captain_known_n": "int — what the captain was known as when this casualty occurred",
+          "phase": "string — phase label (early/mid/late/post-reveal)",
+          "kind": "string — placeholder kind enum: 'killed' | 'betrayed' | 'broke' | 'departed'"
+        }
+      },
+      "trustee_communications": "array of trustee-message objects (append-only)",
+      "trustee_message": {
+        "captain_n": "int",
+        "delivered_phase": "string",
+        "kind": "string — fragment kind (e.g. 'identity-bit-4' / 'family-name' / 'boundary-draw')",
+        "see_persistence_md_trustee_section": "see PERSISTENCE.md §trustee-cross-run for bit map"
+      },
+      "he3_dismantling": {
+        "progress_pct": "int — 0-100, contributed by discovery acts, monotonic",
+        "discovery_acts": "array of unlocked discovery-act IDs (uuid-like strings)",
+        "alt_nexuses_mapped": "array of mapped alt-fuel nexus IDs",
+        "mo_mode": "int — current oligarch MO mode (1=low, 5=panic; see reactive-MO rules)"
+      },
+      "npc_state_vectors": "map (variant_id → npc_state) — see NPCS.md §state-vector",
+      "npc_state": {
+        "last_met_captain_n": "int",
+        "memory_log": "array of {captain_n, said} strings",
+        "bond_momentum": "float — average past bond-score; biases future bonds",
+        "held_trust": "float — extended-trust vector",
+        "known_about_player": "array of strings — what they think they know",
+        "personal_state_lifecycle": "string enum: 'alive' | 'departed' | 'fold' | 'held'"
+      },
+      "captain_cascades": "array of cascade entries — AI-pattern recognitions",
+      "cascade_entry": {
+        "captain_n": "int",
+        "kind": "string — placeholder kind enum",
+        "tag_text": "short — phrase-level tag the AI surfaces in dispatches"
+      }
+    }
+  },
+  "save_slot": "default",
+  "created_utc": "",
+  "last_save_utc": "",
+  "run_counts": {
+    "started": 0,
+    "ended": 0,
+    "active_captain_n": 0
+  },
+  "captains": [],
+  "trustee_communications": [],
+  "he3_dismantling": {
+    "progress_pct": 0,
+    "discovery_acts": [],
+    "alt_nexuses_mapped": [],
+    "mo_mode": 1
+  },
+  "npc_state_vectors": {},
+  "captain_cascades": []
+}
