@@ -17,6 +17,7 @@ A 2.5D roguelike space RPG about *being promoted into uncertainty*. Defector-oli
 - [PERSISTENCE.md](docs/PERSISTENCE.md) — what carries across runs
 - [BELT_CANON_LADDER.md](docs/BELT_CANON_LADDER.md) — knowledge bands
 - [BIAS_GUARDRAILS.md](docs/BIAS_GUARDRAILS.md) — anti-stereotype watch list
+- [ROADMAP.md](docs/ROADMAP.md) — phase boundaries and current plans
 - [_CONVENTIONS.md](docs/_CONVENTIONS.md) — file conventions
 
 ## Project layout

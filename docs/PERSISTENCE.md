@@ -17,6 +17,7 @@ related:
   - "[[TRUSTEE_BACKSTORY]]"
   - "[[HE3_INDUSTRY]]"
   - "[[BIAS_GUARDRAILS]]"
+  - "[[ROADMAP]]"
 ---
 
 # Persistence Model v1 — *Borrowed Space*

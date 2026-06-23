@@ -15,6 +15,7 @@ related:
   - "[[VISION]]"
   - "[[HE3_INDUSTRY]]"
   - "[[BIAS_GUARDRAILS]]"
+  - "[[ROADMAP]]"
 ---
 
 # Belt-Canon Ladder — *Borrowed Space*

@@ -17,6 +17,7 @@ related:
   - "[[NPCS]]"
   - "[[PERSISTENCE]]"
   - "[[BIAS_GUARDRAILS]]"
+  - "[[ROADMAP]]"
 ---
 
 # Trait System v1 — *Borrowed Space*

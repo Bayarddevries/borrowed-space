@@ -20,6 +20,7 @@ related:
   - "[[BELT_CANON_LADDER]]"
   - "[[NPCS]]"
   - "[[BIAS_GUARDRAILS]]"
+  - "[[ROADMAP]]"
 ---
 
 # Borrowed Space — World Bible v1

@@ -19,6 +19,7 @@ related:
   - "[[PERSISTENCE]]"
   - "[[TRUSTEE_BACKSTORY]]"
   - "[[BIAS_GUARDRAILS]]"
+  - "[[ROADMAP]]"
 ---
 
 # NPC System v1 — *Borrowed Space*

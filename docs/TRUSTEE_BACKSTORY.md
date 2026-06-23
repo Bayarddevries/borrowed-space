@@ -17,6 +17,7 @@ related:
   - "[[WORLD_BIBLE]]"
   - "[[HE3_INDUSTRY]]"
   - "[[BIAS_GUARDRAILS]]"
+  - "[[ROADMAP]]"
 ---
 
 # Trustee Backstory v1 — *Borrowed Space*

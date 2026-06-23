@@ -15,6 +15,7 @@ related:
   - "[[VISION]]"
   - "[[WORLD_BIBLE]]"
   - "[[_CONVENTIONS]]"
+  - "[[ROADMAP]]"
 ---
 
 # Bias Guardrails v1 — *Borrowed Space*

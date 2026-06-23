@@ -17,6 +17,7 @@ related:
   - "[[TRUSTEE_BACKSTORY]]"
   - "[[PERSISTENCE]]"
   - "[[BIAS_GUARDRAILS]]"
+  - "[[ROADMAP]]"
 ---
 
 # He-3 Industry v1 — *Borrowed Space*
