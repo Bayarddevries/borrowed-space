@@ -23,11 +23,11 @@ Current state. Verified-working features. Known issues. Updated at the end of ev
 
 ## Project state
 
-- **Phase:** Phase 3a.1 travel-system shipped on `phase/3a.1-travel-system` (`c2154fa`); Phase 3a.2 stations content shipped on `phase/3a.2-stations-content`; both branches ready for PR review/merge to main.
-- **Last commit:** `c2154fa feat(travel): Phase 3a.1 travel-system core + ai.gd integration` on `phase/3a.1-travel-system`. main is at `15ea8fe`.
+- **Phase:** Phase 3a.1 travel-system merged to main. Phase 3a.2 stations merged. Phase 3 sub-phases 3a–3f still open; Phase 3d (EncounterPool) is next.
+- **Last commit:** `1884277 merge(phase-3a.1)` on main.
 - **Repo:** https://github.com/Bayarddevries/borrowed-space (private)
-- **Working tree:** clean (travel-system branch + ai integration; no uncommitted work)
-- **Headline achievement:** Phase 2 ships one playable run; 14 GUT tests pass; Phase 3 split into 5 sub-phases (3a–3f); MAP.md locks phase 3a.1 design; Phase 3a.0 narrative content (16 empty-space beats + 1 legacy-trace prototype) merged; Phase 3a journey docs locked; **Phase 3a.1 travel-system shipped: 23/23 GUT tests pass**; Phase 3a.2 station content (10 named stations + arrival beats) shipped on parallel branch.
+- **Working tree:** clean
+- **Headline achievement:** Phase 2 ships one playable run; Phase 3a.1 travel-system shipped on main (23/23 GUT tests pass); Phase 3a.2 stations content (10 named stations + arrival beats) merged; MAP.md design locked; 5 sub-phases of Phase 3 broken out; EncounterPool stub seam in place for Phase 3d.
 
 ## Verified-working
 
@@ -49,12 +49,12 @@ Current state. Verified-working features. Known issues. Updated at the end of ev
 - ✅ **Phase 3a.0 content merged** (`8f4cc55`) — `empty-space-manifest.json` (16 beats across distress / stranger / failure / crew-fight) + `legacy-trace-prototype.json` (1 past-captain ghost-pin beat with `data_spec` block defining the future `legacy_trace_system.gd` contract). Both rounds-trip through the manifest parser; 14/14 GUT tests still pass.
 - ✅ **Phase 3a journey docs locked** (`ed73c6a`, `f455c32`) — `narrative/beats/_META.md` (Schema A linear / Schema B pooled beats, delta vocabulary locked); `docs/ENCOUNTER_POOL.md` (interface contract for `EncounterPool.roll(ship, arrival_kind)`); `docs/COMBAT.md` placeholder stub preventing accidental combat references elsewhere. TODO.md + ISSUES.md synced. Stale `[[CARTOGRAPHY]]` wikilinks replaced with `[[MAP]]` (CARTOGRAPHY.md never existed).
 - ✅ **Phase 3a.2 content shipped** — `phase/3a.2-stations-content` branch: `narrative/data/stations.json` (10 named stations: Kashner Iceworks, Bentic Penal, Corvallo Station, SX Halo, Orpheum Astrogrowth, Prophet's Threshold, Denise Mar, Berezina Drift, Moscow Prospekt, Coral — matching `cartography.json` faction split exactly); `narrative/beats/station_arrival_beats.json` (10 Schema A beats with atmosphere-based dialog).
-- ✅ **Phase 3a.1 travel-system shipped** (`c2154fa` on `phase/3a.1-travel-system`) — axial-hex math helpers (`hex.gd`), JSON-driven cartography (`cartography.gd` + `narrative/data/cartography.json` with 10 stations STATION_01..STATION_10), per-run ship state (`ship.gd`), transit orchestrator (`travel.gd`), ai.gd integration in `step_5_6_overworld_and_station()`. **23/23 GUT tests pass** (was 14; +9 new). Real EncounterPool integration held for Phase 3d — Phase 3a.1 ships the registry seam it plugs into.
+- ✅ **Phase 3a.1 travel-system MERGED** (`1884277`) — axial-hex math helpers (`hex.gd`), JSON-driven cartography (`cartography.gd` + `narrative/data/cartography.json` with 10 stations STATION_01..STATION_10), per-run ship state (`ship.gd`), transit orchestrator (`travel.gd`), ai.gd integration in `step_5_6_overworld_and_station()`. **23/23 GUT tests pass** (was 14; +9 new). Real EncounterPool integration held for Phase 3d — Phase 3a.1 ships the registry seam it plugs into.
 
 ## In-progress
 
-- 🔵 **Phase 3a.0 content batch merged** (`8f4cc55`): `empty-space-manifest.json` (16 beats × 4 categories) + `legacy-trace-prototype.json` (1 beat with `data_spec` contract for `legacy_trace_system.gd`). Travel system session picks up these beats via `TransitResult.encounter_kind` routing.
-- 🔵 **Phase 3a.1 spec locked** at `docs/MAP.md` on branch `phase/3a.1-travel-system`. *Note: the older HANDOFF called this `docs/CARTOGRAPHY.md` — that filename never existed; spec is at MAP.md (broader scope: topology + cartography + encounters + view).*
+- 🔵 **Phase 3a.0 content batch merged** (`8f4cc55`): `empty-space-manifest.json` (16 beats × 4 categories) + `legacy-trace-prototype.json` (1 beat with `data_spec` contract for `legacy_trace_system.gd`). Travel system session picks up these beats via `TransitResult.encounter_kind` routing. **Now wired into Travel via Phase 3d work.**
+- 🔵 **Phase 3a.1 + 3a.2 MERGED** (`1884277`) — travel-system code + station content on main. **Next: Phase 3d** replaces the static-encounter-registry stub in `travel.gd` with a real `EncounterPool` that reads `BEATS_FOR_HEX_KIND` from the station-arrival beats + empty-space manifest, then routes via the existing schema vocabulary.
 - 🔵 **Phase 3c–3f tracking issues open**: #9 mission board, #10 encounter pool, #11 NPC state-selection, #12 genship-origin wiring. Specs locked; awaiting implementation sessions.
 - 🔵 **Cross-agent doc handoff complete** (5 gameplay-loop docs from other agent now in `docs/`). Per-clarification decisions: 6 genships (add ME), 5 act booleans + keep float, use-once-and-spend OR AI-withdraw blessing, 13-station cartography (every faction), AI-paced Trustee missions, tone-only bias-watch for 7 Trust corps.
 
