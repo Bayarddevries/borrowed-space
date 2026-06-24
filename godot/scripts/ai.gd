@@ -21,6 +21,15 @@ var discoveries: Array = []
 var beat_runner: Node = null
 var ledger: Node = null
 
+# Phase 3a.1 travel-system integration:
+#   - `ship` holds the in-run ship state (fuel, hull, etc., hex coords).
+#   - On every step_5_6 invocation we instantiate a fresh ship + run a
+#     real Transit.transit() so the Persist.run_state[captain_n].ship
+#     block gets written with authentic travel data.
+#   - The beat_runner still drives Ink dialog as before — Phase 3a.1
+#     integrates travel without ripping up the existing Phase 2g flow.
+var ship: ShipState = null
+
 func _ready() -> void:
 	beat_runner = BeatRunner.new()
 	add_child(beat_runner)
@@ -66,6 +75,10 @@ func step_4_meet_crew() -> Array:
 # After step_3 the cursor sits on ai_briefing_1 with 1 choice (crew_meetup_1).
 # After step_4 (meet crew) the cursor hasn't moved, so we burn picks 0,0 to
 # reach overworld_choose_1, then 0,0 to pick refueling + brief encounter.
+#
+# Phase 3a.1: in addition to the manifest-driven dialog, we instantiate a
+# ShipState and run one real Travel.transit() to demonstrate the integration.
+# The transit result is patched into Persist.run_state.[captain_n].ship.
 func step_5_6_overworld_and_station() -> Dictionary:
 	if not beat_runner.is_loaded():
 		return {"text": "BeatRunner manifest not loaded.", "choices": []}
@@ -79,7 +92,36 @@ func step_5_6_overworld_and_station() -> Dictionary:
 	# Synthetic discovery — real gameplay gates this against an event system.
 	beat_runner.apply_to_state({"discoveries_caught": ["ink_first_arrival"]})
 	discoveries.append("ink_first_arrival")
+
+	# Phase 3a.1: real travel-system integration.
+	ship = ShipState.new_default(captain.get("name", "Play-Captain"),
+		captain.get("genship_id", "NAC"), 0, 0)
+	Travel.register_encounter("station_hex", "station_arrival_default_1")
+	var stations: Array = Cartography.load_stations()
+	# Real transit: from (0,0) to STATION_10 at (1,-1).
+	var transit_result := Travel.transit(ship, 1, -1, stations)
+	Travel.clear_encounters()
+	if transit_result.get("ok", false):
+		persist_ship_snapshot(transit_result)
 	return station
+
+## Patch the ShipState into Persist.run_state under a per-captain key.
+## Phase 3a.1 stub: a sentinel captain_n of <run_iteration> is used here
+## because we don't have the finalised captain_n yet from step_7 — that
+## wiring lands when LedgerWriter adopts run_state.* keys (Phase 3c).
+func persist_ship_snapshot(transit_result: Dictionary) -> void:
+	if ship == null:
+		return
+	var snapshot := ship.to_dict()
+	snapshot["last_transit"] = {
+		"arrived_at": [int(transit_result.get("arrived_at", Vector2i(-1, -1)).x),
+		               int(transit_result.get("arrived_at", Vector2i(-1, -1)).y)],
+		"arrival_kind": str(transit_result.get("arrival_kind", "")),
+		"fuel_after": int(transit_result.get("fuel_after", 0)),
+		"cost": int(transit_result.get("cost", 0)),
+		"tick": int(transit_result.get("tick", 0)),
+	}
+	Persist.patch({"run_state": {"phase3a_demo_ship": snapshot}})
 
 # === Step 7: end-of-run summary ===
 func step_7_finalise() -> int:

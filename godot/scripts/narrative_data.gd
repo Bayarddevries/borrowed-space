@@ -22,9 +22,10 @@ extends Node
 class_name NarrativeData
 
 const RELATIVE_PATHS := {
-	"origins":  "/../narrative/data/captain-origins.json",
-	"npcs":     "/../narrative/data/npc-archetypes.json",
-	"ledger":   "/../narrative/data/ledger.json",
+	"origins":     "/../narrative/data/captain-origins.json",
+	"npcs":        "/../narrative/data/npc-archetypes.json",
+	"ledger":      "/../narrative/data/ledger.json",
+	"cartography": "/../narrative/data/cartography.json",
 }
 
 # Cache so we don't re-parse every call.
