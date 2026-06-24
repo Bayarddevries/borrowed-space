@@ -23,11 +23,11 @@ Current state. Verified-working features. Known issues. Updated at the end of ev
 
 ## Project state
 
-- **Phase:** Phase 3a.0 content batch merged; Phase 3a.1 spec locked in `docs/MAP.md`; awaiting code session for travel system.
-- **Last commit:** `8f4cc55 merge(phase-3a-0)` — see git log
+- **Phase:** Phase 3a.1 travel-system shipped on `phase/3a.1-travel-system` (`c2154fa`); Phase 3a.2 stations content shipped on `phase/3a.2-stations-content`; both branches ready for PR review/merge to main.
+- **Last commit:** `c2154fa feat(travel): Phase 3a.1 travel-system core + ai.gd integration` on `phase/3a.1-travel-system`. main is at `15ea8fe`.
 - **Repo:** https://github.com/Bayarddevries/borrowed-space (private)
-- **Working tree:** clean (Phase 3a.0 content merged; Phase 3a.1 design doc landed; no code yet)
-- **Headline achievement:** Phase 2 ships one playable run; 14 GUT tests pass; Phase 3 split into 5 sub-phases (3a–3f); MAP.md locks phase 3a.1 design (belt topology, per-move clock, ghosts-of-past-captains cartography, hub-and-spoke open-belt encounters, sector view); Phase 3a.0 narrative content (16 empty-space beats + 1 legacy-trace prototype) merged; PR #13 closed.
+- **Working tree:** clean (travel-system branch + ai integration; no uncommitted work)
+- **Headline achievement:** Phase 2 ships one playable run; 14 GUT tests pass; Phase 3 split into 5 sub-phases (3a–3f); MAP.md locks phase 3a.1 design; Phase 3a.0 narrative content (16 empty-space beats + 1 legacy-trace prototype) merged; Phase 3a journey docs locked; **Phase 3a.1 travel-system shipped: 23/23 GUT tests pass**; Phase 3a.2 station content (10 named stations + arrival beats) shipped on parallel branch.
 
 ## Verified-working
 
@@ -48,6 +48,8 @@ Current state. Verified-working features. Known issues. Updated at the end of ev
 - ✅ **`docs/MAP.md` locked** — phase 3a.1 design: bipolar belt (inner 25 / outer 40+), per-move clock (1 day / 1 fuel / 1 suspicion), ghosts-of-past-captains cartography (manifest-ledges never avatars), hub-and-spoke open-belt encounters (mostly one-shot, ~15% multi-turn saves), sector view as default zoom target. Cross-linked from ROADMAP.md Phase 3a.
 - ✅ **Phase 3a.0 content merged** (`8f4cc55`) — `empty-space-manifest.json` (16 beats across distress / stranger / failure / crew-fight) + `legacy-trace-prototype.json` (1 past-captain ghost-pin beat with `data_spec` block defining the future `legacy_trace_system.gd` contract). Both rounds-trip through the manifest parser; 14/14 GUT tests still pass.
 - ✅ **Phase 3a journey docs locked** (`ed73c6a`, `f455c32`) — `narrative/beats/_META.md` (Schema A linear / Schema B pooled beats, delta vocabulary locked); `docs/ENCOUNTER_POOL.md` (interface contract for `EncounterPool.roll(ship, arrival_kind)`); `docs/COMBAT.md` placeholder stub preventing accidental combat references elsewhere. TODO.md + ISSUES.md synced. Stale `[[CARTOGRAPHY]]` wikilinks replaced with `[[MAP]]` (CARTOGRAPHY.md never existed).
+- ✅ **Phase 3a.2 content shipped** — `phase/3a.2-stations-content` branch: `narrative/data/stations.json` (10 named stations: Kashner Iceworks, Bentic Penal, Corvallo Station, SX Halo, Orpheum Astrogrowth, Prophet's Threshold, Denise Mar, Berezina Drift, Moscow Prospekt, Coral — matching `cartography.json` faction split exactly); `narrative/beats/station_arrival_beats.json` (10 Schema A beats with atmosphere-based dialog).
+- ✅ **Phase 3a.1 travel-system shipped** (`c2154fa` on `phase/3a.1-travel-system`) — axial-hex math helpers (`hex.gd`), JSON-driven cartography (`cartography.gd` + `narrative/data/cartography.json` with 10 stations STATION_01..STATION_10), per-run ship state (`ship.gd`), transit orchestrator (`travel.gd`), ai.gd integration in `step_5_6_overworld_and_station()`. **23/23 GUT tests pass** (was 14; +9 new). Real EncounterPool integration held for Phase 3d — Phase 3a.1 ships the registry seam it plugs into.
 
 ## In-progress
 

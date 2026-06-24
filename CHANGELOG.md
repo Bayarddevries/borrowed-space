@@ -42,6 +42,21 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) but adapted for s
 ### Phase 3a cleanup (commit f455c32)
 - Three broken `[[CARTOGRAPHY]]` wikilinks replaced with `[[MAP]]` in _META.md, ENCOUNTER_POOL.md, TODO.md (docs/CARTOGRAPHY.md never existed).
 
+### Phase 3a.1 — travel-system shipped (commit c2154fa, branch phase/3a.1-travel-system)
+- godot/scripts/hex.gd — axial hex math (axial distance, neighbors, in_belt, tactical_range, BELT_RADIUS=25).
+- godot/scripts/cartography.gd — JSON loader + HexKind classifier + hazard_modifier table + validation; integrates with NarrativeData via RELATIVE_PATHS["cartography"].
+- godot/scripts/ship.gd — per-run ShipState (hex, fuel, hull, supplies, time_elapsed, is_docked); to_dict/from_dict round-trips for Persist.
+- godot/scripts/travel.gd — Travel.transit(ship, to_q, to_r, stations) → TransitResult. Validates out-of-belt + fuel-sufficiency, advances ship state, rolls encounter from a registry hook (Phase 3d replaces stub with real EncounterPool).
+- godot/scripts/ai.gd — step_5_6_overworld_and_station() now instantiates a ShipState, runs one real Travel.transit() to STATION_10 at (1,-1), and patches the snapshot into Persist.run_state.phase3a_demo_ship.
+- godot/scripts/narrative_data.gd — adds 'cartography' to RELATIVE_PATHS.
+- godot/test/test_travel.gd — 9 new tests: hex_distance_constants, cartography_loads+validation, fuel_cost_basic (lane 0.7, deep_belt 1.0, derelict-anomaly placeholders), transit_consumes_fuel_and_advances_time, transit_blocks_when_out_of_fuel, transit_out_of_belt_refused, transit_encounter_rolled_for_station_hex, ship_state_round_trip, canary test_z_playable_run_includes_travel.
+- narrative/data/cartography.json — 10 stations STATION_01..STATION_10, all 6 factions represented, ids mirror Phase 3a.2 station naming.
+- **23/23 GUT tests pass (was 14, +9). 100/100 asserts. 0.405s.**
+
+### Phase 3a.2 — content batch (PR #14, branch phase/3a.2-stations-content)
+- narrative/data/stations.json — 10 named stations matching cartography.json faction split exactly. Names: Kashner Iceworks (NAC, corporate), Bentic Penal (ED, derelict), Corvallo Station (RRA, crossroads), SX Halo (AC, corporate), Orpheum Astrogrowth (SAA, corporate), Prophet's Threshold (ME, refuge), Denise Mar (NAC, refuge), Berezina Drift (ED, frontier), Moscow Prospekt (RRA, lawful), Coral (AC, crossroads).
+- narrative/beats/station_arrival_beats.json — 10 Schema A beats, atmosphere-appropriate dialog, 2-3 choices each, deltas use locked vocabulary only (fuel_delta, suspicion_delta, bond_score, crew_xp, discoveries, credit_delta, blessing_variant, legacy_trace_claimed).
+
 ### Phase 2 — gameplay-loop doc alignment (commit pending)
 - docs/TRAITS.md — blessing mechanic clarified: use-once-and-spend (player choice) **plus** AI-can-withdraw on betrayal; b_status enum documented
 - docs/PERSISTENCE.md — v2 schema: 5 act boolean fields (discovered_act_1..5) replacing flat `discovered_acts` array; new `faction_standing` block with 6 genships + 7 Trust corps; documented captain outcome enum (death-combat / death-other / ship-destroyed / arrested / mutiny-deposed / mutiny-abandoned / voluntary-retreat / ledger-closed)
