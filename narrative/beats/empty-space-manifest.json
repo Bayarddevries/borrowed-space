@@ -1,0 +1,344 @@
+{
+  "_meta": {
+    "title": "Empty-Space Encounter Beats",
+    "trigger": "open_belt",
+    "description": "In-flight belt encounters picked at module-load by the Phase 3a.1 travel system. When the captain transits a non-station hex (deep_belt, lane, anomaly), the travel system rolls one of these beats. Each resolves through crew choices; deltas feed the ledger and AI state.",
+    "_credits": "All beats are minimal by design — 1-2 sentences of prose, 2-3 choices. They resolve in a single screen, then return to travel. Longer narrative (station encounters, legacy traces) lives in separate manifests. These beats are the ambient texture of the belt: the things that happen between destinations.",
+    "schema": "manifest-v1",
+    "version": "0.1-draft"
+  },
+  "beats": {
+    "distress_call_1": {
+      "_id": "distress_call_1",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "distress",
+      "prose": "A distress ping cuts through the comms — a NAC courier pinballed off her route, hull intact but navigation dead. She's burning battery on the signal. You have enough fuel to reach her, but the detour costs time.",
+      "choices": [
+        {
+          "text": "Alter course. Bring her home.",
+          "next_beat": "distress_call_1_rescue",
+          "delta": { "fuel_delta": -10, "suspicion_delta": -1, "bond_score": 1 }
+        },
+        {
+          "text": "Ignore the ping. Stay on route.",
+          "next_beat": "distress_call_1_ignore",
+          "delta": { "suspicion_delta": 1 }
+        },
+        {
+          "text": "Strip her beacon. Leave the hull.",
+          "next_beat": "distress_call_1_strip",
+          "delta": { "fuel_delta": 5, "suspicion_delta": 2, "bond_score": -1, "discoveries": ["nac_courier_beacon"] }
+        }
+      ]
+    },
+    "distress_call_1_rescue": {
+      "_id": "distress_call_1_rescue",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "distress",
+      "prose": "You match velocity. The courier docks with a shudder and a hiss. She's young, shaking, grateful in that clipped NAC way that doesn't say thank you. Her cargo manifest shows medical supplies — bound for a RRA outpost you passed two ticks ago.",
+      "choices": [
+        {
+          "text": "Take her to the RRA outpost. It's a delay.",
+          "next_beat": "run_end_summary",
+          "delta": { "fuel_delta": -15, "bond_score": 1, "discoveries": ["rra_medical_dead_drop"] }
+        },
+        {
+          "text": "Drop her at the next lane junction. Move on.",
+          "next_beat": "run_end_summary",
+          "delta": { "bond_score": 1 }
+        }
+      ]
+    },
+    "distress_call_1_ignore": {
+      "_id": "distress_call_1_ignore",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "distress",
+      "prose": "You cut the comms. The ping loops for six more seconds and then stops. {crew_name_one} doesn't look at you. The ship hums. The belt doesn't care.",
+      "choices": [
+        {
+          "text": "Log the ping as noise. Move on.",
+          "next_beat": "run_end_summary",
+          "delta": {}
+        },
+        {
+          "text": "Have {crew_name_one} log it. You don't sign.",
+          "next_beat": "run_end_summary",
+          "delta": { "bond_score": -1 }
+        }
+      ]
+    },
+    "distress_call_1_strip": {
+      "_id": "distress_call_1_strip",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "distress",
+      "prose": "You take the beacon — still warm, still pinging — and leave the courier to the belt. The beacon's log shows she was running for an ED subsidiary, off-books. Someone paid her to be here. Someone paid her to be ignored.",
+      "choices": [
+        {
+          "text": "Keep the beacon. Sell it at Coral.",
+          "next_beat": "run_end_summary",
+          "delta": { "discoveries": ["ed_off_books_courier"] }
+        },
+        {
+          "text": "Wipe it. Drop the pieces.",
+          "next_beat": "run_end_summary",
+          "delta": { "suspicion_delta": -1 }
+        }
+      ]
+    },
+
+    "passing_stranger_1": {
+      "_id": "passing_stranger_1",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "stranger",
+      "prose": "A ship drifts past — ED registry, old hull, running dark. No hail. It matches your vector for thirty seconds, then peels away. Someone on that bridge saw you and chose not to speak.",
+      "choices": [
+        {
+          "text": "Hail them. Open channel.",
+          "next_beat": "passing_stranger_1_hail",
+          "delta": { "suspicion_delta": -1 }
+        },
+        {
+          "text": "Log the registry. Move on.",
+          "next_beat": "run_end_summary",
+          "delta": { "discoveries": ["ed_dark_hull_registry"] }
+        },
+        {
+          "text": "Track them. One tick off-route.",
+          "next_beat": "passing_stranger_1_track",
+          "delta": { "fuel_delta": -5, "suspicion_delta": 1 }
+        }
+      ]
+    },
+    "passing_stranger_1_hail": {
+      "_id": "passing_stranger_1_hail",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "stranger",
+      "prose": "The channel opens. A woman's voice — tired, not hostile. \"You're the new {genship_id} captain. I ran your predecessor's run. They didn't make it past Coral.\" The channel cuts before you can respond.",
+      "choices": [
+        {
+          "text": "Log her words. Carry them.",
+          "next_beat": "run_end_summary",
+          "delta": { "discoveries": ["predecessor_warning_anonymous"] }
+        },
+        {
+          "text": "Try to re-establish. She's gone.",
+          "next_beat": "run_end_summary",
+          "delta": {}
+        }
+      ]
+    },
+    "passing_stranger_1_track": {
+      "_id": "passing_stranger_1_track",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "stranger",
+      "prose": "You burn a tick of fuel and close the distance. The ED ship docks at a derelict station — uncharted, not on your map. You mark the coordinates. Someone will want this.",
+      "choices": [
+        {
+          "text": "Log the station. Move on.",
+          "next_beat": "run_end_summary",
+          "delta": { "discoveries": ["uncharted_derelict_station"] }
+        },
+        {
+          "text": "Dock. Investigate.",
+          "next_beat": "run_end_summary",
+          "delta": { "fuel_delta": -10, "suspicion_delta": 1, "discoveries": ["uncharted_derelict_station", "ed_meeting_pin"] }
+        }
+      ]
+    },
+
+    "ship_failure_1": {
+      "_id": "ship_failure_1",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "failure",
+      "prose": "The port nacelle coughs. Not a sound you want to hear in open belt. The drive stutters, catches, stutters again. {crew_name_two} is already in the engine room before you call her name.",
+      "choices": [
+        {
+          "text": "Run diagnostics. Wait for her.",
+          "next_beat": "ship_failure_1_diagnose",
+          "delta": { "crew_xp": { "crew_name_two": 1 } }
+        },
+        {
+          "text": "Reroute through the starboard. Limp forward.",
+          "next_beat": "ship_failure_1_reroute",
+          "delta": { "fuel_delta": -5, "suspicion_delta": 1 }
+        },
+        {
+          "text": "Kill the drive. Drift and repair.",
+          "next_beat": "ship_failure_1_drift",
+          "delta": { "fuel_delta": -10, "bond_score": 1, "crew_xp": { "crew_name_two": 2 } }
+        }
+      ]
+    },
+    "ship_failure_1_diagnose": {
+      "_id": "ship_failure_1_diagnose",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "failure",
+      "prose": "The diagnostic reads: fuel line contamination. Something in the last refuel was wrong — water, or worse, a tracing agent. {crew_name_two} bleeds the line. The drive catches. You're running clean again, but someone at that outpost knew what they were pumping.",
+      "choices": [
+        {
+          "text": "Log the contamination. Someone did this.",
+          "next_beat": "run_end_summary",
+          "delta": { "discoveries": ["fuel_contamination_tracing_agent"] }
+        },
+        {
+          "text": "Keep it quiet. It was an accident.",
+          "next_beat": "run_end_summary",
+          "delta": {}
+        }
+      ]
+    },
+    "ship_failure_1_reroute": {
+      "_id": "ship_failure_1_reroute",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "failure",
+      "prose": "Starboard holds. You limp forward on half thrust. It costs fuel — the belt doesn't forgive inefficiency. {crew_name_two} watches the port nacelle from the engine room camera. She doesn't say what she's thinking.",
+      "choices": [
+        {
+          "text": "Push through. Make the station on time.",
+          "next_beat": "run_end_summary",
+          "delta": { "fuel_delta": -5 }
+        },
+        {
+          "text": "Slow down. Let her work.",
+          "next_beat": "run_end_summary",
+          "delta": { "bond_score": 1, "crew_xp": { "crew_name_two": 1 } }
+        }
+      ]
+    },
+    "ship_failure_1_drift": {
+      "_id": "ship_failure_1_drift",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "failure",
+      "prose": "You kill the drive. The ship goes silent — no hum, no vibration, just the sound of your own breathing. {crew_name_two} works in the open engine bay with a hand-lamp and a wrench. It takes an hour. She comes back grease-streaked and calm. \"It's done.\"",
+      "choices": [
+        {
+          "text": "Thank her. Rest a tick.",
+          "next_beat": "run_end_summary",
+          "delta": { "bond_score": 1, "crew_xp": { "crew_name_two": 2 } }
+        },
+        {
+          "text": "Restart. No time.",
+          "next_beat": "run_end_summary",
+          "delta": { "crew_xp": { "crew_name_two": 1 } }
+        }
+      ]
+    },
+
+    "crew_fight_1": {
+      "_id": "crew_fight_1",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "crew_fight",
+      "prose": "You hear it before you see it — {crew_name_one}'s voice, sharp and low, cutting through the galley wall. {crew_name_two} answers with something louder. It's about rations. It's never about rations.",
+      "choices": [
+        {
+          "text": "Stand between them. Mediate.",
+          "next_beat": "crew_fight_1_mediate",
+          "delta": { "bond_score": 1, "crew_xp": { "crew_name_one": 1, "crew_name_two": 1 } }
+        },
+        {
+          "text": "Side with {crew_name_one}. End it.",
+          "next_beat": "crew_fight_1_side",
+          "delta": { "bond_score": -1, "crew_xp": { "crew_name_one": 1 } }
+        },
+        {
+          "text": "Walk away. Let them sort it.",
+          "next_beat": "crew_fight_1_walk",
+          "delta": { "bond_score": -1 }
+        },
+        {
+          "text": "Round of brandy. Both of them.",
+          "next_beat": "crew_fight_1_brandy",
+          "delta": { "bond_score": 2, "fuel_delta": -2 }
+        }
+      ]
+    },
+    "crew_fight_1_mediate": {
+      "_id": "crew_fight_1_mediate",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "crew_fight",
+      "prose": "You step into the galley. Both of them stop — not because you outrank them, but because you're there. {crew_name_one} sits. {crew_name_two} pours water. You ask what's actually wrong. It takes ten minutes. It's about the run. It's always about the run.",
+      "choices": [
+        {
+          "text": "Acknowledge it. Move forward.",
+          "next_beat": "run_end_summary",
+          "delta": { "bond_score": 1 }
+        },
+        {
+          "text": "Table it. One problem at a time.",
+          "next_beat": "run_end_summary",
+          "delta": {}
+        }
+      ]
+    },
+    "crew_fight_1_side": {
+      "_id": "crew_fight_1_side",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "crew_fight",
+      "prose": "You back {crew_name_one}. {crew_name_two} goes quiet — not agreement, just containment. She leaves the galley. The ship feels smaller. {crew_name_one} nods at you. It's not gratitude. It's confirmation.",
+      "choices": [
+        {
+          "text": "Log it. Move on.",
+          "next_beat": "run_end_summary",
+          "delta": { "bond_score": -1 }
+        },
+        {
+          "text": "Check on {crew_name_two} later.",
+          "next_beat": "run_end_summary",
+          "delta": { "bond_score": 1, "crew_xp": { "crew_name_two": 1 } }
+        }
+      ]
+    },
+    "crew_fight_1_walk": {
+      "_id": "crew_fight_1_walk",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "crew_fight",
+      "prose": "You leave. They fight. It ends — not because it's resolved, but because they're tired. {crew_name_one} doesn't speak to {crew_name_two} for two ticks. The ship runs. The ledger doesn't track this. But you know.",
+      "choices": [
+        {
+          "text": "Let the silence stand.",
+          "next_beat": "run_end_summary",
+          "delta": {}
+        },
+        {
+          "text": "Log it privately. For the ledger.",
+          "next_beat": "run_end_summary",
+          "delta": { "discoveries": ["crew_rupture_unresolved"] }
+        }
+      ]
+    },
+    "crew_fight_1_brandy": {
+      "_id": "crew_fight_1_brandy",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "crew_fight",
+      "prose": "You pull the bottle — the good stuff, saved for a moment that isn't this. But you pour anyway. Three glasses. {crew_name_one} laughs first. {crew_name_two} doesn't. By the end they're talking about the run again, not the rations. Not fixed. But bridged.",
+      "choices": [
+        {
+          "text": "Log the repair. It's fragile.",
+          "next_beat": "run_end_summary",
+          "delta": { "bond_score": 1, "discoveries": ["crew_bridge_fragile"] }
+        },
+        {
+          "text": "Log nothing. Some things stay.",
+          "next_beat": "run_end_summary",
+          "delta": {}
+        }
+      ]
+    }
+  }
+}
