@@ -45,7 +45,7 @@ static func generate(archetype_id: String) -> Dictionary:
 			return {
 				"archetype_id": archetype_id,
 				"variant_id": v["variant_id"],
-				"crew_name": name_frag,
+				"name": name_frag,
 				"bond_score": 0,
 				"held_trust": v["trust_seed"],
 				"memory_log": [],

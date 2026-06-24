@@ -63,23 +63,23 @@ func step_4_meet_crew() -> Array:
 	return crew
 
 # === Step 5 + 6: pick destination, run brief encounter, return ===
+# After step_3 the cursor sits on ai_briefing_1 with 1 choice (crew_meetup_1).
+# After step_4 (meet crew) the cursor hasn't moved, so we burn picks 0,0 to
+# reach overworld_choose_1, then 0,0 to pick refueling + brief encounter.
 func step_5_6_overworld_and_station() -> Dictionary:
-	# Drive 3 beats end-to-end: overworld choice -> station arrival -> debrief.
-	# Each beat ends at the choice index the procedural test profile picks.
 	if not beat_runner.is_loaded():
 		return {"text": "BeatRunner manifest not loaded.", "choices": []}
-	var dest: Dictionary = beat_runner.choose(0)
-	if not dest.get("choices", []).is_empty():
-		beat_runner.choose(0)
-	# Station has 1 choice — debrief into end-of-run.
-	if beat_runner.get_current_beat() != "":
-		var final_beat = beat_runner.run_beat(beat_runner.get_current_beat())
-		if not final_beat.get("choices", []).is_empty():
-			beat_runner.choose(0)
-	# Discovered something on the way (synthetic — real gameplay gates this).
+	# Burn the briefing + crew_meetup choices to land on overworld_choose_1.
+	beat_runner.choose(0)   # ai_briefing_1 -> crew_meetup_1
+	beat_runner.choose(0)   # crew_meetup_1  -> overworld_choose_1
+	# Now choose a destination -> station arrival.
+	var station = beat_runner.choose(0)   # pick refueling (conservative)
+	# Station has 1 choice -> end-of-run.
+	var end_beat = beat_runner.choose(0)
+	# Synthetic discovery — real gameplay gates this against an event system.
 	beat_runner.apply_to_state({"discoveries_caught": ["ink_first_arrival"]})
 	discoveries.append("ink_first_arrival")
-	return beat_runner.get_state()
+	return station
 
 # === Step 7: end-of-run summary ===
 func step_7_finalise() -> int:

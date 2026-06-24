@@ -83,9 +83,14 @@ Current state. Verified-working features. Known issues. Updated at the end of ev
 
 ## Pitfalls discovered (lesson bank)
 
-- **GDScript class_name stays registered in ProjectSettings even after file deletion** — Godot 4 caches class names in `project_metadata.cfg`. Renaming or moving class_name scripts requires editing that cache or `--headless --import` to refresh.
-- **Narrative data lives outside the Godot project root** by AGENTS.md convention. Use `ProjectSettings.globalize_path("res://")` and walk up to the repo root to access it; standard `res://` URIs can't reach it. Production builds need a bundler step (Phase 2c Path-A).
-- **`load()` in GDScript conflicts with `ResourceLoader.load()`** — name carefully when writing persist or similar loaders. We renamed to `load_state()` in `persist.gd` after a parse error.
+- **GDScript `class_name` is registered in ProjectSettings' `global_script_class_cache.cfg`** — Godot 4 caches class names regardless of source state. Renaming/moving class scripts needs `--headless --import` to refresh. Stale cache throws `'Identifier not found'` even when the file is correct.
+- **`extends GutTest` scripts not matching `test_*` prefix are silently filtered** by `-gdir=res://test` — name them `test_foo.gd` or `-gtest=...` them explicitly.
+- **Script-mode `-s` boot (-s script.gd) does not run autoloads** before `_init()`; scripts that depend on `<root>/Persist` or class_name access fail with "Identifier not found". Run via GUT (which wires autoloads correctly), or `root.add_child(node)` followed by `await process_frame`.
+- **`run_beat("beat_id")` is the cursor-advance primitive** — first call moves cursor to that beat, subsequent calls re-read it. `choose(idx)` is read + apply_delta + advance. Knowing this beats visualising the cursor.
+- **narrative/ lives outside the Godot project root** by AGENTS.md convention. Use `ProjectSettings.globalize_path("res://")` to walk up to the repo root. Production builds need bundler (Phase 2c Path-A).
+- **`load()` in GDScript conflicts with `ResourceLoader.load()`** — name carefully. `persist.gd` uses `load_state()` to disambiguate.
+- **`Node.name` property shadows any instance var named `name`** — even via Dictionary it's confusing. Crew dict key is `"name"`; instance var on the class is `crew_name` to avoid the conflict.
+- **`Crew.generate` static call requires `Crew` class_name to be loaded** from project cache; failing that, ScriptCache shows `'Non-existent function generate'`-style errors. (Not a single-tool GUT can't fix — plugin needs project_metadata.cfg sync.)
 
 ---
 
