@@ -33,6 +33,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) but adapted for s
 - docs/MAP.md (NEW, locked) — belt topology, per-move clock, ghosts-of-past-captains cartography, hub-and-spoke open-belt encounters, sector view. Cross-linked from ROADMAP.md Phase 3a.
 - HANDOFF.md updated with phase 3 sub-phase tracker.
 
+### Phase 3a journey docs (commit ed73c6a)
+- narrative/beats/_META.md — Schema A (linear/BeatRunner) vs Schema B (pool/self-describing) beat schemas. Delta vocabulary locked: fuel_delta, suspicion_delta, bond_score, crew_xp, discoveries, credit_delta, blessing_variant, legacy_trace_claimed.
+- docs/ENCOUNTER_POOL.md — interface contract for EncounterPool.roll(ship, arrival_kind) → EncounterResult. Weighting rules by hex kind + ship state. 5-test plan.
+- docs/COMBAT.md — placeholder stub. Lists known facts + open questions + design prerequisites (Phase 3b — explicitly not designed yet).
+- TODO.md + ISSUES.md synced with current GitHub state.
+
+### Phase 3a cleanup (commit f455c32)
+- Three broken `[[CARTOGRAPHY]]` wikilinks replaced with `[[MAP]]` in _META.md, ENCOUNTER_POOL.md, TODO.md (docs/CARTOGRAPHY.md never existed).
+
 ### Phase 2 — gameplay-loop doc alignment (commit pending)
 - docs/TRAITS.md — blessing mechanic clarified: use-once-and-spend (player choice) **plus** AI-can-withdraw on betrayal; b_status enum documented
 - docs/PERSISTENCE.md — v2 schema: 5 act boolean fields (discovered_act_1..5) replacing flat `discovered_acts` array; new `faction_standing` block with 6 genships + 7 Trust corps; documented captain outcome enum (death-combat / death-other / ship-destroyed / arrested / mutiny-deposed / mutiny-abandoned / voluntary-retreat / ledger-closed)
