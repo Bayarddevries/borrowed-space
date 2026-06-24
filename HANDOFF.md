@@ -23,11 +23,11 @@ Current state. Verified-working features. Known issues. Updated at the end of ev
 
 ## Project state
 
-- **Phase:** 2f (test harness — GUT) — committed; 2g next (autoload glue)
+- **Phase:** 2 → 2 final, sample playable run SHIPPED. Phase 3 (combat) next.
 - **Last commit:** see git log
 - **Repo:** https://github.com/Bayarddevries/borrowed-space (private)
 - **Working tree:** clean as of last verification
-- **Headline achievement:** github.com/Bayarddevries/borrowed-space is live with phase 1 docs + phase 2 plan. Phase 2a–2f committed. **9/9 GUT tests pass.**
+- **Headline achievement:** github.com/Bayarddevries/borrowed-space ships **Phase 2 — one playable text-first run**. 13/13 GUT tests pass.
 
 ## Verified-working
 
@@ -42,13 +42,20 @@ Current state. Verified-working features. Known issues. Updated at the end of ev
 - ✅ Placeholder scenes (run_start, overworld, station, combat) + scripts (captain, crew, ai, ink_runner, tool/dice) committed.
 - ✅ **Phase 2d Persistence singleton (`godot/scripts/persist.gd`) works** — registered as autoload `Persist`. Round-trip verified via test/test_persist.gd.
 - ✅ **Phase 2e Narrative-data shape**: 3 JSON files in `narrative/data/`. Loadable, smoke-tested.
-- ✅ **Phase 2f Test harness (GUT 9.6.0)**: GUT addon vendored at `godot/addons/gut/`. Tests live in `godot/test/` with `test_*.gd` prefix. `scripts/test.sh` shell wrapper around `gut_cmdln.gd`. **9/9 tests pass** (1 placeholder + 4 narrative-data + 4 persist).
-
+- ✅ **Phase 2f Test harness (GUT 9.6.0)**: GUT addon vendored at `godot/addons/gut/`. Tests live in `godot/test/` with `test_*.gd` prefix. `scripts/test.sh` shell wrapper around `gut_cmdln.gd`. **13/13 tests pass** (1 placeholder + 4 narrative-data + 4 persist + 4 playable-run).
+- ✅ **Phase 2 final — Sample playable run**:
+  - 7-step sequence per issue #7 (origin pick → archetype → briefing → crew → overworld → station encounter → ledger close).
+  - BeatRunner shim at `godot/scripts/beat_runner.gd` mimics Ink's surface (text + choices + delta); same API as `ink_runner.gd` will expose when inkjs lands.
+  - Captain class reads origin matrix, locks 3 traits from origin's tag_pool.
+  - Crew class procedurally generates NPCs from archetype variants.
+  - LedgerWriter writes captain rows into `ledger.captains[captain_n]` keyed by captain number for idempotency.
+  - Manifest at `narrative/beats/run-start-manifest.json` — 5 beats end-to-end, with optional `{state_key}` interpolation.
+  - Programmatic playthrough proven via `godot/test/test_playable_run.gd` (4 tests).
+  - **No combat, no cover-test fail arcs, no art beyond placeholder paper-blocks** — exactly as issue #7 specified.
 
 ## In-progress
 
-- ⏳ Phase 2g: Autoload glue (signals: data → ink-layer → persist → ai on beat end).
-- ⏳ Phase 2 final: Sample playable run (Phase 2's ONLY product).
+- 🔵 Phase 3: Combat module. Plan not locked yet. Ship grid (8×8?) + CQB (5×5?) + fold mechanic + ledger writes from combat. **Plan-first session pending.**
 
 ---
 

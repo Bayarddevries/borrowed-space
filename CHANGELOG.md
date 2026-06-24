@@ -22,19 +22,21 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) but adapted for s
 
 ---
 
-## [Unreleased] — Phase 1 + 2a
+## [Unreleased] — Phase 1 + 2
 
-### Phase 2f — test harness (GUT 9.6.0) (commit pending)
-- godot/addons/gut/ vendored (3.2 MB, MIT — see LICENSE.md)
-- godot test/ now GUT-formatted: `extends GutTest`, named `test_*.gd`
-- godot/test/test_narrative_data.gd: 4 tests (smoke + genship count + fragment per genship + variant range)
-- godot/test/test_persist.gd: 4 tests (reset / get-state-copy / patch-deep-merge / save-load round-trip)
-- scripts/test.sh wrapper around `gut_cmdln.gd` — runs all `test_*.gd` headless
-- project.godot: GUT enabled under [editor_plugins] via packed-string-array
-- 9/9 GUT tests passing (1 placeholder from phase 2b + 4 new narrative-data + 4 new persist)
-- 18 asserts, 0.388s — verified locally
+### Phase 2 final — Sample playable run (commit pending)
+- godot/scripts/captain.gd — captain record builder: reads origin matrix, locks 3 T-pool traits from country-fragment.tag_pool
+- godot/scripts/crew.gd — procedurally generates crew from npc-archetypes variant pool
+- godot/scripts/ai.gd — orchestrator for the 7-step run sequence
+- godot/scripts/beat_runner.gd — Ink-shaped runtime reading beats from JSON manifest (drop-in for inkjs when bundle lands)
+- godot/scripts/ledger_writer.gd — translates per-run state into Persist rows keyed by captain_n
+- godot/scripts/tool/dice.gd — `class_name Dice` with roll/weighted_choice/lowest_of
+- narrative/beats/run-start-manifest.json — 5-beat story (briefing → crew → overworld → station → ledger close)
+- godot/test/test_playable_run.gd — 4 tests: full-run reproducibility, ledger-row written, beat history recorded, trait-pool lock uses origin tag_pool
+- 13/13 GUT tests pass; 31 asserts; 0.386s verified locally
+- No combat, no cover-test fail arcs, no art beyond placeholder paper-blocks (issue #7 spec)
 
-### Phase 2e — narrative-data shape (commit prior)
+### Phase 2f — test harness (GUT 9.6.0) (commit prior)
 - 3 JSON files in narrative/data/: captain-origins.json (5 genships × 2 fragments), npc-archetypes.json (5 archetypes, 21 variants), ledger.json (mirrors PERSISTENCE.md §layer 4)
 - godot/scripts/narrative_data.gd — GDScript loader stub for the three files; resolves paths via globalize_path since narrative/ is outside the Godot project root
 - godot/test/smoke_test_narrative_data.gd — SceneTree-based smoke test (5/5 genships, 21 variants distributed); superseded by test_narrative_data.gd but kept for one-off ad-hoc runs

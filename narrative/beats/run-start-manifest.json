@@ -1,0 +1,58 @@
+{
+  "_meta": {
+    "purpose": "Sample beat manifest for Phase 2g's playable run. Mirrors Ink's runtime shape (text + choices) so BeatRunner can read it verbatim. When ink_runner.gd replaces BeatRunner in production builds, this manifest becomes the .ink source.",
+    "version": "0.1-draft",
+    "schema": {
+      "start": "string — initial beat id",
+      "beats": "map<beat_id, beat_object>",
+      "beat_object": {
+        "speaker": "narrator | captain | ai",
+        "text": "string with optional {state_key} interpolation",
+        "choices": "array of choice objects"
+      },
+      "choice_object": {
+        "label": "display text",
+        "to": "next beat id",
+        "delta": "optional key-value patch applied to per-run state"
+      }
+    }
+  },
+  "start": "ai_briefing_1",
+  "beats": {
+    "ai_briefing_1": {
+      "speaker": "ai",
+      "text": "Captain {captain_name}, your genship of registration is {genship_id}. I am your AI. The crew will meet in the aft gallery. Proceed when ready.",
+      "choices": [
+        { "label": "Proceed to the aft gallery.", "to": "crew_meetup_1" }
+      ]
+    },
+    "crew_meetup_1": {
+      "speaker": "narrator",
+      "text": "The aft gallery smells of recycle-air and dry ice. Two figures turn at your approach. They read your invoice-code once, twice.",
+      "choices": [
+        { "label": "Step forward.", "to": "overworld_choose_1" }
+      ]
+    },
+    "overworld_choose_1": {
+      "speaker": "narrator",
+      "text": "Dock control offers three destinations: a quiet refueling outpost, a salvage derelict, or the unionised belt transit at Coral.",
+      "choices": [
+        { "label": "Refueling outpost (conservative).", "to": "station_arrival_1", "delta": { "destination_picked": "refueling" } },
+        { "label": "Salvage derelict (risky).", "to": "station_arrival_1", "delta": { "destination_picked": "derelict" } },
+        { "label": "Coral transit (political).", "to": "station_arrival_1", "delta": { "destination_picked": "coral" } }
+      ]
+    },
+    "station_arrival_1": {
+      "speaker": "narrator",
+      "text": "You arrive. The cover holds or doesn't. Discovery beats are queued for the controller to write into the ledger.",
+      "choices": [
+        { "label": "Dock and debrief.", "to": "end_of_run_1" }
+      ]
+    },
+    "end_of_run_1": {
+      "speaker": "ai",
+      "text": "Run complete. Your discoveries land in the ledger. The next captain's brief will reference you.",
+      "choices": []
+    }
+  }
+}
