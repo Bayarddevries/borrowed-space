@@ -22,7 +22,7 @@ Active work, in-progress, queued. Updated at the end of every session.
 
 ## In-progress
 
-- [~] **Phase 3a.1 — Space travel system.** Other agent building. Spec locked (CARTOGRAPHY.md + MAP.md). Code on branch `phase/3a.1-travel-system`. Integration test (`test_playable_run_includes_travel`) will land with that code.
+- [~] **Phase 3a.1 — Space travel system.** Spec locked at `docs/MAP.md` (cartography, topology, encounters, view). Code on branch `phase/3a.1-travel-system`. Integration test (`test_playable_run_includes_travel`) will land with that code.
 - [~] **Narrative beat content.** Shipped: station encounters (14 beats), empty-space encounters (16 beats), legacy-trace prototype (1 beat). Draft PR #13 waiting for merge. More beats will be needed as Phase 3 modules wire in.
 
 ## Queued (Phase 3 sub-deliverables)
