@@ -50,7 +50,7 @@ All narrative beats produce deltas from a fixed set: `fuel_delta`, `suspicion_de
 **Decided:** 2026-06-22
 **Locked by:** Bayard
 
-The belt has 10 stations (later adjusted to 13 in CARTOGRAPHY.md, but 10 was the Phase 2 target). One station per faction minimum. Enough for varied run traversal without bloating early development.
+The belt has 10 stations (later adjusted to 13 in MAP.md § 1, but 10 was the Phase 2 target). One station per faction minimum. Enough for varied run traversal without bloating early development.
 
 ## D5. Multiplex agent workflow with file-level isolation (Phase 2)
 

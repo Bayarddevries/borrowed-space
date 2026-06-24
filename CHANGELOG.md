@@ -1,8 +1,7 @@
 ---
 title: Borrowed Space — Changelog
-status: review
-last_edited: 2026-06-24
 status: locked
+last_edited: 2026-06-24
 tags:
   - workflow
   - changelog
