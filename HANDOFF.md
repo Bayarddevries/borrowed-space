@@ -47,6 +47,7 @@ Current state. Verified-working features. Known issues. Updated at the end of ev
 - ✅ **Phase 2 alignment commit** (this session) — TRAITS / PERSISTENCE / BIAS_GUARDRAILS docs aligned with cross-agent gameplay-loop handoff (GAMEPLAY_LOOP.md / MISSION_BOARD.md / ENCOUNTER_POOL.md / NPC_STATE_SELECTION.md / GENSHIP_ORIGIN.md).
 - ✅ **`docs/MAP.md` locked** — phase 3a.1 design: bipolar belt (inner 25 / outer 40+), per-move clock (1 day / 1 fuel / 1 suspicion), ghosts-of-past-captains cartography (manifest-ledges never avatars), hub-and-spoke open-belt encounters (mostly one-shot, ~15% multi-turn saves), sector view as default zoom target. Cross-linked from ROADMAP.md Phase 3a.
 - ✅ **Phase 3a.0 content merged** (`8f4cc55`) — `empty-space-manifest.json` (16 beats across distress / stranger / failure / crew-fight) + `legacy-trace-prototype.json` (1 past-captain ghost-pin beat with `data_spec` block defining the future `legacy_trace_system.gd` contract). Both rounds-trip through the manifest parser; 14/14 GUT tests still pass.
+- ✅ **Phase 3a journey docs locked** (`ed73c6a`, `f455c32`) — `narrative/beats/_META.md` (Schema A linear / Schema B pooled beats, delta vocabulary locked); `docs/ENCOUNTER_POOL.md` (interface contract for `EncounterPool.roll(ship, arrival_kind)`); `docs/COMBAT.md` placeholder stub preventing accidental combat references elsewhere. TODO.md + ISSUES.md synced. Stale `[[CARTOGRAPHY]]` wikilinks replaced with `[[MAP]]` (CARTOGRAPHY.md never existed).
 
 ## In-progress
 
