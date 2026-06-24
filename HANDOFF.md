@@ -23,11 +23,11 @@ Current state. Verified-working features. Known issues. Updated at the end of ev
 
 ## Project state
 
-- **Phase:** 2 → 2 final, sample playable run SHIPPED. Phase 3 (combat) next.
+- **Phase:** Phase 2 closed + Phase 2 alignment commit (3 doc edits + 4 issues opened). Code/tests pending next session.
 - **Last commit:** see git log
 - **Repo:** https://github.com/Bayarddevries/borrowed-space (private)
-- **Working tree:** clean as of last verification
-- **Headline achievement:** github.com/Bayarddevries/borrowed-space ships **Phase 2 — one playable text-first run**. 13/13 GUT tests pass.
+- **Working tree:** clean (doc edits + tracker issues, no code yet)
+- **Headline achievement:** Phase 2 ships one playable run; 14 GUT tests pass; Phase 3a.1 spec locked; gameplay-loop docs (5 from cross-agent handoff) aligned with original bible; 4 tracking issues opened for Phase 3c–3f.
 
 ## Verified-working
 
@@ -40,18 +40,17 @@ Current state. Verified-working features. Known issues. Updated at the end of ev
 - ✅ ROADMAP.md drafted with phase boundaries and sub-deliverables.
 - ✅ Godot 4.6.2.stable imports the project cleanly with `--headless --import`.
 - ✅ Placeholder scenes (run_start, overworld, station, combat) + scripts (captain, crew, ai, ink_runner, tool/dice) committed.
-- ✅ **Phase 2d Persistence singleton (`godot/scripts/persist.gd`) works** — registered as autoload `Persist`. Round-trip verified via test/test_persist.gd.
-- ✅ **Phase 2e Narrative-data shape**: 3 JSON files in `narrative/data/`. Loadable, smoke-tested.
-- ✅ **Phase 2f Test harness (GUT 9.6.0)**: GUT addon vendored at `godot/addons/gut/`. Tests live in `godot/test/` with `test_*.gd` prefix. `scripts/test.sh` shell wrapper around `gut_cmdln.gd`. **13/13 tests pass** (1 placeholder + 4 narrative-data + 4 persist + 4 playable-run).
-- ✅ **Phase 2 final — Sample playable run**:
-  - 7-step sequence per issue #7 (origin pick → archetype → briefing → crew → overworld → station encounter → ledger close).
-  - BeatRunner shim at `godot/scripts/beat_runner.gd` mimics Ink's surface (text + choices + delta); same API as `ink_runner.gd` will expose when inkjs lands.
-  - Captain class reads origin matrix, locks 3 traits from origin's tag_pool.
-  - Crew class procedurally generates NPCs from archetype variants.
-  - LedgerWriter writes captain rows into `ledger.captains[captain_n]` keyed by captain number for idempotency.
-  - Manifest at `narrative/beats/run-start-manifest.json` — 5 beats end-to-end, with optional `{state_key}` interpolation.
-  - Programmatic playthrough proven via `godot/test/test_playable_run.gd` (4 tests).
-  - **No combat, no cover-test fail arcs, no art beyond placeholder paper-blocks** — exactly as issue #7 specified.
+- ✅ **Phase 2d Persistence singleton** working — `<root>/Persist` autoload, save/load_state/reset/patch all green.
+- ✅ **Phase 2e Narrative-data shape** — 3 JSON files in `narrative/data/`, smoke-tested.
+- ✅ **Phase 2f Test harness (GUT 9.6.0)** — vendored, 14/14 tests pass.
+- ✅ **Phase 2 final — Sample playable run** — 7-step sequence per issue #7; visible-demo via `godot/test/test_demo_visible_run.gd`; ship record written to `ledger.captains["1"]`.
+- ✅ **Phase 2 alignment commit** (this session) — TRAITS / PERSISTENCE / BIAS_GUARDRAILS docs aligned with cross-agent gameplay-loop handoff (GAMEPLAY_LOOP.md / MISSION_BOARD.md / ENCOUNTER_POOL.md / NPC_STATE_SELECTION.md / GENSHIP_ORIGIN.md).
+
+## In-progress
+
+- 🔵 **Phase 3a.1 spec locked** at `docs/CARTOGRAPHY.md` on branch `phase/3a.1-travel-system`. Code/tests not yet built.
+- 🔵 **Phase 3c–3f tracking issues open**: #9 mission board, #10 encounter pool, #11 NPC state-selection, #12 genship-origin wiring. Specs locked; awaiting implementation sessions.
+- 🔵 **Cross-agent doc handoff complete** (5 gameplay-loop docs from other agent now in `docs/`). Per-clarification decisions: 6 genships (add ME), 5 act booleans + keep float, use-once-and-spend OR AI-withdraw blessing, 13-station cartography (every faction), AI-paced Trustee missions, tone-only bias-watch for 7 Trust corps.
 
 ## In-progress
 

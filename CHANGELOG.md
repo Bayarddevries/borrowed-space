@@ -24,7 +24,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) but adapted for s
 
 ## [Unreleased] — Phase 1 + 2
 
-### Phase 2 final — Sample playable run (commit pending)
+### Phase 2 — gameplay-loop doc alignment (commit pending)
+- docs/TRAITS.md — blessing mechanic clarified: use-once-and-spend (player choice) **plus** AI-can-withdraw on betrayal; b_status enum documented
+- docs/PERSISTENCE.md — v2 schema: 5 act boolean fields (discovered_act_1..5) replacing flat `discovered_acts` array; new `faction_standing` block with 6 genships + 7 Trust corps; documented captain outcome enum (death-combat / death-other / ship-destroyed / arrested / mutiny-deposed / mutiny-abandoned / voluntary-retreat / ledger-closed)
+- docs/BIAS_GUARDRAILS.md — new §Watch list per Trust Corp (T1–T7) with anti-trope rows for each corporate front; explicit reminder that T4 SomaGenesis intersects genetic-program trope field
+- 4 new issues opened: #9 mission board, #10 encounter pool, #11 NPC state-selection, #12 genship-origin mechanical wiring
+- Per Bayard clarifications during cross-agent doc handoff
+- No code, no tests touched; doc-only commit
+
+### Phase 2 final — Sample playable run (commit prior)
 - godot/scripts/captain.gd — captain record builder: reads origin matrix, locks 3 T-pool traits from country-fragment.tag_pool
 - godot/scripts/crew.gd — procedurally generates crew from npc-archetypes variant pool
 - godot/scripts/ai.gd — orchestrator for the 7-step run sequence

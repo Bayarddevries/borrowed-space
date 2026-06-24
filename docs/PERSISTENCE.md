@@ -221,14 +221,19 @@ These per-run elements are specifically *what makes each run feel alive* — *no
 
 ---
 
-## Save-state shape (rough draft)
+## Save-state shape (rough draft v2)
 
 For simplicity, the run-state shape is:
 
 ```yaml
 campaign_state:
-  he3_dismantling_progress: 0-100
-  discovered_acts: []
+  he3_dismantling_progress: 0-100       # narrative pacing; UI bar
+  discovered_acts:
+    discovered_act_1: false               # Act 1: Cartel structure mapped
+    discovered_act_2: false               # Act 2: Sabotage programs found
+    discovered_act_3: false               # Act 3: Hidden deposits mapped
+    discovered_act_4: false               # Act 4: Alternative cartography
+    discovered_act_5: false               # Act 5: Trustee's final project
   bunker_mapped_flags: []
   mid_industrial_arcs_unlocked: []
   alt_fuel_replacements: []
@@ -245,21 +250,22 @@ npc_state:
     [npc_id]:
       archetype: "NPC1"
       variant_id: "TBD"
-      memory_log: []
+      memory_log: []                      # see NPC_STATE_SELECTION.md §Impact weighting
       bond_momentum: 0
       held_trust: 0
       known_about_player: []
-      personal_state: "operational"
+      personal_state: "operational"       # enum: operational|injured|afraid|angry|hopeful|displaced
 
 ledger:
   captains:
     [captain_number]:
-      origin_genship
+      origin_genship                      # NAC | ED | RRA | AC | SAA | ME
       origin_country
-      archetype
-      outcomes
+      archetype                           # A | B | C
+      outcomes                            # see §Outcomes enum below
       he3_contribution_pct
-      archived_identity
+      archived_identity                    # for archetype C only
+      b_status                            # enum: active | spent | withdrawn | not-granted
 
   crew:
     [crew_name]:
@@ -270,8 +276,50 @@ ledger:
 
 trustee_arc:
   unlocked_bits: []
+
+# Cross-run faction relationships (new in Phase 2 per MISSION_BOARD.md §Standing)
+# Updated across runs; standing is reserved for faction-level trust (not per-NPC).
+faction_standing:
+  genships:
+    NAC: 0        # -5 (hostile) to +5 (trusted)
+    ED: 0
+    RRA: 0
+    AC: 0
+    SAA: 0
+    ME: 0
+  trust_corps:    # the 7 Trust families / corporate fronts
+    T1: 0         # Helios Extraction (Resource consortium)
+    T2: 0         # Voidline Logistics (Shipping alliance)
+    T3: 0         # Kepler Settlements (Habitat administration)
+    T4: 0         # SomaGenesis (Biotech / medicine)
+    T5: 0         # Actuary Capital (Finance / insurance)
+    T6: 0         # Forge & Frame (Heavy industry)
+    T7: 0         # Helion Systems (Energy core cartel)
 ```
 
 Per-run state is appended as a new captain section.
+
+### Act-state semantics
+
+`discovered_act_N` is a binary. Acts unlock when their conditions are met (per `MISSION_BOARD.md` §Dismantling-progress triggers). They do **not** roll back. Once unlocked, an Act remains unlocked across all subsequent runs and contributes to the world state forever.
+
+`he3_dismantling_progress` is a *narrative pacing* float. It rises and falls within an Act and across runs, but the *act booleans* are the source of truth for unlocks. The float's job is to give the AI dashboard something to refer to ("We're 33% into Act 2. The Trust is concerned but not panicked."), not to gate state.
+
+### Captain outcomes enum
+
+Per the run-end triggers in `GAMEPLAY_LOOP.md` §Phase 4:
+
+| Outcome value | Trigger |
+|---|---|
+| `death-combat` | Captain killed in space combat or CQB |
+| `death-other` | Captain killed by other means (debris, sabotage, etc.) |
+| `ship-destroyed` | Ship HP reaches 0 in space combat |
+| `arrested` | Captured by faction authorities |
+| `mutiny-deposed` | Crew bond dropped below threshold; crew deposed captain |
+| `mutiny-abandoned` | Crew bond dropped; crew abandoned ship |
+| `voluntary-retreat` | Captain chose to end run |
+| `ledger-closed` | Run closed without incident (Phase 2 floor case) |
+
+Death is *not* failure (`MISSION_BOARD.md` §Death as sacrifice); the outcome enum describes the *narrative mode* of the run's end, not its quality.
 
 [End of PERSISTENCE.md draft v1.]

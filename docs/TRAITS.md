@@ -124,13 +124,19 @@ The Trustee, through the AI, grants each captain a *blessing.* Mechanically:
 - The blessing **permits one mid-run cross-station conversation** that would otherwise be blocked.
 - The blessing **denotes-endorsement** in dispatches. Belt-side observers treat the captain as a sanctioned figure.
 
-The blessing **can be withdrawn by the AI.** Withdrawal is triggered by:
+**The blessing has two endpoints.** The first is player choice: the captain may spend the blessing once, mid-run, on the moment that matters most to them. Once spent, the blessing slot is empty for the rest of the run (this is the run-end state per Phase 2's `GAMEPLAY_LOOP.md` Awakening §3, 5; the blessing is *one-time-use mid-run*).
+
+The second endpoint is AI-driven withdrawal. The AI can withdraw the blessing *whether or not* the captain has already spent it mechanically — withdrawal is a narrative event, not a counter. Withdrawal is triggered by:
 
 - AI later decides the captain *violated the trustee experiment.*
 - AI detects the captain deliberately leaks trustee material.
 - AI detects the captain betrays the Trustee's project.
 
-When withdrawn, the AI *announces* the withdrawal to the captain. Sustained gameplay post-withdrawal is possible but harder.
+When withdrawn, the AI *announces* the withdrawal to the captain. Sustained gameplay post-withdrawal is possible but harder. A withdrawn blessing is not re-grantable mid-run; a new captain begins fresh.
+
+**Per-run state field on the captain record:** `b_status` ∈ {`active`, `spent`, `withdrawn`, `not-granted`}.
+
+(`spent` and `withdrawn` are both "no longer does work for the captain" but they narrate differently — the AI refers to them differently, and the *cause* of loss is part of the story.)
 
 ### He-3 literacy (H-slot)
 
