@@ -142,6 +142,38 @@ We do not encode genships through:
 
 ---
 
+**Top-level reminders for Trust corp writing:**
+
+- *Internal diversity.* Each Trust family is *itself* a multi-generational clan. Disagreements within the family are real.
+- *Asset ownership,* not meetings. Per Phase 1 watch list above.
+- T4 (SomaGenesis) carries a *specific drafted watch* because their function intersects the genetic-program arc. Reference that arc's `BIAS_GUARDRAILS.md` row when drafting T4-handling NPCs.
+
+---
+
+---
+
+## Watch list per Trust Corp (T1–T7)
+
+Per Phase 2's `MISSION_BOARD.md` (§Trust Corporations), the 7 Trust families each front a corporate entity. These are *world-building entities,* not playable genships. Tone-only bias watch — the schema migration is deferred. **Each row's job is to flag the specific trope pattern we'd drift into if we wrote any of these corporately-functioning-as-monolithic.**
+
+| Trust family | Front name | He-3 role | Anti-stereotype note |
+|---|---|---|---|
+| **T1** — Resource consortium | Helios Extraction | Owns Mars mine concessions; asteroid patents | Resource-extraction families can become "MBA-poisoned corporate raider" tropes. They have *laborers.* Their management is institutional, not cartoon-evil. |
+| **T2** — Shipping alliance | Voidline Logistics | Contracts He-3 freight | Shipping/freight can become "blue-collar strongmen" tropology if we're not careful. They are *logistics bureaucracy,* not a maritime culture. Their loyalty is to *the routes,* not to the cargo. |
+| **T3** — Habitat administration | Kepler Settlements | Decides who lives on Mars / Luna | Habitat-admin-as-state is a *yard-keepers* trope needler. They maintain the *decks,* not the policy. They can be frustrated with their own administrators. |
+| **T4** — Biotech / medicine | SomaGenesis | Signed the genetic-program docs | This is the *most-loaded* trope field. **Avoid** "evil biotech corporation" or any eugenics-coded trope. T4's complicity in the genetic program is *historical* (per `WORLD_BIBLE.md`); their contemporary admins deal in ongoing treaties, not active experimentation. |
+| **T5** — Finance / insurance | Actuary Capital | Owns conscript payrolls | Payroll-systems can become "populist banker-villain" trope. **Important:** T5's ledger-keeping of conscripts is the dismantling Act 1 unlock, so their *ledger* is morally loaded. Their data is the lever, not their people. |
+| **T6** — Heavy industry | Forge & Frame | Owns the shipyards | Industry-as-natural-bad can drift into "smokestack villain." Frame this as *production rotated to conscript labor*; the structural critique is on labor, not on factories. |
+| **T7** — Energy | Helion Systems | The core cartel | The *most* tempting to make single-evil; if we do, we lose the dismantling arc's *resistance* texture. T7 is *complicit-grid,* not "Person at the top." Their oligarchy is structural, not theatrical. |
+
+**Top-level reminders for Trust corp writing:**
+
+- *Internal diversity.* Each Trust family is *itself* a multi-generational clan. Disagreements within the family are real.
+- *Asset ownership,* not meetings. Per Phase 1 watch list above.
+- T4 (SomaGenesis) carries a *specific drafted watch* because their function intersects the genetic-program arc. Reference that arc's `BIAS_GUARDRAILS.md` row when drafting T4-handling NPCs.
+
+---
+
 ## Checking my drafts
 
 I'll run a bias audit each time we settle a new write. Three questions:
