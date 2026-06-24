@@ -14,7 +14,7 @@ phase: 3a
 related:
   - "[[PERSISTENCE]]"
   - "[[GAMEPLAY_LOOP]]"
-  - "[[CARTOGRAPHY]]"
+  - "[[MAP]]"
 ---
 
 # Narrative Beat Manifest Schemas v1 — *Borrowed Space*

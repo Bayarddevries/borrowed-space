@@ -12,9 +12,8 @@ aliases:
   - EncounterPool
 phase: 3a
 related:
-  - "[[CARTOGRAPHY]]"
-  - "[[GAMEPLAY_LOOP]]"
   - "[[MAP]]"
+  - "[[GAMEPLAY_LOOP]]"
   - "[[_META]]"
 ---
 
