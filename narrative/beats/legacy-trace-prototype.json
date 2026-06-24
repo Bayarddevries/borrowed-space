@@ -1,0 +1,66 @@
+{
+  "_meta": {
+    "title": "Legacy Trace Prototype — Past-Captain Trail Mechanic",
+    "trigger": "legacy_pin_discovered",
+    "description": "Single beat demonstrating the legacy-trace mechanic codified in MAP.md. A legacy-trace is a faint message left by a past captain on the map — visible to future captains who arrive at the same node. This beat is the discovery moment: the new captain finds the trace and decides what to do with it.",
+    "spec_note": "This beat is intentionally minimal — one entry point, two choices, one delta path. It exists so the legacy_trace_system.gd (Phase 3a) has a concrete shape to implement against. Full trace generation, pin placement on the map, and multi-trace discovery chains are out of scope for this beat.",
+    "schema": "manifest-v1",
+    "version": "0.1-prototype"
+  },
+  "data_spec": {
+    "note": "The fields below describe what legacy_trace_system.gd needs to pass through when this beat fires. They are NOT in the beat itself — they are the contract between the map system and the narrative layer.",
+    "required_state": {
+      "legacy_state": {
+        "status": "enum: active | dead | dismantled | fled",
+        "last_known_node": "string — hex coord or station ID where the trace was left",
+        "parting_thoughts": "string — the text shown to the discovering captain",
+        "captain_n": "int — the captain who left this trace"
+      },
+      "discovering_captain": {
+        "captain_n": "int — the current captain finding this trace",
+        "genship_id": "string"
+      }
+    },
+    "ledger_write_on_claim": {
+      "captains[discovering].blessing_variant": "legacy_clearance_1",
+      "captains[discovering].discoveries": "append:legacy_trace_from_[captain_n_of_leaver]",
+      "captains[leaver].legacy_state.status": "acknowledged"
+    },
+    "ledger_write_on_leave": {
+      "captains[discovering].suspicion_delta": 1,
+      "captains[discovering].discoveries": "append:legacy_trace_unclaimed"
+    }
+  },
+  "beats": {
+    "legacy_trace_healing_1": {
+      "_id": "legacy_trace_healing_1",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "legacy_trace",
+      "trigger": "legacy_pin_discovered",
+      "prose": "The pin is faint — a ghost-mark on the hex, left by a captain who didn't make it out. You dock. The hull is cold. On the wall, scrawled in marker: \"If you're reading this, the Trust lied about the He-3. The clearance code is 7-7-ALPHA. Use it or don't. I'm not coming back.\" The handwriting is steady. The captain who wrote this was calm when they left.",
+      "choices": [
+        {
+          "text": "Honor them. Use the clearance code.",
+          "next_beat": "run_end_summary",
+          "delta": {
+            "blessing_variant": "legacy_clearance_1",
+            "discoveries": ["legacy_trace_from_captain_undefined"],
+            "suspicion_delta": -1,
+            "bond_score": 1,
+            "legacy_trace_claimed": true
+          }
+        },
+        {
+          "text": "Leave it. Carry the weight another day.",
+          "next_beat": "run_end_summary",
+          "delta": {
+            "suspicion_delta": 1,
+            "discoveries": ["legacy_trace_unclaimed"],
+            "legacy_trace_claimed": false
+          }
+        }
+      ]
+    }
+  }
+}
