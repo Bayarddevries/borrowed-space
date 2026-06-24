@@ -23,11 +23,11 @@ Current state. Verified-working features. Known issues. Updated at the end of ev
 
 ## Project state
 
-- **Phase:** Phase 2 closed + Phase 2 alignment commit (3 doc edits + 4 issues opened). Code/tests pending next session.
-- **Last commit:** see git log
+- **Phase:** Phase 3a.0 content batch merged; Phase 3a.1 spec locked in `docs/MAP.md`; awaiting code session for travel system.
+- **Last commit:** `8f4cc55 merge(phase-3a-0)` — see git log
 - **Repo:** https://github.com/Bayarddevries/borrowed-space (private)
-- **Working tree:** clean (doc edits + tracker issues, no code yet)
-- **Headline achievement:** Phase 2 ships one playable run; 14 GUT tests pass; Phase 3a.1 spec locked; gameplay-loop docs (5 from cross-agent handoff) aligned with original bible; 4 tracking issues opened for Phase 3c–3f.
+- **Working tree:** clean (Phase 3a.0 content merged; Phase 3a.1 design doc landed; no code yet)
+- **Headline achievement:** Phase 2 ships one playable run; 14 GUT tests pass; Phase 3 split into 5 sub-phases (3a–3f); MAP.md locks phase 3a.1 design (belt topology, per-move clock, ghosts-of-past-captains cartography, hub-and-spoke open-belt encounters, sector view); Phase 3a.0 narrative content (16 empty-space beats + 1 legacy-trace prototype) merged; PR #13 closed.
 
 ## Verified-working
 
@@ -45,10 +45,13 @@ Current state. Verified-working features. Known issues. Updated at the end of ev
 - ✅ **Phase 2f Test harness (GUT 9.6.0)** — vendored, 14/14 tests pass.
 - ✅ **Phase 2 final — Sample playable run** — 7-step sequence per issue #7; visible-demo via `godot/test/test_demo_visible_run.gd`; ship record written to `ledger.captains["1"]`.
 - ✅ **Phase 2 alignment commit** (this session) — TRAITS / PERSISTENCE / BIAS_GUARDRAILS docs aligned with cross-agent gameplay-loop handoff (GAMEPLAY_LOOP.md / MISSION_BOARD.md / ENCOUNTER_POOL.md / NPC_STATE_SELECTION.md / GENSHIP_ORIGIN.md).
+- ✅ **`docs/MAP.md` locked** — phase 3a.1 design: bipolar belt (inner 25 / outer 40+), per-move clock (1 day / 1 fuel / 1 suspicion), ghosts-of-past-captains cartography (manifest-ledges never avatars), hub-and-spoke open-belt encounters (mostly one-shot, ~15% multi-turn saves), sector view as default zoom target. Cross-linked from ROADMAP.md Phase 3a.
+- ✅ **Phase 3a.0 content merged** (`8f4cc55`) — `empty-space-manifest.json` (16 beats across distress / stranger / failure / crew-fight) + `legacy-trace-prototype.json` (1 past-captain ghost-pin beat with `data_spec` block defining the future `legacy_trace_system.gd` contract). Both rounds-trip through the manifest parser; 14/14 GUT tests still pass.
 
 ## In-progress
 
-- 🔵 **Phase 3a.1 spec locked** at `docs/CARTOGRAPHY.md` on branch `phase/3a.1-travel-system`. Code/tests not yet built.
+- 🔵 **Phase 3a.0 content batch merged** (`8f4cc55`): `empty-space-manifest.json` (16 beats × 4 categories) + `legacy-trace-prototype.json` (1 beat with `data_spec` contract for `legacy_trace_system.gd`). Travel system session picks up these beats via `TransitResult.encounter_kind` routing.
+- 🔵 **Phase 3a.1 spec locked** at `docs/MAP.md` on branch `phase/3a.1-travel-system`. *Note: the older HANDOFF called this `docs/CARTOGRAPHY.md` — that filename never existed; spec is at MAP.md (broader scope: topology + cartography + encounters + view).*
 - 🔵 **Phase 3c–3f tracking issues open**: #9 mission board, #10 encounter pool, #11 NPC state-selection, #12 genship-origin wiring. Specs locked; awaiting implementation sessions.
 - 🔵 **Cross-agent doc handoff complete** (5 gameplay-loop docs from other agent now in `docs/`). Per-clarification decisions: 6 genships (add ME), 5 act booleans + keep float, use-once-and-spend OR AI-withdraw blessing, 13-station cartography (every faction), AI-paced Trustee missions, tone-only bias-watch for 7 Trust corps.
 

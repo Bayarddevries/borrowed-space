@@ -1,7 +1,7 @@
 ---
 title: Borrowed Space — Changelog
 status: review
-last_edited: 2026-06-22
+last_edited: 2026-06-23
 tags:
   - workflow
   - changelog
@@ -22,7 +22,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) but adapted for s
 
 ---
 
-## [Unreleased] — Phase 1 + 2
+## [Unreleased] — Phase 3a content
+
+### Phase 3a.0 — content batch (commit 8f4cc55)
+- narrative/beats/empty-space-manifest.json — 16 beats × 4 categories (distress / stranger / failure / crew-fight). Deltas feed LedgerWriter (fuel, suspicion, bond, crew_xp, discoveries).
+- narrative/beats/legacy-trace-prototype.json — 1 beat demonstrating the past-captain ghost-pin mechanic. Includes a data_spec block that documents the contract for the future legacy_trace_system.gd.
+- Both rounds-trip through the manifest parser cleanly. 14/14 GUT tests still pass.
+
+### Phase 3a.1 — design doc
+- docs/MAP.md (NEW, locked) — belt topology, per-move clock, ghosts-of-past-captains cartography, hub-and-spoke open-belt encounters, sector view. Cross-linked from ROADMAP.md Phase 3a.
+- HANDOFF.md updated with phase 3 sub-phase tracker.
 
 ### Phase 2 — gameplay-loop doc alignment (commit pending)
 - docs/TRAITS.md — blessing mechanic clarified: use-once-and-spend (player choice) **plus** AI-can-withdraw on betrayal; b_status enum documented
