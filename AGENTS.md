@@ -1,7 +1,7 @@
 ---
 title: Borrowed Space — Agent Workflow Contract
 status: locked
-last_edited: 2026-06-22
+last_edited: 2026-06-24
 tags:
   - workflow
   - convention
@@ -26,6 +26,19 @@ This file is the contract for any agent or contributor working on `borrowed-spac
 - Advance the TODO without leaving ambiguity for the next agent.
 - Do not ship undocumented history; prefer a TODO over invented content.
 - Do not make claims about remote URLs or tests without verified evidence.
+
+## Pre-flight
+
+Before any implementation session:
+
+1. Identify the **corresponding GitHub issue**. Issues are the queue; pick the highest-priority unassigned item.
+2. Write **one sentence** (in the issue body or a scratch note) defining what "done" looks like for this session.
+3. Identify the **verification primitive** — the test, demo, or manual check that proves the change works.
+4. Only then touch code or narrative.
+
+Skipping this step means regenerating from scratch on every loop.
+
+---
 
 ## First actions (every session, every agent, every machine)
 
