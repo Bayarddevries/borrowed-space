@@ -1,0 +1,71 @@
+{
+  "_meta": {
+    "title": "Belt Cartography",
+    "schema_version": 1,
+    "description": "Phase 3a.1 belt catalog. 10 stations on a radius-25 axial hex grid (Red Blob Games convention). Zero lore; ids + coords + faction mappings only. Names + atmosphere come from narrative/data/stations.json (Phase 3a.2 content batch).",
+    "phase": "3a.1",
+    "locked_by": "phase/3a.1-travel-system spec branch"
+  },
+  "stations": [
+    {
+      "id": "STATION_01",
+      "q": 0, "r": 0,
+      "faction_id": "NAC",
+      "kinds": ["station_hex", "lane"]
+    },
+    {
+      "id": "STATION_02",
+      "q": 8, "r": -8,
+      "faction_id": "ED",
+      "kinds": ["station_hex", "lane"]
+    },
+    {
+      "id": "STATION_03",
+      "q": 12, "r": -4,
+      "faction_id": "RRA",
+      "kinds": ["station_hex"]
+    },
+    {
+      "id": "STATION_04",
+      "q": 9, "r": 1,
+      "faction_id": "AC",
+      "kinds": ["station_hex", "lane", "anomaly_hex"]
+    },
+    {
+      "id": "STATION_05",
+      "q": 4, "r": 6,
+      "faction_id": "SAA",
+      "kinds": ["station_hex"]
+    },
+    {
+      "id": "STATION_06",
+      "q": -4, "r": 6,
+      "faction_id": "ME",
+      "kinds": ["station_hex"]
+    },
+    {
+      "id": "STATION_07",
+      "q": -9, "r": 5,
+      "faction_id": "NAC",
+      "kinds": ["station_hex", "derelict_hex"]
+    },
+    {
+      "id": "STATION_08",
+      "q": -10, "r": -2,
+      "faction_id": "ED",
+      "kinds": ["station_hex"]
+    },
+    {
+      "id": "STATION_09",
+      "q": -6, "r": -6,
+      "faction_id": "RRA",
+      "kinds": ["station_hex", "lane"]
+    },
+    {
+      "id": "STATION_10",
+      "q": -1, "r": -3,
+      "faction_id": "AC",
+      "kinds": ["station_hex", "lane"]
+    }
+  ]
+}
