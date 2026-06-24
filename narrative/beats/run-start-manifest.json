@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "purpose": "Sample beat manifest for Phase 2g's playable run. Mirrors Ink's runtime shape (text + choices) so BeatRunner can read it verbatim. When ink_runner.gd replaces BeatRunner in production builds, this manifest becomes the .ink source.",
-    "version": "0.1-draft",
+    "purpose": "Sample beat manifest for Phase 2g's playable run + Phase 3a.1 station encounters. Mirrors Ink's runtime shape (text + choices) so BeatRunner can read it verbatim.",
+    "version": "0.2-draft",
     "schema": {
       "start": "string — initial beat id",
       "beats": "map<beat_id, beat_object>",
       "beat_object": {
-        "speaker": "narrator | captain | ai",
+        "speaker": "narrator | captain | ai | crew",
         "text": "string with optional {state_key} interpolation",
         "choices": "array of choice objects"
       },
@@ -37,18 +37,96 @@
       "speaker": "narrator",
       "text": "Dock control offers three destinations: a quiet refueling outpost, a salvage derelict, or the unionised belt transit at Coral.",
       "choices": [
-        { "label": "Refueling outpost (conservative).", "to": "station_arrival_1", "delta": { "destination_picked": "refueling" } },
-        { "label": "Salvage derelict (risky).", "to": "station_arrival_1", "delta": { "destination_picked": "derelict" } },
-        { "label": "Coral transit (political).", "to": "station_arrival_1", "delta": { "destination_picked": "coral" } }
+        { "label": "Refueling outpost (conservative).", "to": "station_arrival_refuel", "delta": { "destination_picked": "refueling" } },
+        { "label": "Salvage derelict (risky).", "to": "station_arrival_derelict", "delta": { "destination_picked": "derelict" } },
+        { "label": "Coral transit (political).", "to": "station_arrival_coral", "delta": { "destination_picked": "coral" } }
       ]
     },
-    "station_arrival_1": {
+
+    "station_arrival_refuel": {
       "speaker": "narrator",
-      "text": "You arrive. The cover holds or doesn't. Discovery beats are queued for the controller to write into the ledger.",
+      "text": "The outpost is a tethered cluster of fuel bladders and a single loading arm. A tech in patched coveralls waves you to the pump bay without looking up. The hum is steady. Nothing here surprises anyone.",
       "choices": [
-        { "label": "Dock and debrief.", "to": "end_of_run_1" }
+        { "label": "Refuel and pay standard rate.", "to": "station_refuel_standard", "delta": { "refuel_choice": "standard" } },
+        { "label": "Ask the tech if she runs credit.", "to": "station_refuel_credit", "delta": { "refuel_choice": "credit" } },
+        { "label": "Skip refuel — you have enough.", "to": "end_of_run_1", "delta": { "refuel_choice": "skipped" } }
       ]
     },
+    "station_refuel_standard": {
+      "speaker": "ai",
+      "text": "Fuel +25. The ledger logs the outpost as visited. {crew_name_one} checks the moorings. The tech moves on to her next job before you thank her.",
+      "choices": [
+        { "label": "Run the debrief.", "to": "end_of_run_1", "delta": { "fuel_delta": 25, "station_visited": "refueling" } }
+      ]
+    },
+    "station_refuel_credit": {
+      "speaker": "narrator",
+      "text": "The tech finally looks up. \"Credit runs through the {genship_id} ledger — you'll settle at quarter-end.\" She taps a slate. Fuel flows. The rate is the same. The debt is now institutional.",
+      "choices": [
+        { "label": "Accept the terms.", "to": "end_of_run_1", "delta": { "fuel_delta": 25, "station_visited": "refueling", "credit_flag": true } },
+        { "label": "Refuse — pay upfront.", "to": "station_refuel_standard", "delta": { "refuel_choice": "standard" } }
+      ]
+    },
+
+    "station_arrival_derelict": {
+      "speaker": "narrator",
+      "text": "The derelict hangs in a slow tumble. Hull breach on the port side — someone cut it open and welded it shut again, badly. Your docking clamp catches. {crew_name_two} runs a sniff test. The air reads stale but breathable.",
+      "choices": [
+        { "label": "Send {crew_name_two} in alone.", "to": "station_derelict_solo", "delta": { "derelict_choice": "solo" } },
+        { "label": "Breach together.", "to": "station_derelict_group", "delta": { "derelict_choice": "group" } },
+        { "label": "Log it and move on.", "to": "end_of_run_1", "delta": { "derelict_choice": "skipped", "discovery_logged": true } }
+      ]
+    },
+    "station_derelict_solo": {
+      "speaker": "crew",
+      "text": "\"Captain. I found something. A cargo manifest — the {genship_id} seal, but the date is wrong. Three years before the program started.\" {crew_name_two} holds out the slate. The handwriting is neat. The numbers don't add up.",
+      "choices": [
+        { "label": "Stash the manifest. Tell no one.", "to": "end_of_run_1", "delta": { "discovery": "anomaly_manifest", "suspicion_delta": 1 } },
+        { "label": "Share it with the crew now.", "to": "end_of_run_1", "delta": { "discovery": "anomaly_manifest_shared", "bond_delta": 1 } }
+      ]
+    },
+    "station_derelict_group": {
+      "speaker": "narrator",
+      "text": "You enter together. The corridor walls are scorched — someone ran a cutting torch along the seams, looking for something. {crew_name_one} finds a sealed locker. Inside: a Trust-clearance code, expired. But the cipher family is current.",
+      "choices": [
+        { "label": "Take the code to the AI for analysis.", "to": "end_of_run_1", "delta": { "discovery": "expired_trust_code", "ai_flag": true } },
+        { "label": "Pocket it. The AI doesn't need everything.", "to": "end_of_run_1", "delta": { "discovery": "expired_trust_code", "suspicion_delta": -1 } }
+      ]
+    },
+
+    "station_arrival_coral": {
+      "speaker": "narrator",
+      "text": "Coral station is a wheel of union halls and transit authority offices. The belt's only place where genship crews mix without a handler. Your invoice-code gets you through the gate. The crowd reads it and knows what you are.",
+      "choices": [
+        { "label": "Head to the union hall. Listen first.", "to": "station_coral_hall", "delta": { "coral_choice": "listen" } },
+        { "label": "Find a handler. You need work, not politics.", "to": "station_coral_handler", "delta": { "coral_choice": "work" } },
+        { "label": "Avoid the crowd. Use the side docks.", "to": "station_coral_silent", "delta": { "coral_choice": "avoid" } }
+      ]
+    },
+    "station_coral_hall": {
+      "speaker": "narrator",
+      "text": "The hall is loud. Three crews at a table. A {genship_id} patch on one shoulder — your genship, but a crew you've never met. They're talking about the last captain. Your predecessor. They stop when you sit down.",
+      "choices": [
+        { "label": "\"I'm the new captain. Tell me what happened to them.\"", "to": "end_of_run_1", "delta": { "discovery": "predecessor_fate", "bond_delta": 1 } },
+        { "label": "Say nothing. Listen and leave.", "to": "end_of_run_1", "delta": { "discovery": "predecessor_fate_partial", "suspicion_delta": 1 } }
+      ]
+    },
+    "station_coral_handler": {
+      "speaker": "narrator",
+      "text": "The handler is a woman with a tablet and a tired smile. \"{genship_id}. You're the new one. I've got a run — low-risk, good pay. But it goes through derelict space. Your call.\"",
+      "choices": [
+        { "label": "Take the job.", "to": "end_of_run_1", "delta": { "job_taken": true, "route": "derelict", "supplies_delta": 10 } },
+        { "label": "Decline. You're not ready for derelict runs.", "to": "end_of_run_1", "delta": { "job_taken": false } }
+      ]
+    },
+    "station_coral_silent": {
+      "speaker": "ai",
+      "text": "You dock at the side arm. No one sees. {crew_name_one} doesn't ask why. The fuel line is unmarked — you siphon what you need. The ledger won't record this stop. But someone on the dock watched you leave.",
+      "choices": [
+        { "label": "Log the fuel and move on.", "to": "end_of_run_1", "delta": { "fuel_delta": 15, "station_visited": "coral_silent", "suspicion_delta": 2 } }
+      ]
+    },
+
     "end_of_run_1": {
       "speaker": "ai",
       "text": "Run complete. Your discoveries land in the ledger. The next captain's brief will reference you.",
