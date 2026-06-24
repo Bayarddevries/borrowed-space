@@ -1,0 +1,109 @@
+{
+  "_meta": {
+    "purpose": "Named stations for the belt. Maps to cartography.json placeholder ids STATION_01..STATION_10 written by the travel-system agent.",
+    "version": "0.2-draft",
+    "factions": ["NAC", "ED", "RRA", "AC", "SAA", "ME"],
+    "atmospheres": ["lawful", "corporate", "frontier", "derelict", "refuge", "crossroads"],
+    "schema": {
+      "id": "string — matches cartography.json station id (STATION_01..STATION_10)",
+      "name": "string — display name, no cliché sci-fi",
+      "faction_id": "string — NAC|ED|RRA|AC|SAA|ME",
+      "atmosphere": "string — lawful|corporate|frontier|derelict|refuge|crossroads",
+      "ink_beat_id": "string — Schema A beat id in station_arrival_beats.json",
+      "one_line_lore": "string — 1 sentence flavor, bias-checked",
+      "subplot_hook": "string — optional narrative thread that feeds the dismantling arc"
+    }
+  },
+  "stations": [
+    {
+      "id": "STATION_01",
+      "name": "Kashner Iceworks",
+      "faction_id": "NAC",
+      "atmosphere": "corporate",
+      "ink_beat_id": "station_arrival_KASHNER_01",
+      "one_line_lore": "The wealthy Kashner family of the Trust controls most of the H20 in the system from this NAC hauler depot — mountainous blocks of ice held in containment below the docking bays, 3000 contractors, and a ledger that never balances.",
+      "subplot_hook": "Artificial water scarcity. Kashner restricts H20 flow to genships to build reliance on the Trust — riots aboard conscript vessels are spreading. The Coalition genship has started refusing Kashner water contracts."
+    },
+    {
+      "id": "STATION_02",
+      "name": "Bentic Penal",
+      "faction_id": "ED",
+      "atmosphere": "derelict",
+      "ink_beat_id": "station_arrival_BENTIC_02",
+      "one_line_lore": "A private prison funded by multiple EU governments. With limited space aboard aging genships, governments send their prisoners here to serve their time — and Bentic Security sells their labour to corps that don't ask questions.",
+      "subplot_hook": "Prisoners are used as slave labour and conditions are much worse than any report that reaches the genship refugees. Governments turn a blind eye or are outright lied to about treatment. A conscript who served time here would remember everything."
+    },
+    {
+      "id": "STATION_03",
+      "name": "Corvallo Station",
+      "faction_id": "RRA",
+      "atmosphere": "crossroads",
+      "ink_beat_id": "station_arrival_CORVALLO_03",
+      "one_line_lore": "Positioned on the edge of the asteroid belt, Corvallo is the busiest trade hub in the system — privately owned, corporately veiled as neutral ground, and the one place where every faction's invoice is honoured without interrogation.",
+      "subplot_hook": "Corvallo's neutrality is a fiction. The station's private owners take commissions from every Trust corp and every genship government simultaneously. What moves through here doesn't appear on any ledger — including the one the captain thinks they're reading."
+    },
+    {
+      "id": "STATION_04",
+      "name": "SX Halo",
+      "faction_id": "AC",
+      "atmosphere": "corporate",
+      "ink_beat_id": "station_arrival_SXHALO_04",
+      "one_line_lore": "Headquarters of SX Corp — the ultra-wealthy conglomerate hiding genetic and biological experiments meant to advance military control. The halo-shaped station rests in permanent orbit around Mars, beautiful and lethal.",
+      "subplot_hook": "SX Corp's genetic experiments are putting the entire system at risk. Military-grade biotech developed here has leaked into at least two genship populations. The Trust funds SX. The Trust is the experiment."
+    },
+    {
+      "id": "STATION_05",
+      "name": "Orpheum Astrogrowth",
+      "faction_id": "SAA",
+      "atmosphere": "corporate",
+      "ink_beat_id": "station_arrival_ORPHEUM_05",
+      "one_line_lore": "The largest agricultural producer in the system outside the Coalition genship. Orpheum uses every means possible to maximize yield — and this station is the largest private astrofarm ever constructed.",
+      "subplot_hook": "Orpheum has been sabotaging Coalition crop yields and orbiting microfarms to control the agricultural industry. The Coalition knows. The Coalition cannot prove it. Every captain who docks here eats Orpheum produce whether they choose to or not."
+    },
+    {
+      "id": "STATION_06",
+      "name": "Prophet's Threshold",
+      "faction_id": "ME",
+      "atmosphere": "refuge",
+      "ink_beat_id": "station_arrival_PROPHET_06",
+      "one_line_lore": "A Middle East station built around a prayer rhythm so precise the docking clamps sync to the call. Hospitality and surveillance are inseparable here — the water is cold, the welcome is not optional.",
+      "subplot_hook": "Prophet's Threshold is one of the few stations where conscripts outnumber contractors. The ME government's accelerated launch tempo meant less safety margin — and the families who run this station remember every shortcut that was taken."
+    },
+    {
+      "id": "STATION_07",
+      "name": "Denise Mar",
+      "faction_id": "NAC",
+      "atmosphere": "refuge",
+      "ink_beat_id": "station_arrival_DENISE_07",
+      "one_line_lore": "A NAC station named after a conscript who negotiated the fairest labour-truce in belt history. Her portrait hangs in the arrival hall. The station still honours her terms — conscripts get a discount, and the clerks don't ask where you came from.",
+      "subplot_hook": "Denise Mar's labour-truce is the only binding agreement between conscript and corporate that the Trust has ever honoured. Other NAC stations call it an anomaly. The conscripts who work here call it proof."
+    },
+    {
+      "id": "STATION_08",
+      "name": "Berezina Drift",
+      "faction_id": "ED",
+      "atmosphere": "frontier",
+      "ink_beat_id": "station_arrival_BEREZINA_08",
+      "one_line_lore": "An EU frontier station where the hull is patched with salvaged conspot welding — each layer a different crew's desperate repair. The cargo master doesn't ask for your invoice. She asks what you brought.",
+      "subplot_hook": "Berezina Drift exists because the EU's frontier expansion failed. The government funding dried up. The crew who were supposed to man it were reassigned. What remains is a skeleton crew of conscripts who stayed because they had nowhere else to go."
+    },
+    {
+      "id": "STATION_09",
+      "name": "Moscow Prospekt",
+      "faction_id": "RRA",
+      "atmosphere": "lawful",
+      "ink_beat_id": "station_arrival_MOSCOW_09",
+      "one_line_lore": "A Russian military-first station. Officers drink in the officers' mess while conscripts rotate through He-3 catchment paperwork in silence. The docking bay is clean enough to eat from — and someone probably does.",
+      "subplot_hook": "Moscow Prospekt is where the Trust's genetic-experimentation flu program was first deployed. One-third of the Russian genship's population died here. The experiments were authorized through private-public partnership. Russian conscript citizens filled them."
+    },
+    {
+      "id": "STATION_10",
+      "name": "Coral",
+      "faction_id": "AC",
+      "atmosphere": "crossroads",
+      "ink_beat_id": "station_arrival_CORAL_10",
+      "one_line_lore": "Asia's deep-belt crossroads where no faction holds the lease. The belt's only place where genship crews mix without a handler. Your invoice-code gets you through the gate — the crowd reads it and knows what you are.",
+      "subplot_hook": "Coral is where the Trustee's program was first sighted by the oligarchy. Three crews at a table will tell your predecessor's story before you sit down. The Trust watches Coral more closely than any other station."
+    }
+  ]
+}

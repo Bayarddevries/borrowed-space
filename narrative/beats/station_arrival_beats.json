@@ -1,0 +1,101 @@
+{
+  "_meta": {
+    "title": "Station Arrival Beats",
+    "description": "Schema A beats fired on station arrival. Each beat has 2-3 choices with deltas. Choices route to crew_meetup stubs (Phase 3c).",
+    "schema": "manifest-v1",
+    "version": "0.2-draft",
+    "_comment": "// Phase 3c: crew_meetup_at_<station>_1 stubs will be implemented when mission board lands"
+  },
+  "beats": {
+    "station_arrival_KASHNER_01": {
+      "speaker": "narrator",
+      "text": "Kashner Iceworks resolves out of the dark — mountainous blocks of ice held in containment below the ship, docking bays marking the thin hull like stitch-work. Three thousand contractors live here. The air tastes of corporate filtration. A clerk reads your genship_id once, twice, then stamps a fuel chit without looking up.",
+      "choices": [
+        { "label": "Pay standard rate. Fuel +25.", "to": "crew_meetup_at_KASHNER_01", "delta": { "fuel_delta": 25, "credit_delta": -10 } },
+        { "label": "Ask where the water comes from.", "to": "crew_meetup_at_KASHNER_01", "delta": { "fuel_delta": 25, "suspicion_delta": 1, "discoveries": ["kashner_water_source"] } },
+        { "label": "Refuel and skip the receipt.", "to": "crew_meetup_at_KASHNER_01", "delta": { "fuel_delta": 25, "suspicion_delta": 2 } }
+      ]
+    },
+    "station_arrival_BENTIC_02": {
+      "speaker": "narrator",
+      "text": "Bentic Penal's hull is grey and featureless — a private prison funded by multiple governments that don't want to know the details. The docking clamp catches with a sound like a cell door. A Bentic Security officer in corporate-military livery checks your invoice-code and doesn't smile. Behind him, through the airlock glass, you can see a yard where conscripts in jumpsuits move in lines.",
+      "choices": [
+        { "label": "File your cargo. Don't look.", "to": "crew_meetup_at_BENTIC_02", "delta": { "suspicion_delta": 1 } },
+        { "label": "Ask if you can see the labour logs.", "to": "crew_meetup_at_BENTIC_02", "delta": { "suspicion_delta": 2, "discoveries": ["bentic_labour_audit"] } },
+        { "label": "Pay the transit fee. Leave.", "to": "crew_meetup_at_BENTIC_02", "delta": { "credit_delta": -5 } }
+      ]
+    },
+    "station_arrival_CORVALLO_03": {
+      "speaker": "narrator",
+      "text": "Corvallo Station is the busiest hub in the system — privately owned, veiled as neutral ground, and the one place where every faction's invoice is honoured without interrogation. The docking bay is a crossroads: NAC haulers, ED blazers, RRA military patches, Coalition shoulder patches you don't recognise. Three crews at a table. They look up when your genship_id appears on the board.",
+      "choices": [
+        { "label": "Dock at the public bay. Standard rate.", "to": "crew_meetup_at_CORVALLO_03", "delta": { "fuel_delta": 20, "credit_delta": -10 } },
+        { "label": "Ask for the private traders' deck.", "to": "crew_meetup_at_CORVALLO_03", "delta": { "suspicion_delta": 1, "discoveries": ["corvallo_private_deck"] } },
+        { "label": "Find the three crews. Buy a round.", "to": "crew_meetup_at_CORVALLO_03", "delta": { "bond_score": 1, "credit_delta": -15 } }
+      ]
+    },
+    "station_arrival_SXHALO_04": {
+      "speaker": "narrator",
+      "text": "SX Halo is beautiful — a halo-shaped station in permanent orbit around Mars, its curve catching the planet's light like a promise. SX Corp's logo marks every surface. The docking bay is immaculate. The air smells of nothing at all, which is the smell of money. A receptionist with a smile that doesn't reach her eyes welcomes you to the future of human advancement.",
+      "choices": [
+        { "label": "Accept the corporate hospitality.", "to": "crew_meetup_at_SXHALO_04", "delta": { "fuel_delta": 20, "suspicion_delta": 1, "discoveries": ["sx_hospitality_log"] } },
+        { "label": "Decline. You don't trust clean air.", "to": "crew_meetup_at_SXHALO_04", "delta": { "fuel_delta": 20, "suspicion_delta": -1 } },
+        { "label": "Ask what SX does here. Directly.", "to": "crew_meetup_at_SXHALO_04", "delta": { "suspicion_delta": 2, "discoveries": ["sx_biotech_hint"] } }
+      ]
+    },
+    "station_arrival_ORPHEUM_05": {
+      "speaker": "narrator",
+      "text": "Orpheum Astrogrowth is green — grow-lights baking the arrival deck, the smell of soil and nutrient solution so thick you taste it. The largest private astrofarm ever constructed. A woman with dirt under her nails and a corporate badge waves you through. The Coalition genship grows food. Orpheum grows more. You eat Orpheum produce whether you choose to or not.",
+      "choices": [
+        { "label": "Accept the tour. See the yields.", "to": "crew_meetup_at_ORPHEUM_05", "delta": { "supplies_delta": 10, "discoveries": ["orpheum_yield_log"] } },
+        { "label": "Ask about the Coalition crop failures.", "to": "crew_meetup_at_ORPHEUM_05", "delta": { "suspicion_delta": 2, "discoveries": ["orpheum_sabotage_hint"] } },
+        { "label": "Trade fuel for fresh supplies. Fair.", "to": "crew_meetup_at_ORPHEUM_05", "delta": { "fuel_delta": -10, "supplies_delta": 20 } }
+      ]
+    },
+    "station_arrival_PROPHET_06": {
+      "speaker": "narrator",
+      "text": "Prophet's Threshold docks in rhythm — the clamps sync to a call you feel in your chest before you hear it. A host in clean linen offers water before docking confirmation. The water is cold. The offer is not optional. Around you, conscripts outnumber contractors three to one — this is one of the few stations where that's true.",
+      "choices": [
+        { "label": "Accept the water. Accept the welcome.", "to": "crew_meetup_at_PROPHET_06", "delta": { "bond_score": 1, "fuel_delta": 15 } },
+        { "label": "Decline politely. Stay on schedule.", "to": "crew_meetup_at_PROPHET_06", "delta": { "suspicion_delta": 1, "fuel_delta": 15 } },
+        { "label": "Ask who funded the accelerated launch.", "to": "crew_meetup_at_PROPHET_06", "delta": { "suspicion_delta": 2, "discoveries": ["me_accelerated_launch"] } }
+      ]
+    },
+    "station_arrival_DENISE_07": {
+      "speaker": "narrator",
+      "text": "Denise Mar's arrival hall is quiet in the way NAC stations are quiet — deliberate, fair, and watching. Her portrait hangs above the intake desk: a conscript woman who negotiated the fairest labour-truce in belt history. The conscript beside the portrait smiles at you like a host, not a gatekeeper. The station still honours her terms.",
+      "choices": [
+        { "label": "Ask for the conscript discount. It exists.", "to": "crew_meetup_at_DENISE_07", "delta": { "fuel_delta": 20, "credit_delta": -5, "bond_score": 1 } },
+        { "label": "Donate to the hall. Take nothing.", "to": "crew_meetup_at_DENISE_07", "delta": { "credit_delta": -15, "bond_score": 2 } },
+        { "label": "Ask what happened to Denise Mar.", "to": "crew_meetup_at_DENISE_07", "delta": { "discoveries": ["denise_mar_fate"] } }
+      ]
+    },
+    "station_arrival_BEREZINA_08": {
+      "speaker": "narrator",
+      "text": "Berezina Drift is a patchwork — conspot welding over conspot welding, each layer a different crew's desperate repair. The EU's frontier expansion failed here. The government funding dried up. The crew who were supposed to man it were reassigned. What remains is a skeleton crew of conscripts who stayed because they had nowhere else to go. The cargo master doesn't ask for your invoice. She asks what you brought.",
+      "choices": [
+        { "label": "Trade fuel for hull patches.", "to": "crew_meetup_at_BEREZINA_08", "delta": { "fuel_delta": -15, "bond_score": 1 } },
+        { "label": "Offer cash. She doesn't want it.", "to": "crew_meetup_at_BEREZINA_08", "delta": { "credit_delta": -5, "suspicion_delta": 1 } },
+        { "label": "Ask who's still running this place.", "to": "crew_meetup_at_BEREZINA_08", "delta": { "discoveries": ["berezina_skeleton_crew"] } }
+      ]
+    },
+    "station_arrival_MOSCOW_09": {
+      "speaker": "narrator",
+      "text": "Moscow Prospekt's docking bay is clean enough to eat from — and someone probably does. An officer in pressed uniform meets you at the airlock. He doesn't salute. He assesses. Behind him, through the corridor glass, you can see the officers' mess on one side and the conscript paperwork hall on the other. The two rooms share a wall and nothing else.",
+      "choices": [
+        { "label": "Stand at attention. Protocol first.", "to": "crew_meetup_at_MOSCOW_09", "delta": { "suspicion_delta": -1, "bond_score": 1 } },
+        { "label": "Offer a drink. Break the ice.", "to": "crew_meetup_at_MOSCOW_09", "delta": { "bond_score": 1, "credit_delta": -5 } },
+        { "label": "Ask about the flu program. Carefully.", "to": "crew_meetup_at_MOSCOW_09", "delta": { "suspicion_delta": 2, "discoveries": ["russian_flu_program"] } }
+      ]
+    },
+    "station_arrival_CORAL_10": {
+      "speaker": "narrator",
+      "text": "Coral station is a wheel of union halls and transit authority offices. The belt's only place where genship crews mix without a handler. Your invoice-code gets you through the gate. The crowd reads it and knows what you are. Three crews at a table. They're talking about your predecessor. They stop when you sit down.",
+      "choices": [
+        { "label": "Join the table. Introduce yourself.", "to": "crew_meetup_at_CORAL_10", "delta": { "bond_score": 1, "discoveries": ["predecessor_fate_coral"] } },
+        { "label": "Nod and move past. Listen later.", "to": "crew_meetup_at_CORAL_10", "delta": { "suspicion_delta": 1, "discoveries": ["predecessor_fate_coral_partial"] } },
+        { "label": "Ask who's watching this station.", "to": "crew_meetup_at_CORAL_10", "delta": { "suspicion_delta": 2, "discoveries": ["trustee_program_sighted"] } }
+      ]
+    }
+  }
+}
