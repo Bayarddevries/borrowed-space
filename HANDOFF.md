@@ -92,8 +92,9 @@ Current state. Verified-working features. Known issues. Updated at the end of ev
 - **`run_beat("beat_id")` is the cursor-advance primitive** — first call moves cursor to that beat, subsequent calls re-read it. `choose(idx)` is read + apply_delta + advance. Knowing this beats visualising the cursor.
 - **narrative/ lives outside the Godot project root** by AGENTS.md convention. Use `ProjectSettings.globalize_path("res://")` to walk up to the repo root. Production builds need bundler (Phase 2c Path-A).
 - **`load()` in GDScript conflicts with `ResourceLoader.load()`** — name carefully. `persist.gd` uses `load_state()` to disambiguate.
-- **`Node.name` property shadows any instance var named `name`** — even via Dictionary it's confusing. Crew dict key is `"name"`; instance var on the class is `crew_name` to avoid the conflict.
-- **`Crew.generate` static call requires `Crew` class_name to be loaded** from project cache; failing that, ScriptCache shows `'Non-existent function generate'`-style errors. (Not a single-tool GUT can't fix — plugin needs project_metadata.cfg sync.)
+│ **`Node.name` property shadows any instance var named `name`** — even via Dictionary it's confusing. Crew dict key is `"name"`; instance var on the class is `crew_name` to avoid the conflict.
+│ **`Crew.generate` static call requires `Crew` class_name to be loaded** from project cache; failing that, ScriptCache shows `'Non-existent function generate'`-style errors. (Not a single-tool GUT can't fix — plugin needs project_metadata.cfg sync.)
+│ **Godot 4.6 vs inkgd 0.5.0** — the inkgd addon (pure GDScript Ink runtime) has Godot 3.x compatibility issues (`tool` → `@tool`, `onready` → `@onready`, `Directory` → `DirAccess`, `ToolButton` → `Button`). Do NOT attempt to install inkgd until someone ports the editor plugin to Godot 4.6. The current BeatRunner + JSON manifest approach is the workaround. If you need native Ink, the migration cost is ~2 hours of GDScript compatibility fixes across 10 files.
 
 ---
 
