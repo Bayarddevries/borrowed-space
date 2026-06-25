@@ -1,0 +1,73 @@
+{
+  "_meta": {
+    "purpose": "Trust family definitions for the dismantling arc and faction system.",
+    "version": "0.1-draft",
+    "note": "Two-family names, front corp, internal dysfunction, and one concrete exploit per family. No ethnic or nationality coding. Tone matches mission-board operational labels.",
+    "schema": {
+      "trust_id": "string — T1..T7",
+      "front_id": "string — corporate-facing entity",
+      "family_names": "array[string] — two mixed-heritage surnames",
+      "he3_role": "string — one sentence function in the cartel",
+      "dysfunction": "string — internal fault line a captain can exploit",
+      "exposed_entries": "array[string] — named intel or asset unlock strings"
+    }
+  },
+  "families": [
+    {
+      "trust_id": "T1",
+      "front_id": "Helios Extraction",
+      "family_names": ["Cartwright", "Hale"],
+      "he3_role": "Owns Mars mine concessions and asteroid-patent claims.",
+      "dysfunction": "The Hales mapped a second unmapped vein and withheld it from Cartwright oversight to force a family buyout.",
+      "exposed_entries": ["kessler_vein_alpha_location", "hale_buyout_records"]
+    },
+    {
+      "trust_id": "T2",
+      "front_id": "Voidline Logistics",
+      "family_names": ["Sterling", "Vossi"],
+      "he3_role": "Contracts He-3 freight and owns the route-station toll grid.",
+      "dysfunction": "The Vossi faction wants to open a competing corridor that would gut Sterling toll stations. Sterling is retaliating through insurance claims on Vossi-rated hulls.",
+      "exposed_entries": ["corvallo_corridor_blueprint_roll", "sterling_insurance_block"]
+    },
+    {
+      "trust_id": "T3",
+      "front_id": "Kepler Settlements",
+      "family_names": ["Lindqvist", "Adebayo"],
+      "he3_role": "Decides allocation of habitat and Mars surface access.",
+      "dysfunction": "Lindqvist quietly reduced a Mars life-support resource estimate. Adebayo's engineers found the original numbers first and are sitting on the proof.",
+      "exposed_entries": ["adebayo_aquifer_proof", "lindqvist_revision_log"]
+    },
+    {
+      "trust_id": "T4",
+      "front_id": "SomaGenesis",
+      "family_names": ["Caldera", "Raines"],
+      "he3_role": "Signed the pre-launch genetic-program documents.",
+      "dysfunction": "Caldera fielded a gestational trait marker for long-haul conscript populations and tested it through Raines-administered clinics. Raines clinicians are now leaking case records.",
+      "exposed_entries": ["caldera_marker_case_files", "raines_clinic_logs"]
+    },
+    {
+      "trust_id": "T5",
+      "front_id": "Actuary Capital",
+      "family_names": ["Kessler", "Gray"],
+      "he3_role": "Owns conscript payroll settlement and mortality-premium tables.",
+      "dysfunction": "Kesslers raised conscript mortality premiums forty percent without adjusting payout thresholds. Grays falsify death certificates so families cannot collect.",
+      "exposed_entries": ["kessler_premium_tables", "gray_death_cert_forgery_ledger"]
+    },
+    {
+      "trust_id": "T6",
+      "front_id": "Forge and Frame",
+      "family_names": ["Orison", "Kowalski"],
+      "he3_role": "Owns the shipyards and hull-alloy production.",
+      "dysfunction": "Orison alloy fatigue-tested at eighteen years and concealed the failure mode. Kowalski discovered the cycle and built a mandatory refit billing chain that diverts into their own accounts.",
+      "exposed_entries": ["orison_fatigue_test_record", "kowalski_refit_billing_chain"]
+    },
+    {
+      "trust_id": "T7",
+      "front_id": "Helion Systems",
+      "family_names": ["Cheng", "Okafor"],
+      "he3_role": "Core He-3 enrichment and fuel logistics cartel.",
+      "dysfunction": "Chengs fabricated a yield-extending catalyst and withheld it from public distribution. Okafor distribution managers are running parallel leakage experiments with Trustee-linked captains.",
+      "exposed_entries": ["cheng_catalyst_study", "okafor_leakage_log"]
+    }
+  ]
+}

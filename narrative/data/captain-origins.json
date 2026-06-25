@@ -1,125 +1,125 @@
 {
   "_meta": {
-    "purpose": "Origin matrix the player picks from at run-start. Pre-game setup, no lore.",
-    "version": "0.1-draft",
-    "note": "5 genships (NAC/ED/RRA/AC + SAA). Playable text-first runs ship with N=2 country fragments per genship — extend later. Zero-lite lore; identifiers and structural flags only.",
+    "purpose": "Origin matrix the player picks from at run-start.",
+    "version": "0.2-draft",
+    "note": "Genship labels and heritage labels filled. Mechanical values unchanged. Heritage tags align station dialog with genship-culture texture.",
     "schema": {
-      "genship_id": "string — genship ID (matches WORLD_BIBLE.md)",
-      "genship_label": "string — display-label, placeholder",
-      "first_ship_class": "string — flagship tier per canon (TIER-1 / TIER-2 / TIER-COAL)",
-      "country_fragments": "array of country-fragment objects; count variable per genship",
+      "genship_id": "string — genship ID",
+      "genship_label": "string — display label",
+      "first_ship_class": "string — TIER-1/TIER-COAL",
+      "country_fragments": "array[country_fragment]",
       "country_fragment": {
-        "id": "string — fragment ID, unique",
-        "label": "string — display label, placeholder",
-        "h_tier_default": "int — captain He-3 literacy tier at run-start (1 lowest, 4 covert)",
-        "starting_suspicion": "int — base suspicion meter (0 safe, higher = precarious)",
-        "tag_pool": "array of string — trait-bag tags the Ink layer pulls from (couples with TRAITS.md personality pool)"
+        "id": "string — fragment ID",
+        "label": "string — display label",
+        "h_tier_default": "int",
+        "starting_suspicion": "int",
+        "tag_pool": "string[]"
       }
     }
   },
   "origins": [
     {
       "genship_id": "NAC",
-      "genship_label": "[G1-NorthAmerica PLACEHOLDER]",
+      "genship_label": "Declaration",
       "first_ship_class": "TIER-1",
       "country_fragments": [
         {
           "id": "NAC-charter",
-          "label": "[NAC-charter PLACEHOLDER]",
+          "label": "Portland Habitat Deck",
           "h_tier_default": 2,
           "starting_suspicion": 1,
-          "tag_pool": ["t-P-D", "t-P-K", "t-P-L"]
+          "tag_pool": ["t-P-H-charter", "t-P-D", "t-P-K"]
         },
         {
           "id": "NAC-volunteer",
-          "label": "[NAC-volunteer PLACEHOLDER]",
+          "label": "Gulf Coast Drilling Rig",
           "h_tier_default": 3,
           "starting_suspicion": 0,
-          "tag_pool": ["t-P-A", "t-P-B", "t-P-I"]
+          "tag_pool": ["t-P-H-volunteer", "t-P-A", "t-P-I"]
         }
       ]
     },
     {
       "genship_id": "ED",
-      "genship_label": "[G2-EuropeanUnion PLACEHOLDER]",
+      "genship_label": "Covenant",
       "first_ship_class": "TIER-1",
       "country_fragments": [
         {
           "id": "ED-urban",
-          "label": "[ED-urban PLACEHOLDER]",
+          "label": "Helsinki Arbitration Spire",
           "h_tier_default": 2,
           "starting_suspicion": 1,
-          "tag_pool": ["t-P-E", "t-P-J", "t-P-K"]
+          "tag_pool": ["t-P-H-urban", "t-P-E", "t-P-J"]
         },
         {
           "id": "ED-rural",
-          "label": "[ED-rural PLACEHOLDER]",
+          "label": "Algiers Refugee Barge",
           "h_tier_default": 2,
           "starting_suspicion": 2,
-          "tag_pool": ["t-P-G", "t-P-F", "t-P-I"]
+          "tag_pool": ["t-P-H-rural", "t-P-G", "t-P-F"]
         }
       ]
     },
     {
       "genship_id": "RRA",
-      "genship_label": "[G3-Russia PLACEHOLDER]",
+      "genship_label": "Sever",
       "first_ship_class": "TIER-1",
       "country_fragments": [
         {
           "id": "RRA-energo",
-          "label": "[RRA-energo PLACEHOLDER]",
+          "label": "Norilsk Module 14",
           "h_tier_default": 3,
           "starting_suspicion": 0,
-          "tag_pool": ["t-P-C", "t-P-K", "t-P-H"]
+          "tag_pool": ["t-P-H-energo", "t-P-C", "t-P-K"]
         },
         {
           "id": "RRA-relocated",
-          "label": "[RRA-relocated PLACEHOLDER]",
+          "label": "Transbaikal Transit Yard",
           "h_tier_default": 1,
           "starting_suspicion": 2,
-          "tag_pool": ["t-P-F", "t-P-I", "t-P-L"]
+          "tag_pool": ["t-P-H-relocated", "t-P-F", "t-P-I"]
         }
       ]
     },
     {
       "genship_id": "AC",
-      "genship_label": "[G4-AsiaCoalition PLACEHOLDER]",
+      "genship_label": "Pillar",
       "first_ship_class": "TIER-1",
       "country_fragments": [
         {
           "id": "AC-coastal",
-          "label": "[AC-coastal PLACEHOLDER]",
+          "label": "Busan Transit Platform",
           "h_tier_default": 2,
           "starting_suspicion": 1,
-          "tag_pool": ["t-P-A", "t-P-D", "t-P-F"]
+          "tag_pool": ["t-P-H-coastal", "t-P-A", "t-P-D"]
         },
         {
           "id": "AC-inland",
-          "label": "[AC-inland PLACEHOLDER]",
+          "label": "Xi'an Freight Annex",
           "h_tier_default": 2,
           "starting_suspicion": 1,
-          "tag_pool": ["t-P-B", "t-P-J", "t-P-L"]
+          "tag_pool": ["t-P-H-inland", "t-P-B", "t-P-J"]
         }
       ]
     },
     {
       "genship_id": "SAA",
-      "genship_label": "[G5-SouthAtlanticAccord PLACEHOLDER]",
+      "genship_label": "Seeding",
       "first_ship_class": "TIER-COAL",
       "country_fragments": [
         {
           "id": "SAA-coalition",
-          "label": "[SAA-coalition PLACEHOLDER]",
+          "label": "Recife Canopy Block",
           "h_tier_default": 3,
           "starting_suspicion": 0,
-          "tag_pool": ["t-P-A", "t-P-C", "t-P-K"]
+          "tag_pool": ["t-P-H-coalition", "t-P-A", "t-P-C"]
         },
         {
           "id": "SAA-refugee",
-          "label": "[SAA-refugee PLACEHOLDER]",
+          "label": "Luanda Overflow Deck",
           "h_tier_default": 1,
           "starting_suspicion": 3,
-          "tag_pool": ["t-P-I", "t-P-G", "t-P-F"]
+          "tag_pool": ["t-P-H-refugee", "t-P-I", "t-P-G"]
         }
       ]
     }
