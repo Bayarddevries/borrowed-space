@@ -1,0 +1,11 @@
+{
+  "categories": ["Patrol", "Distress", "Discovery", "Crew", "Faction"],
+  "entries": [
+    {"id": "patrol_01", "category": "Patrol", "description": "Routine belt sweep by an independent crew. They hail and check papers.", "weight": 1.2, "intensity": "low", "resolution": "dialog", "state_modifiers": {"early": 1.2, "mid": 1.0, "late": 0.8}, "act_gate": null},
+    {"id": "patrol_02", "category": "Patrol", "description": "Corporate patrol mistakes you for a smuggler. Weapons charged.", "weight": 1.0, "intensity": "mid", "resolution": "combat", "state_modifiers": {"early": 1.0, "mid": 1.2, "late": 1.4}, "act_gate": null},
+    {"id": "distress_01", "category": "Distress", "description": "Distress call from a derelict. No answers on hails. Quiet. Too quiet.", "weight": 1.1, "intensity": "low", "resolution": "dialog", "state_modifiers": {"early": 1.3, "mid": 1.0, "late": 0.7}, "act_gate": null},
+    {"id": "distress_02", "category": "Distress", "description": "Pirate trap disguised as a distress signal. They were waiting for you.", "weight": 0.9, "intensity": "high", "resolution": "combat", "state_modifiers": {"early": 0.8, "mid": 1.1, "late": 1.3}, "act_gate": null},
+    {"id": "discovery_01", "category": "Discovery", "description": "Uncharted signal source — a pre-collapse automated relay, still broadcasting.", "weight": 1.0, "intensity": "low", "resolution": "dialog", "state_modifiers": {"early": 1.4, "mid": 1.0, "late": 0.6}, "act_gate": null},
+    {"id": "discovery_02", "category": "Discovery", "description": "Wreckage field with a live crate of He-3. Someone else already claimed it.", "weight": 0.8, "intensity": "mid", "resolution": "combat", "state_modifiers": {"early": 1.0, "mid": 1.1, "late": 1.2}, "act_gate": null}
+  ]
+}
