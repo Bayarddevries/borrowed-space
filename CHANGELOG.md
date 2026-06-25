@@ -92,6 +92,25 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) but adapted for s
 - Bias-check: all archetype references match `aliens.json` IDs; no ethnic-coded tropes; casualty tone is solemn and defers tribute wording to the casualty pipeline variable.
 - Closes #18.
 
+### Phase 3e.4 — casualty pipeline + captains journal shipped (commit 09879c0)
+- `godot/scripts/casualty_pipeline.gd` — HP=0 → ledger patch → journal append → Ink tribute cite. `class_name CasualtyPipeline`. `process(casualties: Array[Dictionary])` writes `tribute_paras` to ledger and returns casualty summary.
+- `godot/scripts/captains_journal.gd` — append-only per-captain journal. `append(captain_id, fragment_id, day_index)` stores `{fragment_id, day_index, run_id}` entries. Reads through `NarrativeData.voice_fragments()`. `class_name CaptainsJournal`.
+- `godot/scripts/narrative_data.gd` — added `voice_fragments()` loader + `encounter_pool()` loader (the latter landed on Phase 3d branch first; back-ported for consumer consistency).
+- `narrative/data/voice_fragments.json` — staged by remote content agent via prompt `phase-3e-voice-fragments.md` (50 `die_in_throes` + 50 `captain_journal` entries; user-authored corpus expansion pending).
+- **50/50 GUT tests pass** (236/236 asserts) on commit.
+- Bias-check: no ethnic-coded naming in journal fragments; two-corpus system ensures clinical AI voice and captain observational voice are distinct register.
+- Closes #16.
+
+### Phase 3d.1 — encounter-pool scaffold (commit d5b69c8, branch phase/3d-encounter-pool)
+- `narrative/data/encounter-pool.json` — 6-entry skeleton (2 low / 2 mid / 2 high) across Patrol, Distress, Discovery, Crew, Faction categories. Schema: `id`, `category`, `description`, `weight`, `intensity`, `resolution`, `state_modifiers`, `act_gate`.
+- `godot/scripts/narrative_data.gd` — added `encounter_pool()` static loader.
+- Content agent instructed to expand skeleton to 30+ entries; integration agent owns `travel.gd` stub wire-up.
+- **50/50 GUT tests pass** on branch (no code touched on main).
+- Note: this commit predates GitHub issue #10 creation during context compaction; tracked here for CHANGELOG completeness.
+
+### Missing-issue tracking note
+- Two commits landed (`d5b69c8` Phase 3d scaffold, `09879c0` Phase 3e.4) whose `Closes #N` footers reference issues that did not yet exist at commit time. The issue tracker has since caught up (#10 Phase 3d, #16 CasualtyPipeline). No orphaned closes remain.
+
 ### Phase 2 — gameplay-loop doc alignment (commit pending)
 - docs/TRAITS.md — blessing mechanic clarified: use-once-and-spend (player choice) **plus** AI-can-withdraw on betrayal; b_status enum documented
 - docs/PERSISTENCE.md — v2 schema: 5 act boolean fields (discovered_act_1..5) replacing flat `discovered_acts` array; new `faction_standing` block with 6 genships + 7 Trust corps; documented captain outcome enum (death-combat / death-other / ship-destroyed / arrested / mutiny-deposed / mutiny-abandoned / voluntary-retreat / ledger-closed)

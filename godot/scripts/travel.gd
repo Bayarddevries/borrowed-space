@@ -8,31 +8,18 @@ extends RefCounted
 #   1. Verifies the destination is reachable (in-belt, within fuel).
 #   2. Computes fuel cost = axial_distance * hazard_modifier.
 #   3. Advances the ship on success (fuel, hex, time tick).
-#   4. Rolls an encounter — Phase 3a.1 ships a stub; Phase 3d replaces
-#      with the real EncounterPool.
+#   4. Rolls an encounter via EncounterPool (Phase 3d), falling back to
+#      the legacy registry when the pool returns null.
 #   5. Returns a TransitResult dict.
-#
-# Phase 3a.1 stub encounter roll:
-#   - station_hex: rolls one of the canonical station encounters
-#     (caller passes manifest, or we use the global encounter pool if
-#     one is registered; otherwise returns null)
-#   - other kinds: returns null (placeholder for Phase 3d)
-#
-# The stub is intentional — Phase 3a.1 proves transit math + state
-# mutation. Phase 3d is the moment statistical encounter hooks fire.
 
 const _STUB_ENCOUNTER_BEAT := "station_arrival_STATION_default_1"
 
-## One-shot encounter registry — populated by EncounterPool when wired
-## (Phase 3d). Phase 3a.1 ships an empty registry so transit() can be
-## called without NullDeferences in tests.
+## One-shot encounter registry — preserved for test deterministic seams.
 static var _encounter_registry := {}
 
-## Register an encounter kind -> beat_id mapping (test seam).
 static func register_encounter(arrival_kind: String, beat_id: String) -> void:
 	_encounter_registry[arrival_kind] = beat_id
 
-## Reset encounter registry (test seam).
 static func clear_encounters() -> void:
 	_encounter_registry.clear()
 
@@ -118,8 +105,8 @@ static func transit(ship: ShipState, to_q: int, to_r: int, stations: Array) -> D
 	var arrival_kind := Cartography.hex_kind_at(to_q, to_r, stations)
 	ship.is_docked = arrival_kind == "station_hex"
 
-	var encounter: Variant = null
-	if _encounter_registry.has(arrival_kind):
+	var encounter: Variant = EncounterPool.roll(ship.to_dict(), arrival_kind, stations)
+	if encounter == null and _encounter_registry.has(arrival_kind):
 		encounter = _encounter_registry[arrival_kind]
 
 	return {
