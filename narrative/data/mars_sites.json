@@ -1,0 +1,76 @@
+{
+  "_meta": {
+    "purpose": "Mars surface sites tied to Trust family exposed entries, with access requirements and dismantling hooks.",
+    "version": "0.1-draft",
+    "note": "Each site is a named place the captain can travel to. Discovery and access methods are mechanical prerequisites for the dismantling arc. Tone: dry, operational.",
+    "schema": {
+      "site_id": "string — short code for internal refs",
+      "name": "string — display name",
+      "trust_family": "string — T1..T7 this site exposes",
+      "exposed_entry_refs": "array[string] — keys from trust_families.json exposed_entries",
+      "location": "string — Mars region / terrain",
+      "surface_expression": "string — what is publicly visible",
+      "secret": "string — what is suppressed",
+      "access_requirements": "array[string] — methods to enter or unlock",
+      "dismantling_hook": "string — one sentence on what exposing this site breaks"
+    }
+  },
+  "sites": [
+    {
+      "site_id": "kessler_vein_alpha",
+      "name": "Kessler Vein Alpha",
+      "trust_family": "T1",
+      "exposed_entry_refs": ["kessler_vein_alpha_location", "hale_buyout_records"],
+      "location": "Tharsis lava tube network, Mars",
+      "surface_expression": "A known mining claim with standard extraction infrastructure at the mouth. Publicly listed as Cartwright-Haulage Zone 7.",
+      "secret": "The Hales mapped a second unmapped He-3 vein branching off the main lava tube and suppressed the survey data to force a family buyout.",
+      "access_requirements": [
+        "Hale family clearance codes (theft or diplomacy)",
+        "Seismic scanner rigged from derelict probe parts"
+      ],
+      "dismantling_hook": "Prove a second vein exists. Broker the Hale buyout or publish the data and break Cartwright-Hale's Mars mine monopoly."
+    },
+    {
+      "site_id": "caldera_test_site_7",
+      "name": "Caldera Test Site 7",
+      "trust_family": "T4",
+      "exposed_entry_refs": ["caldera_marker_case_files", "raines_clinic_logs"],
+      "location": "Open-air biotech testing ground near Meridiani Planum, Mars",
+      "surface_expression": "A fenced perimeter with decommissioned livestock pens and standard biohazard signage. T4 lists it as an agricultural research station.",
+      "secret": "Caldera and Raines ran gestational trait-marker trials on conscript agricultural workers here. Residual case files were never purged.",
+      "access_requirements": [
+        "Raines clinic clearance (diplomacy with leakers)",
+        "Containment-breach vent entry"
+      ],
+      "dismantling_hook": "Recover residual marker data. Publish, trade to a genship resistance cell, or destroy to control the narrative."
+    },
+    {
+      "site_id": "adebayo_memorial_reservoir",
+      "name": "Adebayo Memorial Reservoir",
+      "trust_family": "T3",
+      "exposed_entry_refs": ["adebayo_aquifer_proof", "lindqvist_revision_log"],
+      "location": "Buried under a dust-covered outflow channel, Arabia Terra, Mars",
+      "surface_expression": "A damp outflow fan visible from orbit. Public surveys list the channel as dry with no significant subsurface ice.",
+      "secret": "The Adebayo engineering team ran a ground-penetrating radar survey showing a connected reservoir system. Lindqvist issued a drill-permit denial and suppressed the results.",
+      "access_requirements": [
+        "Adebayo engineer contact + radar data from a derelict survey probe",
+        "Internal T3 drill-permit override"
+      ],
+      "dismantling_hook": "Expose the suppressed scale data. Reserves are large enough to fully liberate every genship from water dependence contracts, breaking Kepler Settlements' habitat monopoly."
+    },
+    {
+      "site_id": "orison_scrapyard",
+      "name": "Orison Scrapyard",
+      "trust_family": "T6",
+      "exposed_entry_refs": ["orison_fatigue_test_record", "kowalski_refit_billing_chain"],
+      "location": "Surface-grade alloy testing range, Elysium Planitia, Mars",
+      "surface_expression": "A flat graded basin littered with hull plate fragments and test pylon markers. Forge and Frame lists it as a materials recycling depot.",
+      "secret": "Orison dumped fatigue-cracked hull plates here after the 18-year alloy failure tests. Kowalski documented the failure mode but concealed it to build the mandatory refit billing chain.",
+      "access_requirements": [
+        "Kowalski maintenance codes (from Anza at Moscow Prospekt or B3 Holdfast)",
+        "Radiation hazard bypass through a sealed shelter corridor"
+      ],
+      "dismantling_hook": "Recover the cracked hull plates and fatigue test record. Publish to trigger a fleet-wide inspection and collapse the mandatory refit billing cycle."
+    }
+  ]
+}
