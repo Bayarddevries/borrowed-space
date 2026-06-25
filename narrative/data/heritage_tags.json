@@ -1,0 +1,85 @@
+{
+  "_meta": {
+    "purpose": "Heritage tag definitions for the 12 captain country-fragment options.",
+    "version": "0.1-draft",
+    "schema": {
+      "id": "string — tag ID (matches captain-origins.json tag_pool entry)",
+      "fragment_ref": "string — genship_id + country_fragment_id",
+      "display_label": "string — human-readable fragment name",
+      "dialog_tone": "string — sentence on how this captain speaks in Ink",
+      "cover_test_flavor": "string — sentence on how this fragment affects cover-test voice"
+    }
+  },
+  "heritage_tags": [
+    {
+      "id": "t-P-H-charter",
+      "fragment_ref": "NAC/NAC-charter",
+      "display_label": "Portland Habitat Deck",
+      "dialog_tone": "Solidarity language. Contract nouns. Uses 'we' before 'I' when crew are present.",
+      "cover_test_flavor": "Suspicion threshold against corporate authority runs 1 lower."
+    },
+    {
+      "id": "t-P-H-volunteer",
+      "fragment_ref": "NAC/NAC-volunteer",
+      "display_label": "Gulf Coast Drilling Rig",
+      "dialog_tone": "Defiant register. Minimal clauses. Skips formal address with contractor-types.",
+      "cover_test_flavor": "Defiant dialog options squelch less; cover-test failure against T1 softens one step."
+    },
+    {
+      "id": "t-P-H-urban",
+      "fragment_ref": "ED/ED-urban",
+      "display_label": "Helsinki Arbitration Spire",
+      "dialog_tone": "Procedure-heavy. Citation by article number. Formal escalation preferred.",
+      "cover_test_flavor": "Authoritative dialog options gain +1 bond in ED stations."
+    },
+    {
+      "id": "t-P-H-rural",
+      "fragment_ref": "ED/ED-rural",
+      "display_label": "Algiers Refugee Barge",
+      "dialog_tone": "Stateless register. Mixed idiom. Suspicious of paperwork unless crew are present.",
+      "cover_test_flavor": "Default suspicion in non-ED stations starts 1 higher."
+    },
+    {
+      "id": "t-P-H-energo",
+      "fragment_ref": "RRA/RRA-energo",
+      "display_label": "Norilsk Module 14",
+      "dialog_tone": "Sparse. Numeric shorthand. Uses metric shorthand and energy-unit metaphors.",
+      "cover_test_flavor": "Numeric dialog options gain bond in RRA contexts."
+    },
+    {
+      "id": "t-P-H-relocated",
+      "fragment_ref": "RRA/RRA-relocated",
+      "display_label": "Transbaikal Transit Yard",
+      "dialog_tone": "Watchful. Short answers. Name-drops freight routing casually.",
+      "cover_test_flavor": "Suspicion penalty in RRA stations reduced by 1."
+    },
+    {
+      "id": "t-P-H-coastal",
+      "fragment_ref": "AC/AC-coastal",
+      "display_label": "Busan Transit Platform",
+      "dialog_tone": "Fast register. Brief. Trade idioms. Respects transit authority over rank.",
+      "cover_test_flavor": "Fast/defiant dialog paths dampen suspicion rise."
+    },
+    {
+      "id": "t-P-H-inland",
+      "fragment_ref": "AC/AC-inland",
+      "display_label": "Xi’an Freight Annex",
+      "dialog_tone": "Quiet. Precise. Favors logistics verbs over emotional language.",
+      "cover_test_flavor": "Quiet/neutral paths give +1 bond in AC stations."
+    },
+    {
+      "id": "t-P-H-coalition",
+      "fragment_ref": "SAA/SAA-coalition",
+      "display_label": "Recife Canopy Block",
+      "dialog_tone": "Collective register. Agricultural metaphors. Uses growth verbs for progress.",
+      "cover_test_flavor": "Solidarity options in SAA beats gain bond."
+    },
+    {
+      "id": "t-P-H-refugee",
+      "fragment_ref": "SAA/SAA-refugee",
+      "display_label": "Luanda Overflow Deck",
+      "dialog_tone": "High-alert. Short. Stateless idiom. Avoids trust verbs unless bond is high.",
+      "cover_test_flavor": "Default suspicion starts 1 higher; trust gains are worth +1 extra."
+    }
+  ]
+}
