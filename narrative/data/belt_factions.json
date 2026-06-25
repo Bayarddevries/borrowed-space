@@ -1,0 +1,45 @@
+{
+  "_meta": {
+    "purpose": "Belt faction definitions with named leadership, internal politics, and captain-facing leverage.",
+    "version": "0.1-draft",
+    "note": "Post-collapse tone: dry, operational. Each faction has internal political splits; no single bloc voice. Bias-checked against BIAS_GUARDRAILS.md.",
+    "schema": {
+      "faction_id": "string — B1/B2/B3",
+      "display_name": "string — operational name",
+      "home_station": "string — cartography station id",
+      "leader": "string — named leader with role note",
+      "internal_politics": "string — two-sentence split",
+      "leverage": "string — one sentence on what they control",
+      "captain_angle": "string — one sentence on how a captain can use them"
+    }
+  },
+  "factions": [
+    {
+      "faction_id": "B1",
+      "display_name": "Dispatch Network",
+      "home_station": "STATION_03",
+      "leader": "Maren Cole — former T2 corridor controller, blacklisted after refusing a bribe",
+      "internal_politics": "The Network split after the corridor wars: one camp wants to unionize clearance priority through Corvallo, the other wants to burn the toll grid. Cole positions between them, paid by both to hold the line.",
+      "leverage": "They hold the corridor clearance codes T2 uses to prioritize haulers. A captain with those codes can bypass insurance blocks.",
+      "captain_angle": "The captain can broker a union vote, smuggle clearance codes to a rival captain, or sell Cole's ledger to T2 for standing."
+    },
+    {
+      "faction_id": "B2",
+      "display_name": "Breach Yard",
+      "home_station": "STATION_08",
+      "leader": "Kade Vossi — salvage master, estranged from the Vossi corporate family",
+      "internal_politics": "The Yard is split between crews who sell only to genships and crews who take Trust contracts when the work dries up. Kade enforces 'no Trust' but turns a blind eye when a haul is too profitable.",
+      "leverage": "Pre-launch genship hull fragments and maintenance logs showing the 18-year fatigue failure.",
+      "captain_angle": "The captain can buy hull patches at discount, trade salvage data for safe passage through ED lanes, or expose the fatigue logs to trigger a fleet-wide inspection."
+    },
+    {
+      "faction_id": "B3",
+      "display_name": "Holdfast",
+      "home_station": "STATION_09",
+      "leader": "Anza Kowalski and Rafal Kowalski — co-leaders, competing claims on the same books",
+      "internal_politics": "Anza inherited the Kowalski maintenance tradition and wants to keep hull safety records public. Rafal inherited the billing accounts and wants to sell that data to T6 at a premium. They each control half the facility and do not speak.",
+      "leverage": "Verified genship maintenance logs and hull-certification chains that T6 uses to force mandatory refit billing.",
+      "captain_angle": "The captain can side with Anza to publish hull data to the fleet, side with Rafal to sell the ledger to T6 for credits, or broker a temporary truce between the cousins."
+    }
+  ]
+}
