@@ -33,9 +33,9 @@
       "trust_id": "T3",
       "front_id": "Kepler Settlements",
       "family_names": ["Lindqvist", "Adebayo"],
-      "he3_role": "Decides allocation of habitat and Mars surface access.",
-      "dysfunction": "Lindqvist quietly reduced a Mars life-support resource estimate. Adebayo's engineers found the original numbers first and are sitting on the proof.",
-      "exposed_entries": ["adebayo_aquifer_proof", "lindqvist_revision_log"]
+      "he3_role": "Decides habitat allocation, Mars surface access, scrubber maintenance schedules, and atmosphere-mix standards.",
+      "dysfunction": "Lindqvist quietly reduced a Mars life-support resource estimate. Adebayo's engineers found the original numbers first and are sitting on the proof. Lindqvist also controls scrubber maintenance orders and can hold stations hostage through air-quality denial.",
+      "exposed_entries": ["adebayo_aquifer_proof", "lindqvist_revision_log", "kepler_scrubber_maintenance_ledger"]
     },
     {
       "trust_id": "T4",
@@ -49,9 +49,9 @@
       "trust_id": "T5",
       "front_id": "Actuary Capital",
       "family_names": ["Kessler", "Gray"],
-      "he3_role": "Owns conscript payroll settlement and mortality-premium tables.",
-      "dysfunction": "Kesslers raised conscript mortality premiums forty percent without adjusting payout thresholds. Grays falsify death certificates so families cannot collect.",
-      "exposed_entries": ["kessler_premium_tables", "gray_death_cert_forgery_ledger"]
+      "he3_role": "Owns conscript payroll settlement, mortality-premium tables, Trust commercial law, and the conscript-court system.",
+      "dysfunction": "Kesslers raised conscript mortality premiums forty percent without adjusting payout thresholds. Grays falsify death certificates so families cannot collect. Kesslers also authored the binding commercial code conscripts are sentenced under; the Gray adjudication wing enforces it.",
+      "exposed_entries": ["kessler_premium_tables", "gray_death_cert_forgery_ledger", "trust_commercial_jurisdiction_framework"]
     },
     {
       "trust_id": "T6",
@@ -68,6 +68,14 @@
       "he3_role": "Core He-3 enrichment and fuel logistics cartel.",
       "dysfunction": "Chengs fabricated a yield-extending catalyst and withheld it from public distribution. Okafor distribution managers are running parallel leakage experiments with Trustee-linked captains.",
       "exposed_entries": ["cheng_catalyst_study", "okafor_leakage_log"]
+    },
+    {
+      "trust_id": "T8",
+      "front_id": "Meridian Information",
+      "family_names": ["Voss", "Reeves"],
+      "he3_role": "Owns the orbital comms relays, station news feeds, entertainment catalog, and genship curricular archives.",
+      "dysfunction": "Voss runs narrative management for the Trust and manufactured the genship origin myths. Reeves runs the editorial desk and has been selling suppressed-history packets to belt contacts. Their own staff is factionally split between loyalists and leakers.",
+      "exposed_entries": ["meridian_relay_control_keys", "suppressed_history_packet_archive", "trust_curricular_origin_myths"]
     }
   ]
 }
