@@ -55,11 +55,24 @@ func step_3_ai_briefing(captain_name: String) -> Dictionary:
 	# Lock the 3 T-pool traits using the origin's tag_pool.
 	var traits = Captain.lock_traits(captain.get("tag_pool", []))
 	captain["t_slots"] = traits
+	var origin_block: Dictionary = captain.get("origin", {})
+	var origin_flavor: Dictionary = origin_block.get("narrative_flavor", {})
+	var corp_rel: Dictionary = origin_block.get("corp_relationships", {})
+	var uc: Dictionary = origin_block.get("unique_content", {})
 	var briefing_state := {
 		"captain_name": captain_name,
 		"genship_id": captain["genship_id"],
 		"t_slots": traits,
 	}
+	# Pipe origin flavor + faction standing + content chain into the
+	# Ink-bound state so later systems can consume it.
+	briefing_state["origin_flavor"] = {
+		"ai_tone": str(origin_flavor.get("ai_tone", "")),
+		"cover_test_modifier": int(origin_flavor.get("cover_test_modifier", 0)),
+		"reaction_tokens": origin_flavor.get("reaction_tokens", []),
+	}
+	briefing_state["corp_relationships"] = corp_rel
+	briefing_state["unique_content_chain"] = str(uc.get("chain_id", ""))
 	beat_runner.bind_state(briefing_state)
 	return beat_runner.run_beat()
 

@@ -47,6 +47,11 @@ func finalise_run(state: Dictionary, captain: Dictionary, crew: Array,
 	# Persist state. captain keyed by captain_n for idempotent merges.
 	var persisted := Persist.get_state()
 	var captains_map: Dictionary = persisted.get("ledger", {}).get("captains", {})
+	# Patch starting Corp standing from the captain's origin block.
+	var origin_block: Dictionary = captain.get("origin", {})
+	var corp_rel: Dictionary = origin_block.get("corp_relationships", {})
+	if not corp_rel.is_empty():
+		record["starting_corp_standing"] = corp_rel.duplicate()
 	captains_map[str(n)] = record
 	# Existing discoveries are union-ed (set semantics) with the new run's discoveries.
 	var existing_discoveries: Array = persisted.get("campaign_state", {}).get("discovered_acts", [])

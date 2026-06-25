@@ -55,6 +55,7 @@ Headline achievement: 23/23 GUT tests pass; Phase 3e plan locked + 7 issues open
 - ✅ **Phase 3a.1 travel-system MERGED** (`1884277`) — axial-hex math helpers (`hex.gd`), JSON-driven cartography (`cartography.gd` + `narrative/data/cartography.json` with 10 stations STATION_01..STATION_10), per-run ship state (`ship.gd`), transit orchestrator (`travel.gd`), ai.gd integration in `step_5_6_overworld_and_station()`. **23/23 GUT tests pass** (was 14; +9 new). Real EncounterPool integration held for Phase 3d — Phase 3a.1 ships the registry seam it plugs into.
 - ✅ **Phase 3d NPC state-selection shipped** (`phase/3d-npc-state-selection`) — `godot/scripts/npc_state.gd` (`class_name NpcState`): weighted scoring (30/25/15/30), 3-tier memory compression, Trustee visibility chain, Random Mode. `godot/test/test_npc_state.gd` — **8/8 GUT tests pass**. Closes #11.
 - ✅ **Phase 3f genship-origin data expanded** (main) — `narrative/data/captain-origins.json` expanded from 5 to 6 origins (ME added). Full per-origin mechanical data: corp_relationships, unique_content chains, narrative_flavor. `test_narrative_data.gd` updated. **55/55 GUT tests pass**. Closes #12.
+- ✅ **Phase 3f genship-origin runtime wired** (main) — `Captain.get_origin()` populates `captain["origin"]`; `ai.gd` pipes origin_flavor + corp_relationships + unique_content_chain into briefing_state; `ledger_writer.gd` writes starting_corp_standing. `test_captain.gd` replace placeholder with 5 real GUT cases. **59/59 GUT tests pass**.
 
 ## In-progress
 

@@ -24,6 +24,20 @@ var b_status: String = "active"   # active | withdrawn | not-granted
 var l_status: String = "dormant"  # dormant | unfolding | resolved | not-applicable (Archetype C only)
 var archetype: String = "A"
 
+# Looks up the full origin block for a genship_id from the origin matrix.
+# Returns the complete origin dictionary (all 10 top-level keys) or {} if
+# the genship is not found.
+static func get_origin(genship_id: String) -> Dictionary:
+	var origins: Variant = NarrativeData.origins()
+	if origins == null:
+		push_error("[Captain] cannot read captain-origins.json")
+		return {}
+	var arch_list: Array = (origins as Dictionary).get("origins", [])
+	for entry in arch_list:
+		if entry.get("genship_id", "") == genship_id:
+			return entry
+	return {}
+
 # Builds a fresh captain from the origin matrix. Returns the record so
 # the host can hand it straight to the ledger writer.
 static func new_run(genship_id: String, fragment_id: String) -> Dictionary:
@@ -46,6 +60,7 @@ static func new_run(genship_id: String, fragment_id: String) -> Dictionary:
 						"archetype": "A",                                 # placeholder; selected in step 2
 						"tag_pool": cf["tag_pool"],
 						"ship_class": o["first_ship_class"],
+						"origin": get_origin(genship_id),                # full origin block from matrix
 					}
 	push_error("[Captain] origin fragment not found: %s/%s" % [genship_id, fragment_id])
 	return {}
