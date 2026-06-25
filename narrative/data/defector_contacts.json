@@ -1,0 +1,75 @@
+{
+  "_meta": {
+    "purpose": "Defector contact roster tied to Trust family exposed entries.",
+    "version": "0.1-draft",
+    "note": "Each contact is a named NPC the captain can meet, with intel unlock, access requirement, reward, and internal-family politics. Tone: dry, operational.",
+    "schema": {
+      "contact_id": "string — short code",
+      "display_name": "string — name the captain sees",
+      "trust_family": "string — T1..T8",
+      "home_station": "string — station id or named place",
+      "status": "string — active / compromised / wanted / hidden",
+      "intel_unlocks": "array[string] — keys matching trust_families.json exposed_entries",
+      "captain_requirement": "string — what the captain must do to unlock contact",
+      "reward": "string — concrete gameplay benefit",
+      "internal_politics": "string — one sentence on family split that enables this contact"
+    }
+  },
+  "defector_contacts": [
+    {
+      "contact_id": "morrow_t2",
+      "display_name": "Lysander Morrow",
+      "trust_family": "T2",
+      "home_station": "Corvallo Station",
+      "status": "Active. Sterling family has a bounty on his operating license.",
+      "intel_unlocks": ["corvallo_corridor_blueprint_roll"],
+      "captain_requirement": "High bond with B1 Dispatch Network, OR successful cover test against T2.",
+      "reward": "Corridor clearance codes that bypass Sterling insurance blocks.",
+      "internal_politics": "Split from Sterling after the insurance-block order; the Vossi branch quietly funds his courier ring because it keeps their parallel corridor viable."
+    },
+    {
+      "contact_id": "vossi_t2",
+      "display_name": "Yara Vossi",
+      "trust_family": "T2",
+      "home_station": "Berezina Drift",
+      "status": "Active. Wanted by Cartwright-Hale and Sterling family.",
+      "intel_unlocks": ["sterling_insurance_block"],
+      "captain_requirement": "Bring her a scanner part from a derelict, OR resolve a B2 internal dispute.",
+      "reward": "Salvage repair discount, Sterling insurance fraud evidence.",
+      "internal_politics": "Vossis disowned her for selling corridor secrets to competing captains; she runs Breach Yard's no-Trust salvage crew and is not sorry."
+    },
+    {
+      "contact_id": "adebayo_t3",
+      "display_name": "Leila Adebayo",
+      "trust_family": "T3",
+      "home_station": "Orpheum Astrogrowth",
+      "status": "Active. Lindqvist has a surveillance flag on her file.",
+      "intel_unlocks": ["adebayo_aquifer_proof"],
+      "captain_requirement": "Crew bond check + geophysical survey data from a derelict probe.",
+      "reward": "Reservoir coordinates, Lindqvist revision log.",
+      "internal_politics": "Senior Adebayo engineers protected her when the suppression order came down; she is a scientist who will not let falsified data stand."
+    },
+    {
+      "contact_id": "hale_t1",
+      "display_name": "Eleanor Hale",
+      "trust_family": "T1",
+      "home_station": "Kashner Iceworks",
+      "status": "Compromised. Hale family is forcing her to sign the buyout agreement under house arrest.",
+      "intel_unlocks": ["hale_buyout_records", "kessler_vein_alpha_location"],
+      "captain_requirement": "Break her surveillance flag — diplomacy with NAC garrison commander OR hack T1 clearance system.",
+      "reward": "Second vein coordinates, buyout contract copy.",
+      "internal_politics": "Hale family split over her discovery; the senior matriarch wants the buyout to consolidate power, younger operatives want to publish and break Cartwright dominance."
+    },
+    {
+      "contact_id": "reeves_t8",
+      "display_name": "Tomás Reeves",
+      "trust_family": "T8",
+      "home_station": "Prophet's Threshold",
+      "status": "Active. Meridian CEO Voss has marked him for reassignment to a remote outpost.",
+      "intel_unlocks": ["suppressed_history_packet_archive", "meridian_relay_control_keys"],
+      "captain_requirement": "Bring proof of tampered curriculum from a genship schooling record.",
+      "reward": "Suppressed history packets, relay override codes.",
+      "internal_politics": "Reeves preserves history rather than manufactures myths; the suppressed-history archive is his insurance — if Voss fires him, he releases everything."
+    }
+  ]
+}
