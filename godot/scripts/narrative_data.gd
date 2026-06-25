@@ -27,6 +27,7 @@ const RELATIVE_PATHS := {
 	"ledger":      "/../narrative/data/ledger.json",
 	"cartography": "/../narrative/data/cartography.json",
 	"aliens":      "/../narrative/data/aliens.json",
+	"encounter_pool": "/../narrative/data/encounter-pool.json",
 }
 
 # Cache so we don't re-parse every call.
@@ -71,6 +72,9 @@ static func aliens() -> Variant:
 
 static func voice_fragments() -> Variant:
 	return _read_json("voice_fragments", _resolve_dev_path("voice_fragments"))
+
+static func encounter_pool() -> Variant:
+	return _read_json("encounter_pool", _resolve_dev_path("encounter_pool"))
 
 # Returns a list of {id, label, ship_class, fragments_count} per genship.
 static func list_genships() -> Array:
