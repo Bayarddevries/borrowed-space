@@ -22,18 +22,17 @@ Active work, in-progress, queued. Updated at the end of every session.
 
 ## In-progress
 
-- [~] **Phase 3a.1 — Space travel system.** Spec locked at `docs/MAP.md` (cartography, topology, encounters, view). Code on branch `phase/3a.1-travel-system`. Integration test (`test_playable_run_includes_travel`) will land with that code.
 - [~] **Narrative beat content.** Shipped: station encounters (14 beats), empty-space encounters (16 beats), legacy-trace prototype (1 beat). Draft PR #13 waiting for merge. More beats will be needed as Phase 3 modules wire in.
+- [ ] **Phase 3e — CQB runtime + tests.** `cqb_grid.gd` and `test_cqb.gd` shipped on `phase/3e-cqb-grid`. 15/15 GUT tests pass. Issues #15, #19 closed. Remaining open issues: #16 CasualtyPipeline, #17 cqb_ai + aliens.json, #18 Ink beats, #20 visual layer (deferred), #21 ai.gd integration.
 
 ## Queued (Phase 3 sub-deliverables)
 
-Phase 3 is combat module. Spec-first — no code until plans are locked.
-
-- [ ] **3a.2 — Encounter pool system.** Interface spec needed. Depends on travel system (3a.1) for `TransitResult` hook. Beats exist; the pool that *selects* them does not.
-- [ ] **3b. — Combat module.** Cover-test in run + CQB grid + space combat. Plan not locked. COMBAT.md placeholder exists.
-- [ ] **3c. — Mission board module.** Implementation spec not yet written.
-- [ ] **3d. — NPC state-selection.** Implementation spec not yet written.
-- [ ] **3e. — Genship-origin mechanicals.** Implementation spec not yet written.
+- [~] **Phase 3e.1 — cqb_grid.** CqbGrid runtime + 15/15 GUT tests on `phase/3e-cqb-grid`.
+- [~] **Phase 3a.2 — Encounter pool system.** Spec ready. Implementation pending merge of Phase 3e cqb_grid.
+- [ ] **3b. — Combat module.** Cover-test in run + CQB grid + space combat. Plan locked in COMBAT.md.
+- [ ] **3c. — Mission board module.** Implementation spec written; development pending.
+- [ ] **3d. — NPC state-selection.** Spec at `docs/NPC_STATE_SELECTION.md`.
+- [ ] **3f. — Genship-origin mechanicals.** Implementation spec not yet written.
 
 ## Deferred / non-blocking
 
