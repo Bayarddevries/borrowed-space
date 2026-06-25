@@ -1,0 +1,60 @@
+{
+  "_meta": {
+    "title": "CQB Ink Beats",
+    "description": "Cover-test tiers + CQB outcome beats fired from ai.gd during station contact. Phase 3e.",
+    "schema": "manifest-v1",
+    "version": "0.2-draft"
+  },
+  "start": "cqb_cover_pass_clean",
+  "beats": {
+    "cqb_cover_pass_clean": {
+      "speaker": "narrator",
+      "text": "The gate at {station} gave way without a second look. {captain.short_form} kept the invoice-code clean, the papers straight. Nobody asked questions. Your crew exhales at once.",
+      "choices": [
+        { "label": "Push on.", "to": "end_of_run_1", "delta": { "fuel_delta": 1 } }
+      ]
+    },
+    "cqb_cover_pass_rough": {
+      "speaker": "narrator",
+      "text": "The gate at {station} let you through — but the cameras caught every face. {captain.short_form} felt the weight of it in the corridor after. They'll remember this pass.",
+      "choices": [
+        { "label": "Push on.", "to": "end_of_run_1", "delta": { "suspicion_delta": 1 } }
+      ]
+    },
+    "cqb_enter": {
+      "speaker": "narrator",
+      "text": "The gate at {station} doesn't negotiate. A {alien_archetype} steps from the cover with a {weapon_id} in hand. The grid is {grid_size} by {grid_size}. Your crew draws breath and opens fire.",
+      "choices": [
+        { "label": "Enter the fight.", "to": "end_of_run_1" }
+      ]
+    },
+    "cqb_end_won": {
+      "speaker": "narrator",
+      "text": "The last alien falls. Your crew stands breathing in the wreckage of the gate. Nobody walks away clean — but everyone walks away. The bond between them holds.",
+      "choices": [
+        { "label": "Run the debrief.", "to": "end_of_run_1", "delta": { "bond_score": 1 } }
+      ]
+    },
+    "cqb_end_lost": {
+      "speaker": "narrator",
+      "text": "The fight goes the wrong way. An ally cuts the line — pull back, abort, live to run another day. The station stays. The ledger records a loss.",
+      "choices": [
+        { "label": "Debrief and patch the hull.", "to": "end_of_run_1", "delta": { "bond_score": -2, "suspicion_delta": 1 } }
+      ]
+    },
+    "cqb_end_fled": {
+      "speaker": "narrator",
+      "text": "You got out, but you left a trace. The {alien_archetype} will remember your ship. Next time, the gate will be harder. This run ends — but the belt doesn't forget.",
+      "choices": [
+        { "label": "Plot the jump.", "to": "end_of_run_1", "delta": { "bond_score": -1, "suspicion_delta": 1, "fuel_delta": -5 } }
+      ]
+    },
+    "cqb_end_casualty": {
+      "speaker": "narrator",
+      "text": "{tribute_cite}",
+      "choices": [
+        { "label": "Continue the run.", "to": "end_of_run_1", "delta": { "bond_score": -2 } }
+      ]
+    }
+  }
+}

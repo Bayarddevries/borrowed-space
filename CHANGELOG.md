@@ -85,6 +85,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) but adapted for s
 - Bias-check: archetypes are functional/synthetic IDs; no anthropomorphic othering or ethnic-coded tropes. Placeholder names prefixed.
 - Closes #17.
 
+### Phase 3e.3 — Ink beats for cover-test + CQB outcomes shipped (branch phase/3e-ink-beats)
+- `narrative/beats/cqb-ink-beats.json` — 8-beat Schema A manifest (cover-test tiers + CQB outcome variants). Beat IDs: `cqb_cover_pass_clean`, `cqb_cover_pass_rough`, `cqb_enter`, `cqb_end_won`, `cqb_end_lost`, `cqb_end_fled`, `cqb_end_casualty`. Casualty beat carries tribute via `{tribute_cite}` variable per Phase 3e casualty pipeline contract.
+- `godot/test/test_ink_beats_cover_test.gd` — 8 GUT cases: manifest parse + per-beat structure/delta validation.
+- **50/50 GUT tests pass** (236/236 asserts) after this commit.
+- Bias-check: all archetype references match `aliens.json` IDs; no ethnic-coded tropes; casualty tone is solemn and defers tribute wording to the casualty pipeline variable.
+- Closes #18.
+
 ### Phase 2 — gameplay-loop doc alignment (commit pending)
 - docs/TRAITS.md — blessing mechanic clarified: use-once-and-spend (player choice) **plus** AI-can-withdraw on betrayal; b_status enum documented
 - docs/PERSISTENCE.md — v2 schema: 5 act boolean fields (discovered_act_1..5) replacing flat `discovered_acts` array; new `faction_standing` block with 6 genships + 7 Trust corps; documented captain outcome enum (death-combat / death-other / ship-destroyed / arrested / mutiny-deposed / mutiny-abandoned / voluntary-retreat / ledger-closed)
