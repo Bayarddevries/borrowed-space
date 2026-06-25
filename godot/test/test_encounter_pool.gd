@@ -55,8 +55,25 @@ func test_low_fuel_reduces_encounter_chance() -> void:
 	assert_true(low_total < full_total, "low fuel should reduce encounter chance")
 
 func test_weighted_selection_respects_weight() -> void:
+	# Heavy entries (weight >= 2.8) that are eligible on deep_belt:
+	#   enc_distress_hull_breach_02 (3.0), enc_distress_raider_siege_04 (3.2),
+	#   enc_discovery_derelict_vessel_01 (3.0), enc_discovery_anomalous_signal_03 (3.2),
+	#   enc_discovery_water_vein_mapping_06 (3.1)
+	# Light entries (weight <= 1.5) that are eligible on deep_belt:
+	#   enc_crew_skill_gap_training_04 (1.7), enc_crew_resource_tension_05 (1.9)
+	var heavy_ids := [
+		"enc_distress_hull_breach_02",
+		"enc_distress_raider_siege_04",
+		"enc_discovery_derelict_vessel_01",
+		"enc_discovery_anomalous_signal_03",
+		"enc_discovery_water_vein_mapping_06",
+	]
+	var light_ids := [
+		"enc_crew_skill_gap_training_04",
+		"enc_crew_resource_tension_05",
+	]
 	var counts: Dictionary = {}
-	for seed in range(200):
+	for seed in range(400):
 		var r: Variant = _roll_with_seed(_make_ship(), "deep_belt", [], seed)
 		if r != null:
 			var vid: String = str(r.get("variant_id", ""))
@@ -64,28 +81,29 @@ func test_weighted_selection_respects_weight() -> void:
 				counts[vid] = 0
 			counts[vid] += 1
 
-	var heavy_hits: int = counts.get("discovery_01", 0) + counts.get("patrol_02", 0)
-	var light_hits: int = (
-		counts.get("patrol_01", 0) +
-		counts.get("distress_01", 0) +
-		counts.get("crew_01", 0) +
-		counts.get("faction_01", 0)
-	)
+	var heavy_hits: int = 0
+	for hid in heavy_ids:
+		heavy_hits += counts.get(hid, 0)
+	var light_hits: int = 0
+	for lid in light_ids:
+		light_hits += counts.get(lid, 0)
 	assert_true(heavy_hits > 0, "heavier entries should have been selected at least once")
 	# Compare per-entry hit rate: heavier weights should produce at least
-	# as many selections per eligible entry as the 1.0-weight entries.
-	var heavy_per_entry: float = float(heavy_hits) / 2.0
-	var light_per_entry: float = float(light_hits) / 4.0
+	# as many selections per eligible entry as the lighter-weight entries.
+	var heavy_per_entry: float = float(heavy_hits) / float(heavy_ids.size())
+	var light_per_entry: float = float(light_hits) / float(light_ids.size())
 	assert_true(heavy_per_entry >= light_per_entry,
-			"heavier entries should not underperform 1.0-weight entries on a per-entry basis")
+			"heavier entries should not underperform lighter entries on a per-entry basis")
 
 func test_act_gate_filters_by_current_act() -> void:
+	# enc_discovery_water_vein_mapping_06 has act_gate=act_1 and is eligible
+	# on deep_belt + anomaly_hex.
 	var eligible_act1: int = 0
 	for seed in range(300):
 		var r: Variant = _roll_with_seed(_make_ship({"act": "act_1"}), "deep_belt", [], seed)
 		if r != null:
 			var vid: String = str(r.get("variant_id", ""))
-			if vid == "patrol_01":
+			if vid == "enc_discovery_water_vein_mapping_06":
 				eligible_act1 += 1
 	assert_true(eligible_act1 > 0, "act_1 entry should be eligible when act=act_1")
 
@@ -94,7 +112,7 @@ func test_act_gate_filters_by_current_act() -> void:
 		var r: Variant = _roll_with_seed(_make_ship({"act": "act_2"}), "deep_belt", [], seed)
 		if r != null:
 			var vid: String = str(r.get("variant_id", ""))
-			if vid == "patrol_01":
+			if vid == "enc_discovery_water_vein_mapping_06":
 				eligible_act2 += 1
 	assert_true(eligible_act2 == 0,
 			"act_1 entry should NOT be eligible when act=act_2")
