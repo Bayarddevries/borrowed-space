@@ -8,10 +8,10 @@ func test_narrative_data_smoke() -> void:
 	assert_true(NarrativeData.smoke_test(),
 		"NarrativeData.smoke_test() should return true")
 
-func test_list_genships_returns_five() -> void:
+func test_list_genships_returns_six() -> void:
 	var gs: Array = NarrativeData.list_genships()
-	assert_eq(gs.size(), 5,
-		"Five genships expected — NAC, ED, RRA, AC, SAA")
+	assert_eq(gs.size(), 6,
+		"Six genships expected — NAC, ED, RRA, AC, SAA, ME")
 
 func test_each_genship_has_country_fragments() -> void:
 	var gs: Array = NarrativeData.list_genships()

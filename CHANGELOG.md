@@ -57,6 +57,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) but adapted for s
 - narrative/data/stations.json — 10 named stations matching cartography.json faction split exactly. Names: Kashner Iceworks (NAC, corporate), Bentic Penal (ED, derelict), Corvallo Station (RRA, crossroads), SX Halo (AC, corporate), Orpheum Astrogrowth (SAA, corporate), Prophet's Threshold (ME, refuge), Denise Mar (NAC, refuge), Berezina Drift (ED, frontier), Moscow Prospekt (RRA, lawful), Coral (AC, crossroads).
 - narrative/beats/station_arrival_beats.json — 10 Schema A beats, atmosphere-appropriate dialog, 2-3 choices each, deltas use locked vocabulary only (fuel_delta, suspicion_delta, bond_score, crew_xp, discoveries, credit_delta, blessing_variant, legacy_trace_claimed).
 
+### Phase 3f — genship-origin data expansion (commit pending)
+- `narrative/data/captain-origins.json` — expanded from 5 to 6 origins (added ME). Each origin now carries full per-origin mechanical data: `h_tier_default`, `starting_suspicion`, `starting_genship_standing`, `corp_relationships` (7 Trust corps, -5..+5), `tag_pool`, `unique_content` (chain_id/chain_title/act_gate/available_by_default/lock_rule/summary), `narrative_flavor` (ai_tone/cover_test_modifier/reaction_tokens). All values locked per Issue #12 spec table. Chain IDs unique across origins.
+- `godot/test/test_narrative_data.gd` — updated `test_list_genships_returns_five` → `test_list_genships_returns_six` to reflect 6 origins.
+- Bias-check: all `narrative_flavor.ai_tone` strings reference in-fiction entities only (genship IDs, Trust corp IDs, belt terminology). No real-world ethnicity, nationality, or religion named. `reaction_tokens` are structural descriptors (payroll-grade, rotation-cycle, flu-memory, off-the-clock, overlooked-ship, built-with-design) — none encode ethnic or religious shorthand. `cover_test_modifier` values are flat integers with no genship hierarchy implied. ME origin uses "built-with-design" and "spaces-between-walls" tokens per BIAS_GUARDRAILS.md §ME watch list (avoids "crammed"/"overpopulated" tropes). All chain summaries describe mechanical gameplay effects, not cultural stereotypes.
+- Closes #12
+- Phase: 3f
+
 ### Phase 3e — combat design lock (commit pending)
 - **docs/COMBAT.md** upgraded from placeholder to **DESIGN LOCKED**. Full spec at 6×6 default grid (5×5 cramped / 7×7 boss via JSON) + 2 AP per turn + half/full cover (25%/50%) + flanking-waives + aggro-AI pathfind-attack-LOS + casualty pipeline (HP=0 → Ink tribute + ledger write) + fold two-way cost (crews −1 attack / enemies +1 attack when suspicion > 3) + ASCII prototype first.
 - docs/COMBAT_PLAN_LOCK.md — preserved as audit trail of design decisions; superseded by COMBAT.md.

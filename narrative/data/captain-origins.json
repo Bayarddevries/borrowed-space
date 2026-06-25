@@ -1,20 +1,20 @@
 {
   "_meta": {
-    "purpose": "Origin matrix the player picks from at run-start.",
-    "version": "0.2-draft",
-    "note": "Genship labels and heritage labels filled. Mechanical values unchanged. Heritage tags align station dialog with genship-culture texture.",
+    "purpose": "Origin matrix the player picks from at run-start. Expanded with per-origin mechanical data for Issue #12.",
+    "version": "0.3-draft",
+    "note": "Genship labels and heritage labels filled. Mechanical values locked per docs/GENSHIP_ORIGIN.md §Origin details + Issue #12 spec table. Heritage tags align station dialog with genship-culture texture. All narrative_flavor strings pass BIAS_GUARDRAILS.md — no real-world ethnicity/nationality/religion references.",
     "schema": {
       "genship_id": "string — genship ID",
       "genship_label": "string — display label",
       "first_ship_class": "string — TIER-1/TIER-COAL",
-      "country_fragments": "array[country_fragment]",
-      "country_fragment": {
-        "id": "string — fragment ID",
-        "label": "string — display label",
-        "h_tier_default": "int",
-        "starting_suspicion": "int",
-        "tag_pool": "string[]"
-      }
+      "h_tier_default": "int — starting He-3 literacy (1-4)",
+      "starting_suspicion": "int — initial suspicion in home faction",
+      "starting_genship_standing": "int — standing with own genship faction",
+      "corp_relationships": "object — default standing with 7 Trust corps (trust_T1..trust_T7)",
+      "tag_pool": "string[] — origin-level trait tag pool (fragments draw from this)",
+      "unique_content": "object — unique encounter chain for this origin",
+      "narrative_flavor": "object — AI dialog tone, cover-test modifier, reaction tokens",
+      "country_fragments": "array[country_fragment]"
     }
   },
   "origins": [
@@ -22,6 +22,32 @@
       "genship_id": "NAC",
       "genship_label": "Declaration",
       "first_ship_class": "TIER-1",
+      "h_tier_default": 2,
+      "starting_suspicion": 1,
+      "starting_genship_standing": 3,
+      "corp_relationships": {
+        "trust_T1": 0,
+        "trust_T2": 0,
+        "trust_T3": 0,
+        "trust_T4": 0,
+        "trust_T5": 2,
+        "trust_T6": 0,
+        "trust_T7": -1
+      },
+      "tag_pool": ["t-P-D", "t-P-K", "t-P-L"],
+      "unique_content": {
+        "chain_id": "the_payroll_papers",
+        "chain_title": "The Payroll Papers",
+        "act_gate": "act_1",
+        "available_by_default": true,
+        "lock_rule": null,
+        "summary": "An encounter chain where the captain discovers NA conscript mortality data filed by T5. Publishing it causes massive suspicion but unlocks Act 1 faster. Only available to NAC captains with H-tier >=2."
+      },
+      "narrative_flavor": {
+        "ai_tone": "The AI notes that NAC conscripts are tracked by T5 insurance systems. NPCs address the captain as payroll-grade.",
+        "cover_test_modifier": 1,
+        "reaction_tokens": ["payroll-grade", "tracked-file", "T5-known"]
+      },
       "country_fragments": [
         {
           "id": "NAC-charter",
@@ -43,6 +69,32 @@
       "genship_id": "ED",
       "genship_label": "Covenant",
       "first_ship_class": "TIER-1",
+      "h_tier_default": 2,
+      "starting_suspicion": 1,
+      "starting_genship_standing": 3,
+      "corp_relationships": {
+        "trust_T1": 0,
+        "trust_T2": -1,
+        "trust_T3": 1,
+        "trust_T4": 2,
+        "trust_T5": 0,
+        "trust_T6": 0,
+        "trust_T7": 0
+      },
+      "tag_pool": ["t-P-E", "t-P-J", "t-P-K"],
+      "unique_content": {
+        "chain_id": "the_rotation_file",
+        "chain_title": "The Rotation File",
+        "act_gate": "act_1",
+        "available_by_default": true,
+        "lock_rule": null,
+        "summary": "An encounter chain where the captain discovers which ED citizens were rotated through Trust-held positions. The data reveals a pattern of deliberate exposure to high-risk zones. Can be leveraged as blackmail material against T4."
+      },
+      "narrative_flavor": {
+        "ai_tone": "The AI notes that ED citizens are rotated through duty cycles, so their trust network is broad but shallow. NPCs reference procedure.",
+        "cover_test_modifier": 0,
+        "reaction_tokens": ["rotation-cycle", "procedure-bound", "broad-shallow"]
+      },
       "country_fragments": [
         {
           "id": "ED-urban",
@@ -64,6 +116,32 @@
       "genship_id": "RRA",
       "genship_label": "Sever",
       "first_ship_class": "TIER-1",
+      "h_tier_default": 2,
+      "starting_suspicion": 1,
+      "starting_genship_standing": 3,
+      "corp_relationships": {
+        "trust_T1": 0,
+        "trust_T2": 0,
+        "trust_T3": 0,
+        "trust_T4": 0,
+        "trust_T5": 0,
+        "trust_T6": -1,
+        "trust_T7": -1
+      },
+      "tag_pool": ["t-P-C", "t-P-K", "t-P-H"],
+      "unique_content": {
+        "chain_id": "the_flu_archive",
+        "chain_title": "The Flu Archive",
+        "act_gate": "act_2",
+        "available_by_default": true,
+        "lock_rule": null,
+        "summary": "An encounter chain where the captain finds genetic-experimentation records held by diaspora communities. The records reveal what T4 did. Exposing the records causes T4 standing to drop to hostile and triggers unique Act 2 content."
+      },
+      "narrative_flavor": {
+        "ai_tone": "The AI notes that RRA conscripts carry the flu in their collective memory. NPCs react with visible class tension.",
+        "cover_test_modifier": 0,
+        "reaction_tokens": ["flu-memory", "class-tension", "barracks-order"]
+      },
       "country_fragments": [
         {
           "id": "RRA-energo",
@@ -85,6 +163,32 @@
       "genship_id": "AC",
       "genship_label": "Pillar",
       "first_ship_class": "TIER-1",
+      "h_tier_default": 2,
+      "starting_suspicion": 0,
+      "starting_genship_standing": 3,
+      "corp_relationships": {
+        "trust_T1": 0,
+        "trust_T2": 0,
+        "trust_T3": 1,
+        "trust_T4": 0,
+        "trust_T5": 0,
+        "trust_T6": 1,
+        "trust_T7": -1
+      },
+      "tag_pool": ["t-P-A", "t-P-D", "t-P-F"],
+      "unique_content": {
+        "chain_id": "the_freight_manifest",
+        "chain_title": "The Freight Manifest",
+        "act_gate": "act_1",
+        "available_by_default": true,
+        "lock_rule": null,
+        "summary": "An encounter chain where the captain discovers that T2 shipping routes are used to transport more than He-3 — they move personnel and intelligence under cargo manifests. The captain can intercept, redirect, or expose these transports. Interfering with T2 routes is a primary path to Act 1 unlock."
+      },
+      "narrative_flavor": {
+        "ai_tone": "The AI notes that AC conscripts are hours documented as 1x, reality 2x. NPCs reference union contracts.",
+        "cover_test_modifier": 0,
+        "reaction_tokens": ["off-the-clock", "union-documented", "double-hours"]
+      },
       "country_fragments": [
         {
           "id": "AC-coastal",
@@ -106,6 +210,32 @@
       "genship_id": "SAA",
       "genship_label": "Seeding",
       "first_ship_class": "TIER-COAL",
+      "h_tier_default": 1,
+      "starting_suspicion": 2,
+      "starting_genship_standing": 3,
+      "corp_relationships": {
+        "trust_T1": 1,
+        "trust_T2": 0,
+        "trust_T3": 0,
+        "trust_T4": 0,
+        "trust_T5": 0,
+        "trust_T6": 0,
+        "trust_T7": 0
+      },
+      "tag_pool": ["t-P-A", "t-P-C", "t-P-I"],
+      "unique_content": {
+        "chain_id": "the_overlooked_network",
+        "chain_title": "The Overlooked Network",
+        "act_gate": "act_1",
+        "available_by_default": true,
+        "lock_rule": null,
+        "summary": "An encounter chain unique to SAA captains. Because the Coalition is half-size and overlooked, SAA stations have become informal intelligence hubs. The captain discovers a network of Coalition smugglers, informants, and mediators who operate between factions. This network provides early access to dismantling opportunities without standing requirements. However, relying on it increases the chance of betrayal."
+      },
+      "narrative_flavor": {
+        "ai_tone": "The AI notes that SAA is the best-positioned to smuggle and the Trustee's captain pool often draws from here. NPCs underestimate the captain.",
+        "cover_test_modifier": -1,
+        "reaction_tokens": ["overlooked-ship", "half-size", "smuggler-pool"]
+      },
       "country_fragments": [
         {
           "id": "SAA-coalition",
@@ -120,6 +250,53 @@
           "h_tier_default": 1,
           "starting_suspicion": 3,
           "tag_pool": ["t-P-H-refugee", "t-P-I", "t-P-G"]
+        }
+      ]
+    },
+    {
+      "genship_id": "ME",
+      "genship_label": "Threshold",
+      "first_ship_class": "TIER-1",
+      "h_tier_default": 2,
+      "starting_suspicion": 0,
+      "starting_genship_standing": 3,
+      "corp_relationships": {
+        "trust_T1": -1,
+        "trust_T2": 0,
+        "trust_T3": 0,
+        "trust_T4": 0,
+        "trust_T5": 0,
+        "trust_T6": 1,
+        "trust_T7": 1
+      },
+      "tag_pool": ["t-P-B", "t-P-E", "t-P-G"],
+      "unique_content": {
+        "chain_id": "the_station_architects",
+        "chain_title": "The Station Architects",
+        "act_gate": "act_1",
+        "available_by_default": true,
+        "lock_rule": null,
+        "summary": "An encounter chain where the captain learns that ME engineers designed several belt stations. These engineers embedded hidden spaces, shortcuts, and structural weaknesses into the stations — intentional design choices that can be exploited. ME captains gain unique access to station areas that other captains cannot reach."
+      },
+      "narrative_flavor": {
+        "ai_tone": "The AI notes that ME stations are built with design, not crammed by necessity. NPCs react to the captain's architectural knowledge.",
+        "cover_test_modifier": -1,
+        "reaction_tokens": ["built-with-design", "spaces-between-walls", "station-kin"]
+      },
+      "country_fragments": [
+        {
+          "id": "ME-urban",
+          "label": "Cairo Density Spire",
+          "h_tier_default": 2,
+          "starting_suspicion": 0,
+          "tag_pool": ["t-P-H-urban", "t-P-B", "t-P-E"]
+        },
+        {
+          "id": "ME-rural",
+          "label": "Sanaa Engineering Block",
+          "h_tier_default": 3,
+          "starting_suspicion": 1,
+          "tag_pool": ["t-P-H-rural", "t-P-G", "t-P-F"]
         }
       ]
     }
