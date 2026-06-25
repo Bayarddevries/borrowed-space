@@ -32,9 +32,9 @@ const _STATIONS_FIXTURE := [
 ]
 
 func before_each() -> void:
-	Travel.clear_encounters()
-	# Re-register defaults so prior tests don't leak.
-	Travel.register_encounter("station_hex", "station_arrival_default_1")
+	Travel.clear_registry()
+	# Do NOT re-register a default; tests that need a specific beat
+	# should register the beat they expect themselves.
 
 # ───── CARTOGRAPHY.md §8 ─────
 

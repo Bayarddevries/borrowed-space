@@ -118,12 +118,14 @@ Returns the 3 NPCs selected for this run, each shaped:
 
 - Godot 4.6 strict variant typing on every typed var — no :=
   inference on custom class references
-- Memory_log entries are Array[Dictionary], not a flat string
+- Memory-log entries are Array[Dictionary], not a flat string
   — schema: {run_number, impact, summary, caused_by}
 - The Trustee chain is enum-like but stored as plain String in
   save files — match Persist schema, don't invent enum objects
 - Narrative data path: use NarrativeData.npc_archetypes() which you
   may need to add (one static func, 3 lines)
+  NOTE: content agent is simultaneously drafting `npc-archetypes.json`;
+  coordinate that the loader and JSON schema agree on field names
 - Persist.patch merges by key; do NOT overwrite the npc_state block
   wholesale or you will lose cross-run data
 

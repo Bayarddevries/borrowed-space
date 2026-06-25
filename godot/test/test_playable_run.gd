@@ -71,15 +71,14 @@ func test_run_count_increments() -> void:
 		"Two runs should yield ended_count == 2.")
 
 func test_trait_pool_lock_uses_origin_tag_pool() -> void:
-	# The SAA-coalition fragment has tag_pool ["t-P-A", "t-P-C", "t-P-K"] —
-	# these are the only legal trait IDs for this run.
+	# The SAA-coalition fragment has tag_pool ["t-P-H-coalition", "t-P-A", "t-P-C"].
 	var ai: Node = AI_SCRIPT.new()
 	add_child(ai)
 	var result: Dictionary = ai.full_run("SAA", "SAA-coalition", "B", "Test-Captain-Trait")
 	var captain = result.get("captain", {})
 	var traits: Array = captain.get("t_slots", [])
 	for t in traits:
-		assert_true(["t-P-A", "t-P-C", "t-P-K"].has(t),
+		assert_true(["t-P-H-coalition", "t-P-A", "t-P-C"].has(t),
 			"Each trait should come from the SAA-coalition tag_pool; got %s" % str(t))
 	assert_eq(traits.size(), 3,
 		"Three traits should be drawn.")

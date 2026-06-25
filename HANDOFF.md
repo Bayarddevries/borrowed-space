@@ -58,10 +58,10 @@ Headline achievement: 23/23 GUT tests pass; Phase 3e plan locked + 7 issues open
 
 | Spotify Entry                  | Issue/PR                        | Status                                     |
 |--------------------------------|----------------------------------|---------------------------------------------|
-| Mission board                  | #9                               | Awaiting implementation                     |
-| Phase 3f — CQB visual layer    | #20                              | Deferred                                    |
-| Phase 3d — EncounterPool impl  | phase/3d-encounter-pool          | encounter_pool.gd + travel.gd wired + 6-entry JSON, 56/56 GUT pass (244/244 asserts) |
-| NPC state-selection            | #11                              | Awaiting implementation                     |
+| Mission board                  | #9                               | Parse clean; awaiting Persist wiring decision |
+| Phase 3f — CQB visual layer    | #20                              | Deferred                                   |
+| Phase 3d — EncounterPool impl  | phase/3d-encounter-pool          | Merged to main (`cc19be2`), 56/56 pass    |
+| NPC state-selection            | phase/3d-npc-state-selection     | 1fadf25, 8/8 pass, merged to main         |
 
 ---
 

@@ -100,7 +100,7 @@ func step_5_6_overworld_and_station() -> Dictionary:
 	var stations: Array = Cartography.load_stations()
 	# Real transit: from (0,0) to STATION_10 at (1,-1).
 	var transit_result := Travel.transit(ship, 1, -1, stations)
-	Travel.clear_encounters()
+	Travel.clear_registry()
 	if transit_result.get("ok", false):
 		persist_ship_snapshot(transit_result)
 	return station
