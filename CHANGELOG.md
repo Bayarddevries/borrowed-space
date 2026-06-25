@@ -57,6 +57,17 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) but adapted for s
 - narrative/data/stations.json — 10 named stations matching cartography.json faction split exactly. Names: Kashner Iceworks (NAC, corporate), Bentic Penal (ED, derelict), Corvallo Station (RRA, crossroads), SX Halo (AC, corporate), Orpheum Astrogrowth (SAA, corporate), Prophet's Threshold (ME, refuge), Denise Mar (NAC, refuge), Berezina Drift (ED, frontier), Moscow Prospekt (RRA, lawful), Coral (AC, crossroads).
 - narrative/beats/station_arrival_beats.json — 10 Schema A beats, atmosphere-appropriate dialog, 2-3 choices each, deltas use locked vocabulary only (fuel_delta, suspicion_delta, bond_score, crew_xp, discoveries, credit_delta, blessing_variant, legacy_trace_claimed).
 
+### Phase 3e — combat design lock (commit pending)
+- **docs/COMBAT.md** upgraded from placeholder to **DESIGN LOCKED**. Full spec at 6×6 default grid (5×5 cramped / 7×7 boss via JSON) + 2 AP per turn + half/full cover (25%/50%) + flanking-waives + aggro-AI pathfind-attack-LOS + casualty pipeline (HP=0 → Ink tribute + ledger write) + fold two-way cost (crews −1 attack / enemies +1 attack when suspicion > 3) + ASCII prototype first.
+- docs/COMBAT_PLAN_LOCK.md — preserved as audit trail of design decisions; superseded by COMBAT.md.
+- HANDOFF.md — Phase 3e tracked in In-progress; Prior "Phase 3: Combat module not locked" line replaced; Pitfalls section re-read.
+- 7 GitHub issues opened: #15 CqbGrid runtime, #16 CasualtyPipeline (ledger + Ink tribute), #17 cqb_ai + aliens.json, #18 Ink pass-through + cqb-end beats, #19 test_cqb.gd suite (8-10 cases), #20 visual layer (deferred, blocked on Phase 3f DirectionPage), #21 ai.gd integration wiring.
+- Issue #11 re-labeled (was mis-labeled "Phase 3e"; now NPC state-selection under phase-3/npc labels).
+- New labels created: phase-3e, phase-3f, combat, narrative, npc, test, art.
+- Per session clarifications (D1 6×6 variable-size, D4 single-aggro-fn v0, D5 Ink tribute v0 must-have, D7 two-way fold, D8 ASCII-first).
+- 23/23 GUT tests still pass (no code touched this session; design-only commit).
+- Per docs/AGENTS.md bias-check rule: combat design preserves crew-bond ledger writes and trusts no trope-field shortcuts; SomaGenesis T4 cross-cite preserved in CASUALTY tribute cite generation.
+
 ### Phase 2 — gameplay-loop doc alignment (commit pending)
 - docs/TRAITS.md — blessing mechanic clarified: use-once-and-spend (player choice) **plus** AI-can-withdraw on betrayal; b_status enum documented
 - docs/PERSISTENCE.md — v2 schema: 5 act boolean fields (discovered_act_1..5) replacing flat `discovered_acts` array; new `faction_standing` block with 6 genships + 7 Trust corps; documented captain outcome enum (death-combat / death-other / ship-destroyed / arrested / mutiny-deposed / mutiny-abandoned / voluntary-retreat / ledger-closed)

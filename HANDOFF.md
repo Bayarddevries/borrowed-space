@@ -23,11 +23,14 @@ Current state. Verified-working features. Known issues. Updated at the end of ev
 
 ## Project state
 
-- **Phase:** Phase 3a.1 travel-system merged to main. Phase 3a.2 stations merged. Phase 3 sub-phases 3a–3f still open; Phase 3d (EncounterPool) is next.
-- **Last commit:** `1884277 merge(phase-3a.1)` on main.
-- **Repo:** https://github.com/Bayarddevries/borrowed-space (private)
-- **Working tree:** clean
-- **Headline achievement:** Phase 2 ships one playable run; Phase 3a.1 travel-system shipped on main (23/23 GUT tests pass); Phase 3a.2 stations content (10 named stations + arrival beats) merged; MAP.md design locked; 5 sub-phases of Phase 3 broken out; EncounterPool stub seam in place for Phase 3d.
+## Phase
+
+**Phase 3e (combat) plan locked.** 6×6 default grid, 2 AP/turn, half/full cover (25%/50%), flanked-waives. Single aggro AI, JSON-driven stats. Casualty pipeline: HP=0 → Ink tribute + ledger entry. Fold mechanic two-way cost (crews −1 attack, enemies +1 attack). Ship ASCII prototype first. Specs at `docs/COMBAT.md`. Issues #15–19, #21 opened. #20 (visual layer) deferred to Phase 3f.
+
+Last commit: `529463b docs(handoff): post-merge update for Phase 3a.1 + 3a.2`
+Repo: https://github.com/Bayarddevries/borrowed-space (private)
+Working tree: clean
+Headline achievement: 23/23 GUT tests pass; Phase 3e plan locked + 7 issues opened; Phase 3a combat scaffolding parallel-tracked with Phase 3d-3f via separate sub-agents.
 
 ## Verified-working
 
@@ -53,14 +56,13 @@ Current state. Verified-working features. Known issues. Updated at the end of ev
 
 ## In-progress
 
-- 🔵 **Phase 3a.0 content batch merged** (`8f4cc55`): `empty-space-manifest.json` (16 beats × 4 categories) + `legacy-trace-prototype.json` (1 beat with `data_spec` contract for `legacy_trace_system.gd`). Travel system session picks up these beats via `TransitResult.encounter_kind` routing. **Now wired into Travel via Phase 3d work.**
-- 🔵 **Phase 3a.1 + 3a.2 MERGED** (`1884277`) — travel-system code + station content on main. **Next: Phase 3d** replaces the static-encounter-registry stub in `travel.gd` with a real `EncounterPool` that reads `BEATS_FOR_HEX_KIND` from the station-arrival beats + empty-space manifest, then routes via the existing schema vocabulary.
-- 🔵 **Phase 3c–3f tracking issues open**: #9 mission board, #10 encounter pool, #11 NPC state-selection, #12 genship-origin wiring. Specs locked; awaiting implementation sessions.
-- 🔵 **Cross-agent doc handoff complete** (5 gameplay-loop docs from other agent now in `docs/`). Per-clarification decisions: 6 genships (add ME), 5 act booleans + keep float, use-once-and-spend OR AI-withdraw blessing, 13-station cartography (every faction), AI-paced Trustee missions, tone-only bias-watch for 7 Trust corps.
-
-## In-progress
-
-- 🔵 Phase 3: Combat module. Plan not locked yet. Ship grid (8×8?) + CQB (5×5?) + fold mechanic + ledger writes from combat. **Plan-first session pending.**
+- 🔵 **Phase 3d** — `EncounterPool.roll(ship, arrival_kind)`. Reads `empty-space-manifest.json` + `station_arrival_beats.json` to replace the static stub in `travel.gd`. Issue #10. Awaiting implementation session.
+- 🔵 **Phase 3a + 3b + 3c parallel work:**
+  - **#9 (Phase 3c)** mission board.
+  - **#11 (was mislabeled Phase 3e)** NPC state-selection rules — spec at `docs/NPC_STATE_SELECTION.md`.
+  - **#12 (Phase 3f)** genship-origin wiring.
+- 🔵 **Phase 3e (combat)** — design locked in `docs/COMBAT.md`. 7 issues open: #15 CqbGrid runtime, #16 CasualtyPipeline, #17 cqb_ai + aliens.json, #18 Ink beats, #19 test_cqb.gd, #20 visual layer (deferred), #21 ai.gd integration. Awaiting implementation sessions.
+- 🔵 **Cross-agent doc handoff** complete (5 gameplay-loop docs from other agent now in `docs/`). Per-clarification decisions: 6 genships (add ME), 5 act booleans + keep float, use-once-and-spend OR AI-withdraw blessing, 13-station cartography (every faction), AI-paced Trustee missions, tone-only bias-watch for 7 Trust corps.
 
 ---
 
