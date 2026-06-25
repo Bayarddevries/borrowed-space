@@ -69,6 +69,9 @@ static func ledger_template() -> Variant:
 static func aliens() -> Variant:
 	return _read_json("aliens", _resolve_dev_path("aliens"))
 
+static func voice_fragments() -> Variant:
+	return _read_json("voice_fragments", _resolve_dev_path("voice_fragments"))
+
 # Returns a list of {id, label, ship_class, fragments_count} per genship.
 static func list_genships() -> Array:
 	var data = origins()
