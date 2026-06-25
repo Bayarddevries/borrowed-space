@@ -1,0 +1,57 @@
+{
+  "_meta": {
+    "purpose": "Healthcare/pharma belt faction — the Last Mile Dispensary — as a counter to Trust radiation-treatment monopoly.",
+    "version": "0.1-draft",
+    "note": "Radiation exposure from T7 fuel operations and T6 hull-decay is universal for space workers. Trust-approved treatment is the only licensed option. Last Mile produces generic alternatives and couriers suppressed medical data.",
+    "schema": {
+      "faction_id": "string — short code",
+      "display_name": "string — operational name",
+      "home_station": "string — station id or named place",
+      "cover": "string — official registration",
+      "actual_function": "string — real operation",
+      "leadership": "array[{name, role, background}]",
+      "internal_politics": "string — faction split",
+      "captain_services": "array[string] — concrete captain-facing benefits",
+      "captain_risks": "array[string] — failure or low-bond consequences",
+      "exposed_entry_ties": "array[string] — keys matching trust_families.json exposed_entries",
+      "monopoly_angle": "string — one sentence on how this represents systemic control"
+    }
+  },
+  "last_mile_dispensary": {
+    "faction_id": "dispensary_last_mile",
+    "display_name": "Last Mile Dispensary",
+    "home_station": "STATION_07",
+    "cover": "Prescribed environmental-exposure treatment clinic. Registered under T3 habitat health allocation.",
+    "actual_function": "Generic radiation-treatment synthesis, antibiotic/insulin batch production, and medical-data courier operation for leakers inside T4 and T5.",
+    "leadership": [
+      {
+        "name": "Dr. Nassor Vey",
+        "role": "Medical director",
+        "background": "Former T4 clinical researcher, disavowed after refusing to hand over patient genetic data to Caldera."
+      },
+      {
+        "name": "Mischa Koren",
+        "role": "Logistics engineer",
+        "background": "Runs belt distribution and keeps the dispensary physically mobile to avoid T3/T5 audits."
+      }
+    ],
+    "internal_politics": "Vey wants to publish full case-file data and break T4's clinical monopoly. Koren wants to keep dispensing and avoid Trust retaliation. The crew splits along that line every time a big shipment comes in.",
+    "captain_services": [
+      "Buy generic equivalents of restricted Trust radiation treatment at below-market rates",
+      "Carry medical-data payloads for leakers inside T4 and T5",
+      "High bond unlocks T4 case-file access without going through T4",
+      "Crew radiation-exposure recovery time reduced by one rest cycle"
+    ],
+    "captain_risks": [
+      "Low bond or active T4 suspicion triggers a station search",
+      "Search can temporarily lockdown the dispensary and strand the captain",
+      "T5 commercial-court classification of 'patent violation' can trigger a bounty on captain's medical supplies"
+    ],
+    "exposed_entry_ties": [
+      "caldera_marker_case_files",
+      "raines_clinic_logs",
+      "trust_commercial_jurisdiction_framework"
+    ],
+    "monopoly_angle": "Radiation exposure from T7 fuel enrichment and T6 hull-decay is universal for space workers. Trust-approved treatment is the only licensed option; without it, workers cannot continue in space-rated jobs. Last Mile breaks that dependency by producing generic alternatives."
+  }
+}
