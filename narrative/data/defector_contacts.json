@@ -70,6 +70,50 @@
       "captain_requirement": "Bring proof of tampered curriculum from a genship schooling record.",
       "reward": "Suppressed history packets, relay override codes.",
       "internal_politics": "Reeves preserves history rather than manufactures myths; the suppressed-history archive is his insurance — if Voss fires him, he releases everything."
+    },
+    {
+      "contact_id": "raines_t4",
+      "display_name": "Dr. Elara Raines",
+      "trust_family": "T4",
+      "home_station": "Meridian Relay Clinic",
+      "status": "Active but flagged. T4 compliance office has her under periodic review.",
+      "intel_unlocks": ["raines_clinic_logs", "caldera_marker_case_files"],
+      "captain_requirement": "Deliver a patient-data wipe from a T4 outer clinic, OR successfully cover-test against T4 with high crew bond.",
+      "reward": "Full marker case-file archive, plus T4 whistleblower credentials that lower T4 suspicion in subsequent encounters.",
+      "internal_politics": "Raines clinicians are already leaking through an informal chain; she wants to go public while younger clinicians want to stay inside and steer the program from below."
+    },
+    {
+      "contact_id": "gray_t5",
+      "display_name": "Iris Gray",
+      "trust_family": "T5",
+      "home_station": "Gray Settlement Archive",
+      "status": "Compromised in theory, active in practice. Gray family publicly claimed she died in a shuttle accident three years ago.",
+      "intel_unlocks": ["gray_death_cert_forgery_ledger", "trust_commercial_jurisdiction_framework"],
+      "captain_requirement": "Extract her during a scheduled T5 audit cycle, OR deliver a falsified Gray insurance document that clears her temporarily.",
+      "reward": "Death-certificate forgery templates, legal framework document proving Trust commercial law has no standing over defector crews.",
+      "internal_politics": "Gray archivists protect her because the ledgers implicate half the Gray adjudication wing; the Kessler branch wants her dead because the jurisdiction opinion threatens court revenue."
+    },
+    {
+      "contact_id": "kowalski_t6",
+      "display_name": "Rafal Kowalski",
+      "trust_family": "T6",
+      "home_station": "Moscow Prospekt Hull Annex",
+      "status": "Open secret. Forge and Frame terminated him after he refused to sign the fatigue-test cover-up; his clearance has not yet been revoked.",
+      "intel_unlocks": ["kowalski_refit_billing_chain", "orison_fatigue_test_record"],
+      "captain_requirement": "Smuggle him off-station before clearance revocation, OR deliver the Orison fatigue plates from mars_sites.json to him for forensic confirmation.",
+      "reward": "Hull-maintenance codes valid across T6-rated stations, refit-billing ledger that can trigger a fleet inspection.",
+      "internal_politics": "Old guard want to publish the fatigue data and break the billing cycle; new guard want to keep collecting refit fees because margins are too good. Rafal is trying to swing the old guard before his access is cut."
+    },
+    {
+      "contact_id": "cheng_t7",
+      "display_name": "Keiko Cheng",
+      "trust_family": "T7",
+      "home_station": "Helion Enrichment Wing",
+      "status": "Hidden. Chengs list her as deceased in an off-station transport accident; she actually runs a maintenance crew in the enrichment cascade.",
+      "intel_unlocks": ["cheng_catalyst_study", "okafor_leakage_log"],
+      "captain_requirement": "Pass a T7 radiation-clearance check to access the cascade, OR bring proof of Okafor leakage to a Chengs family meeting to force a split.",
+      "reward": "Catalyst synthesis parameters (genship fuel yield +30%), Okafor leakage manifest exposing Trust-linked captains.",
+      "internal_politics": "Chengs are split between catalyst hoarders and Okafor distribution running side experiments. Keiko wants the catalyst public so nobody can leverage it again."
     }
   ]
 }
