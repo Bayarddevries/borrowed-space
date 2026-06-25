@@ -61,7 +61,7 @@ Headline achievement: 23/23 GUT tests pass; Phase 3e plan locked + 7 issues open
   - **#9 (Phase 3c)** mission board.
   - **#11 (was mislabeled Phase 3e)** NPC state-selection rules — spec at `docs/NPC_STATE_SELECTION.md`.
   - **#12 (Phase 3f)** genship-origin wiring.
-- 🔵 **Phase 3e (combat)** — design locked in `docs/COMBAT.md`. 7 issues open: #15 CqbGrid runtime, #16 CasualtyPipeline, #17 cqb_ai + aliens.json, #18 Ink beats, #19 test_cqb.gd, #20 visual layer (deferred), #21 ai.gd integration. Awaiting implementation sessions.
+- 🔵 **Phase 3e (combat)** — design locked in `docs/COMBAT.md`. **Phase 3e.1 cqb_grid.gd + test_cqb.gd shipped** on branch `phase/3e-cqb-grid` (15/15 cqb tests pass; 38/38 total prior+new). Issues: #15 CqbGrid runtime (implemented), #16 CasualtyPipeline, #17 cqb_ai + aliens.json, #18 Ink beats, #19 test_cqb.gd (implemented), #20 visual layer (deferred), #21 ai.gd integration. Awaiting implementation sessions.
 - 🔵 **Cross-agent doc handoff** complete (5 gameplay-loop docs from other agent now in `docs/`). Per-clarification decisions: 6 genships (add ME), 5 act booleans + keep float, use-once-and-spend OR AI-withdraw blessing, 13-station cartography (every faction), AI-paced Trustee missions, tone-only bias-watch for 7 Trust corps.
 
 ---
