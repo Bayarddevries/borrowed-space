@@ -68,6 +68,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) but adapted for s
 - 23/23 GUT tests still pass (no code touched this session; design-only commit).
 - Per docs/AGENTS.md bias-check rule: combat design preserves crew-bond ledger writes and trusts no trope-field shortcuts; SomaGenesis T4 cross-cite preserved in CASUALTY tribute cite generation.
 
+### Phase 3e.1 — cqb_grid.gd + test_cqb.gd shipped (branch phase/3e-cqb-grid)
+- `godot/scripts/cqb_grid.gd` — Phase 3e CQB runtime. 6×6 default grid; 2 AP/turn; half/full cover; LOS check; attack with cover/fold/height modifiers; step_toward; flanked detection; ASCII prototype (`cqb_debug_print`). `class_name CqbGrid` registered.
+- `godot/test/test_cqb.gd` — 15 GUT cases: grid init, cover types, actor placement, LOS, cover damage reduction, flanking, step_toward, suspicion fold two-way, mortality, ASCII render.
+- **15/15 GUT tests pass** (29/29 asserts). 0.884s.
+- Bug fixes during landing: `class_name` registration (was missing, causing "Identifier not found" in tests), Godot 4.6 variant-inferred warnings treated as errors (explicit types on all typed vars in `test_cqb.gd` + `cqb_grid.gd`), test placement distances adjusted (claw range 1 required actor proximity), fold test distance adjusted for same reason.
+- Per bias-check: no new proxemic or anthropomorphic othering in alien stats; vanilla human-vs-alien tactical grid only.
+- Closes #15, #19.
+
 ### Phase 2 — gameplay-loop doc alignment (commit pending)
 - docs/TRAITS.md — blessing mechanic clarified: use-once-and-spend (player choice) **plus** AI-can-withdraw on betrayal; b_status enum documented
 - docs/PERSISTENCE.md — v2 schema: 5 act boolean fields (discovered_act_1..5) replacing flat `discovered_acts` array; new `faction_standing` block with 6 genships + 7 Trust corps; documented captain outcome enum (death-combat / death-other / ship-destroyed / arrested / mutiny-deposed / mutiny-abandoned / voluntary-retreat / ledger-closed)
