@@ -1,0 +1,28 @@
+{
+  "archetypes": [
+    {
+      "id": "rust_runner",
+      "display_name": "Rust Runner [Placeholder]",
+      "hp_max": 5,
+      "weapon_id": "claw"
+    },
+    {
+      "id": "forge_wright",
+      "display_name": "Forge Wright [Placeholder]",
+      "hp_max": 9,
+      "weapon_id": "industrial_cutter"
+    },
+    {
+      "id": "gaze_striker",
+      "display_name": "Gaze Striker [Placeholder]",
+      "hp_max": 5,
+      "weapon_id": "toxic_needle"
+    },
+    {
+      "id": "sentry_drone",
+      "display_name": "Sentry Drone [Placeholder]",
+      "hp_max": 6,
+      "weapon_id": "drone_blaster"
+    }
+  ]
+}

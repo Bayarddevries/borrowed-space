@@ -76,6 +76,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) but adapted for s
 - Per bias-check: no new proxemic or anthropomorphic othering in alien stats; vanilla human-vs-alien tactical grid only.
 - Closes #15, #19.
 
+### Phase 3e.2 — cqb_ai.gd + aliens.json shipped (branch phase/3e-cqb-ai)
+- `godot/scripts/cqb_ai.gd` — `class_name CqbAI`. Static `decide_action(enemy_id, grid, fold_mod=0)` returns `CqbAction` dict (`kind`/`actor`/`target_id`/`step_to`). v0 behavior: pick nearest crew; attack if in-range + LOS + AP; else close distance; else wait. No fold-branching yet.
+- `narrative/data/aliens.json` — 4 archetypes: Rust Runner (claw), Forge Wright (industrial_cutter), Gaze Striker (toxic_needle), Sentry Drone (drone_blaster). All weapon_ids validated against `CqbGrid.WEAPON_TABLE`.
+- `godot/scripts/narrative_data.gd` — added `aliens()` static loader (resolves from `narrative/data/`).
+- `godot/test/test_cqb_ai.gd` — 4 GUT cases: attack-in-range, move-out-of-range, wait-no-ap, aliens.json load+validate.
+- **4/4 cqb_ai tests pass** (33 asserts). Full suite: 42/42 tests pass (162/162 asserts).
+- Bias-check: archetypes are functional/synthetic IDs; no anthropomorphic othering or ethnic-coded tropes. Placeholder names prefixed.
+- Closes #17.
+
 ### Phase 2 — gameplay-loop doc alignment (commit pending)
 - docs/TRAITS.md — blessing mechanic clarified: use-once-and-spend (player choice) **plus** AI-can-withdraw on betrayal; b_status enum documented
 - docs/PERSISTENCE.md — v2 schema: 5 act boolean fields (discovered_act_1..5) replacing flat `discovered_acts` array; new `faction_standing` block with 6 genships + 7 Trust corps; documented captain outcome enum (death-combat / death-other / ship-destroyed / arrested / mutiny-deposed / mutiny-abandoned / voluntary-retreat / ledger-closed)

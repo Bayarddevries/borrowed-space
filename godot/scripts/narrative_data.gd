@@ -26,6 +26,7 @@ const RELATIVE_PATHS := {
 	"npcs":        "/../narrative/data/npc-archetypes.json",
 	"ledger":      "/../narrative/data/ledger.json",
 	"cartography": "/../narrative/data/cartography.json",
+	"aliens":      "/../narrative/data/aliens.json",
 }
 
 # Cache so we don't re-parse every call.
@@ -64,6 +65,9 @@ static func npc_archetypes() -> Variant:
 
 static func ledger_template() -> Variant:
 	return _read_json("ledger", _resolve_dev_path("ledger"))
+
+static func aliens() -> Variant:
+	return _read_json("aliens", _resolve_dev_path("aliens"))
 
 # Returns a list of {id, label, ship_class, fragments_count} per genship.
 static func list_genships() -> Array:
