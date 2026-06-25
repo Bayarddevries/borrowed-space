@@ -23,7 +23,7 @@
       "archetype_id": "NPC-T",
       "display_label": "[NPC-T-Trustee PLACEHOLDER]",
       "anchor_stage": "constant",
-      "first_question": "[voice-frag: NPC-T-Q1 PLACEHOLDER]",
+      "first_question": "What will you do with the authority I give you?",
       "variants": [
         {
           "variant_id": "NPC-T-1",
@@ -45,7 +45,7 @@
       "archetype_id": "NPC-AI",
       "display_label": "[NPC-AI-ShipAI PLACEHOLDER]",
       "anchor_stage": "constant",
-      "first_question": "[voice-frag: NPC-AI-Q1 PLACEHOLDER]",
+      "first_question": "What do you remember of the captain before you?",
       "variants": [
         {
           "variant_id": "NPC-AI-1",
@@ -60,7 +60,7 @@
       "archetype_id": "NPC1",
       "display_label": "[NPC1-Sherpa PLACEHOLDER]",
       "anchor_stage": "early",
-      "first_question": "[voice-frag: NPC1-Q1 PLACEHOLDER]",
+      "first_question": "What was your first act of mercy?",
       "variants": [
         {
           "variant_id": "NPC1-1",
@@ -110,7 +110,7 @@
       "archetype_id": "NPC2",
       "display_label": "[NPC2-Engineer PLACEHOLDER]",
       "anchor_stage": "mid",
-      "first_question": "[voice-frag: NPC2-Q1 PLACEHOLDER]",
+      "first_question": "What do you want from the rest of your life?",
       "variants": [
         {
           "variant_id": "NPC2-1",
@@ -160,7 +160,7 @@
       "archetype_id": "NPC3",
       "display_label": "[NPC3-Gatekeeper PLACEHOLDER]",
       "anchor_stage": "late",
-      "first_question": "[voice-frag: NPC3-Q1 PLACEHOLDER]",
+      "first_question": "Are you sure no one else is counting on you?",
       "variants": [
         {
           "variant_id": "NPC3-1",
