@@ -56,13 +56,12 @@ Headline achievement: 23/23 GUT tests pass; Phase 3e plan locked + 7 issues open
 
 ## In-progress
 
-- 🔵 **Phase 3d** — `EncounterPool.roll(ship, arrival_kind)`. Reads `empty-space-manifest.json` + `station_arrival_beats.json` to replace the static stub in `travel.gd`. Issue #10. Awaiting implementation session.
-- 🔵 **Phase 3a + 3b + 3c parallel work:**
-  - **#9 (Phase 3c)** mission board.
-  - **#11 (was mislabeled Phase 3e)** NPC state-selection rules — spec at `docs/NPC_STATE_SELECTION.md`.
-  - **#12 (Phase 3f)** genship-origin wiring.
-🔵 Phase 3e (combat) — design locked in `docs/COMBAT.md`. **Phase 3e.1 cqb_grid.gd + test_cqb.gd shipped** on branch `phase/3e-cqb-grid` (15/15 cqb tests pass; 38/38 total prior+new). **Phase 3e.2 cqb_ai.gd + aliens.json shipped** on branch `phase/3e-cqb-ai` (4/4 cqb_ai tests pass; 42/42 total). **Phase 3e.3 cover-test + CQB outcome ink beats shipped** on branch `phase/3e-ink-beats` (8/8 beat tests pass; 50/50 total). Issues: #15 CqbGrid runtime (implemented), #17 cqb_ai + aliens.json (implemented), #18 Ink beats (implemented), #16 CasualtyPipeline, #20 visual layer (deferred), #21 ai.gd integration.
-- 🔵 **Cross-agent doc handoff** complete (5 gameplay-loop docs from other agent now in `docs/`). Per-clarification decisions: 6 genships (add ME), 5 act booleans + keep float, use-once-and-spend OR AI-withdraw blessing, 13-station cartography (every faction), AI-paced Trustee missions, tone-only bias-watch for 7 Trust corps.
+| Spotify Entry                  | Issue/PR                        | Status                                     |
+|--------------------------------|----------------------------------|---------------------------------------------|
+| Mission board                  | #9                               | Awaiting implementation                     |
+| Phase 3f — CQB visual layer    | #20                              | Deferred                                    |
+| Phase 3d — EncounterPool impl  | phase/3d-encounter-pool          | encounter_pool.gd + travel.gd wired + 6-entry JSON, 56/56 GUT pass (244/244 asserts) |
+| NPC state-selection            | #11                              | Awaiting implementation                     |
 
 ---
 
