@@ -96,6 +96,106 @@
         { "label": "Nod and move past. Listen later.", "to": "crew_meetup_at_CORAL_10", "delta": { "suspicion_delta": 1, "discoveries": ["predecessor_fate_coral_partial"] } },
         { "label": "Ask who's watching this station.", "to": "crew_meetup_at_CORAL_10", "delta": { "suspicion_delta": 2, "discoveries": ["trustee_program_sighted"] } }
       ]
+    },
+
+    "station_arrival_KASHNER_11": {
+      "speaker": "narrator",
+      "text": "Kashner Iceworks on a shift change. The docking queue is twice as long — three haulers ahead of you, all running water contracts. A dockhand waves you to the overflow bay. The overflow bay doesn't have fuel lines. You'll have to jerrycan it.",
+      "choices": [
+        { "label": "Wait for the main bay. Burn hold time.", "to": "crew_meetup_at_KASHNER_11", "delta": { "fuel_delta": 22 } },
+        { "label": "Take the overflow. Jerrycan fuel.", "to": "crew_meetup_at_KASHNER_11", "delta": { "fuel_delta": 20, "credit_delta": -15 } },
+        { "label": "Ask the dockhand about the haulers.", "to": "crew_meetup_at_KASHNER_11", "delta": { "discoveries": ["kashner_hauler_schedule"], "suspicion_delta": 1 } }
+      ]
+    },
+
+    "station_arrival_BENTIC_11": {
+      "speaker": "narrator",
+      "text": "Bentic Penal's outer ring is quiet — too quiet. A third of the docking clamps are locked open, empty. The security officer who met you last time isn't on rotation. The one who is doesn't check your invoice. She just waves you through. Something changed since your last visit.",
+      "choices": [
+        { "label": "Dock. Watch the corridors carefully.", "to": "crew_meetup_at_BENTIC_11", "delta": { "discoveries": ["bentic_reduced_security"] } },
+        { "label": "Ask what happened to the missing clamps.", "to": "crew_meetup_at_BENTIC_11", "delta": { "suspicion_delta": 2, "discoveries": ["bentic_docking_shutdown"] } },
+        { "label": "Fuel and leave. Fast turnaround.", "to": "crew_meetup_at_BENTIC_11", "delta": { "fuel_delta": 15 } }
+      ]
+    },
+
+    "station_arrival_CORVALLO_11": {
+      "speaker": "narrator",
+      "text": "Corvallo's trade floor is in lock-down — the private deck is closed, shutters down, armed guards at the freight lift. A notice on the public board reads: inventory audit. The crews at the tables aren't talking. They're counting what they have left.",
+      "choices": [
+        { "label": "Dock at public bay. Wait it out.", "to": "crew_meetup_at_CORVALLO_11", "delta": { "fuel_delta": 15, "suspicion_delta": -1 } },
+        { "label": "Find a crew who knows what happened.", "to": "crew_meetup_at_CORVALLO_11", "delta": { "bond_score": 1, "discoveries": ["corvallo_audit_reason"] } },
+        { "label": "Leave. Come back next transit.", "to": "crew_meetup_at_CORVALLO_11", "delta": { "fuel_delta": -5 } }
+      ]
+    },
+
+    "station_arrival_SXHALO_11": {
+      "speaker": "narrator",
+      "text": "SX Halo's reception is different this time. No smile. The airlock queue moves fast — too fast, like they want you processed and gone. A technician in a sealed suit crosses the docking bay carrying a sample container marked with biohazard bands. He doesn't make eye contact.",
+      "choices": [
+        { "label": "Follow standard docking. Don't stare.", "to": "crew_meetup_at_SXHALO_11", "delta": { "fuel_delta": 20 } },
+        { "label": "Ask about the biohazard container.", "to": "crew_meetup_at_SXHALO_11", "delta": { "suspicion_delta": 2, "discoveries": ["sx_biohazard_transfer"] } },
+        { "label": "Refuel from the external pump only.", "to": "crew_meetup_at_SXHALO_11", "delta": { "fuel_delta": 15, "suspicion_delta": -1 } }
+      ]
+    },
+
+    "station_arrival_ORPHEUM_11": {
+      "speaker": "narrator",
+      "text": "Orpheum's grow-lights are dimmed — not off, but cycling at a fraction of their usual intensity. The woman with dirt under her nails isn't at the dock. Her replacement is clean-handed and won't explain. The produce shipment you were promised isn't on the loading manifest.",
+      "choices": [
+        { "label": "Ask what happened to the grow schedule.", "to": "crew_meetup_at_ORPHEUM_11", "delta": { "discoveries": ["orpheum_grow_cycle_disruption"] } },
+        { "label": "Take what's available. Adapt.", "to": "crew_meetup_at_ORPHEUM_11", "delta": { "fuel_delta": -5, "bond_score": 1 } },
+        { "label": "Leave. You'll source elsewhere.", "to": "crew_meetup_at_ORPHEUM_11", "delta": { "fuel_delta": -3 } }
+      ]
+    },
+
+    "station_arrival_PROPHET_11": {
+      "speaker": "narrator",
+      "text": "Prophet's Threshold is in mourning — black cloth draped over the arrival hall arches, the rhythm of the docking clamps slower than usual. A station attendant whispers that a conscript crew died in a pressure failure three shifts ago. The water is still offered. It's offered harder now.",
+      "choices": [
+        { "label": "Accept the water. Stay for the funeral.", "to": "crew_meetup_at_PROPHET_11", "delta": { "bond_score": 2, "fuel_delta": 15 } },
+        { "label": "Ask about the pressure failure.", "to": "crew_meetup_at_PROPHET_11", "delta": { "discoveries": ["prophet_pressure_failure"], "suspicion_delta": 1 } },
+        { "label": "Refuel quietly. Don't intrude.", "to": "crew_meetup_at_PROPHET_11", "delta": { "fuel_delta": 15 } }
+      ]
+    },
+
+    "station_arrival_DENISE_11": {
+      "speaker": "narrator",
+      "text": "Denise Mar's hall has a new portrait beside the old one — a younger face, a recent death. The conscript at the desk tells you it's the station founder's granddaughter. She kept the labour-truce alive after her grandmother couldn't. The station is still debating whether to honour her terms or renegotiate.",
+      "choices": [
+        { "label": "Honour the old terms. Pay full.", "to": "crew_meetup_at_DENISE_11", "delta": { "fuel_delta": 20, "credit_delta": -10, "bond_score": 1 } },
+        { "label": "Ask who's pushing the renegotiation.", "to": "crew_meetup_at_DENISE_11", "delta": { "discoveries": ["denise_renegotiation_factions"], "suspicion_delta": 1 } },
+        { "label": "Dock. Stay out of it.", "to": "crew_meetup_at_DENISE_11", "delta": { "fuel_delta": 15 } }
+      ]
+    },
+
+    "station_arrival_BEREZINA_11": {
+      "speaker": "narrator",
+      "text": "Someone's been welding on Berezina Drift since your last visit — new plating over the worst sections, actual alloy instead of cargo wrap. The cargo master has a new suit. She won't say where the materials came from. The station smells less like desperation and more like ambition.",
+      "choices": [
+        { "label": "Ask who's funding the repairs.", "to": "crew_meetup_at_BEREZINA_11", "delta": { "discoveries": ["berezina_repair_funding"], "suspicion_delta": 1 } },
+        { "label": "Trade for the new plating. You need it.", "to": "crew_meetup_at_BEREZINA_11", "delta": { "credit_delta": -20, "bond_score": 1 } },
+        { "label": "Refuel. Don't ask questions.", "to": "crew_meetup_at_BEREZINA_11", "delta": { "fuel_delta": 15 } }
+      ]
+    },
+
+    "station_arrival_MOSCOW_11": {
+      "speaker": "narrator",
+      "text": "Moscow Prospekt's sick bay is full. You can see it through the corridor glass — patients on every bunk, medics moving between them without stopping. The officer who meets you has a cough he's suppressing. The quarantine notices are posted, but no one is enforcing them at the dock.",
+      "choices": [
+        { "label": "Dock. Keep your crew on the ship.", "to": "crew_meetup_at_MOSCOW_11", "delta": { "fuel_delta": 15, "bond_score": 1 } },
+        { "label": "Offer medical supplies if you have them.", "to": "crew_meetup_at_MOSCOW_11", "delta": { "bond_score": 2, "credit_delta": -10 } },
+        { "label": "Ask about the outbreak. Report it.", "to": "crew_meetup_at_MOSCOW_11", "delta": { "discoveries": ["moscow_outbreak_report"], "suspicion_delta": 1 } }
+      ]
+    },
+
+    "station_arrival_CORAL_11": {
+      "speaker": "narrator",
+      "text": "Coral's union hall has a petition on the board — crew conditions, transit fees, the usual. But this one has signatures from four different genship affiliations. That hasn't happened before. The table where crews used to talk is empty. They're at the petition board instead.",
+      "choices": [
+        { "label": "Read the petition. Add your signature.", "to": "crew_meetup_at_CORAL_11", "delta": { "bond_score": 1, "suspicion_delta": 1, "discoveries": ["cross_genship_petition"] } },
+        { "label": "Copy the petition. File it privately.", "to": "crew_meetup_at_CORAL_11", "delta": { "discoveries": ["cross_genship_petition_copy"] } },
+        { "label": "Fuel and leave. Not your fight.", "to": "crew_meetup_at_CORAL_11", "delta": { "fuel_delta": 15 } }
+      ]
     }
   }
 }
