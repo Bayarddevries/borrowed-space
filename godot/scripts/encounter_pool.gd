@@ -27,7 +27,7 @@ static func roll(ship_state: Dictionary, arrival_kind: String, stations: Array) 
 		"anomaly_hex":
 			base_chance = 1.0
 		"station_hex":
-			base_chance = 0.25
+			base_chance = 0.60
 		_:
 			base_chance = 0.40
 
