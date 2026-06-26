@@ -80,21 +80,40 @@ The system has eight modules plus one cross-cutting glue layer. They are *interf
 | 8 | **CQB combat** | 6×6 tactical grid, 2 AP/turn, cover/fold/flanking, aggro AI, casualty→tribute→ledger pipeline. | 3e |
 | 9 | **Genship origins** | Per-origin mechanical data (corp relationships, unique content chains, narrative flavor, AI tone). | 3f |
 
+### Content data (narrative/data/, feeds runtime loaders)
+
+| File | Purpose | Phase |
+|---|---|---|
+| `captain-origins.json` | 6 genship origins × mechanical data (corp relationships, content chains, AI tone) | 3f |
+| `npc-archetypes.json` | 5 archetypes × 21 variants for crew generation | 2e |
+| `belt_factions.json` | Belt faction definitions (B1/B2/B3): leadership, politics, leverage | 3 |
+| `defector_contacts.json` | Named NPC defector contacts tied to Trust families | 3 |
+| `heritage_tags.json` | 12 captain country-fragment heritage tags | 3 |
+| `last_mile_dispensary.json` | Healthcare/pharma belt faction (anti-Trust radiation monopoly) | 3 |
+| `mars_sites.json` | Mars surface sites with dismantling hooks | 3 |
+| `trust_families.json` | Trust family definitions (T1–T8) for dismantling arc | 3 |
+| `encounter-pool.json` | 30+ weighted encounter entries across 5 categories | 3d |
+| `aliens.json` | 4 CQB enemy archetypes + weapon validation | 3e |
+| `stations.json` | 10 named stations (faction-matched to cartography) | 3a.2 |
+| `cartography.json` | Hex belt topology, 10 stations STATION_01..STATION_10 | 3a.1 |
+| `voice_fragments.json` | 50 `die_in_throes` + 50 `captain_journal` staged entries (3g landing target) | 3e.4 |
+
 ### Cross-cutting
 
 | # | Module | Responsibility |
 |---|---|---|
-| 10 | **Voice corpus** | `die_in_throes` + `captain_journal` fragments. Feeds casualty tributes + journal entries. |
-| 11 | **UI / art** | Paper pipeline. Station interiors, paper-frame staging. **Phase 4 only.** |
+| 14 | **Voice corpus** | `die_in_throes` + `captain_journal` fragments (split from `voice_fragments.json` in 3g). Feeds casualty tributes + journal entries. |
+| 15 | **UI / art** | Paper pipeline. Station interiors, paper-frame staging. **Phase 4 only.** |
 
 ### Module dependencies
 
 ```
-[1 State] → [2 CaptainGen] → [3 Narrative] → [5 Travel]
-   ↓            ↓              ↓               ↓
-  [Ledger] ← [4 Crew]    [8 CQB] ← [7 Encounter]
-   ↓                         ↓              ↓
-[6 Mission Board] ← [9 Genship Origins]  [10 Voice]
+[1 State] → [2 CaptainGen] → [3 Narrative] → [5 Travel] → [7 Encounter Pool]
+   ↓            ↓              ↓               ↓              ↓
+  [Ledger] ← [4 Crew]    [8 CQB]      [6 Mission Board]   ↓
+   ↓            ↓              ↓              ↓         [14 Voice]
+[10 Content] ←─────────────┴──────────────┘              ↓
+                                                      [15 UI/Art]
 ```
 
 The combat module **calls into** the narrative layer through Ink beats; the narrative layer does *not* depend on combat. This asymmetry means combat can be swapped or rewritten without narrative refactoring.
