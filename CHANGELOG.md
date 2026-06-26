@@ -27,6 +27,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) but adapted for s
 ### Paid agent — #21 CQB integration shipped (PR #28)
 - `godot/scripts/cqb_engagement.gd` — full grid turn-loop orchestrator (CqbEngagement.run())
 - `godot/scripts/ai.gd` — step_X_meet_aliens() chaining CoverTest → CQB → CasualtyPipeline → Ink beat
+
+### Demo loop — moves 3+4+5 (overworld scene + full playable run)
+- `godot/scripts/demo_session.gd` — NEW: scene-transition glue singleton (DemoSession). Carries captain/crew/ship state between run_start and overworld scenes. Demo-only — Persist is the real game state singleton.
+- `godot/scripts/overworld_controller.gd` — NEW: full overworld flow. ASCII hex grid display (3-hex radius around ship), station dropdown (10 stations with coords/faction/distance), Transit button calling Travel.transit(), encounter display (prose from pool or registry), CoverTest → CQB routing via #21 chain, End Run button finalising LedgerWriter and returning to briefing.
+- `godot/scenes/overworld.tscn` — updated from placeholder to functional scene with 6 UI nodes (hex label, encounter label, status label, station dropdown, transit button, proceed button, end run button).
+- `godot/scripts/demo_controller.gd` — added `_on_launch_pressed()` stashing captain+crew into DemoSession and switching to overworld.tscn. The Launch → Overworld button now works.
+- Full GUT suite: 77/78 pass (0 failures, 1 risky — same as baseline).
+- Closes moves 3+4+5 from day-1 demo.
 - `godot/scripts/beat_runner.gd` — load_manifest_from() for CQB beat manifest
 - `godot/scripts/casualty_pipeline.gd` — process → process_casualties rename, static-context fix
 - `godot/scripts/narrative_data.gd` — RELATIVE_PATHS voice_fragments fix (one-liner)

@@ -132,6 +132,19 @@ func _on_meet_crew_pressed() -> void:
 	lines += "\nClick [b]Launch → Overworld[/b] to transit."
 	_crew_label.text = lines
 
+# ── Move 3: Launch → Overworld (scene switch) ────────────────────
+func _on_launch_pressed() -> void:
+	if captain.is_empty():
+		_trace_label.text = "Pick an origin and meet crew first."
+		return
+	if crew.is_empty():
+		_trace_label.text = "Meet crew before launching."
+		return
+	# Stash captain + crew in DemoSession for the overworld scene.
+	DemoSession.captain = captain
+	DemoSession.crew = crew
+	get_tree().change_scene_to_file("res://scenes/overworld.tscn")
+
 # ── Move 4: Ledger write on encounter return ─────────────────────
 # Called from overworld.tscn via a scene-switch handler after the
 # transit completes. Builds a ledger row from captain + crew.
