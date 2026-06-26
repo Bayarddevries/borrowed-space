@@ -22,7 +22,20 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) but adapted for s
 
 ---
 
-## [Unreleased] — Phase 3a content
+## [Unreleased] — Phase 3g ready
+
+### Reconciliation commit (this session)
+- docs(ROADMAP): full rewrite of Phase 2+3 sections, module table updated to actual architecture (11→15 nodes), content data inventory (13 files)
+- docs(HANDOFF): Phase 3 sub-phase tracker cleanup, next-agent reading list points to 3g
+- docs(TODO, ISSUES): Phase 3a/3c/3d/3e/3f flipped to done; 3g + #21 queued
+- CHANGELOG: this entry
+- 64/64 GUT tests pass (278 asserts); next build = Phase 3g voice corpus
+
+### Phase 3g — voice corpus (READY)
+- `.agents/prompts/phase-3g-voice-corpus.md` — build prompt for `die_in_throes.json` (50 entries) + `captains_journal.json` (50 entries). Schema, bias-check rules, distribution targets all specified.
+- Bias-check: no ethnic-coded tropes; Wildermyth-style personal fragments; two-corpus register distinction (AI voice vs captain observational voice)
+
+## [Unreleased] — Phase 3a content (legacy heading, kept for history)
 
 ### Phase 3c — mission board (commit pending)
 - godot/scripts/mission_board.gd — `MissionBoard.generate()` returning 3-5 offers with `id`, `source`, `risk`, `act_gate`, `continuation_of`. Source weights: corps 40% / genship 30% / private 20% / trustee 10%. Standing < -3 blacks out corp source. Neutral (0) drifts to -1 per run. Trust > +3 grows at +1/run. In-place ledger mutation. Guaranteed continuation offer when `run_state.missions` contains an in-progress entry.
