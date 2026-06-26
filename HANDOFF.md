@@ -8,7 +8,7 @@ tags:
   - state
 aliases:
   - HANDOFF
-phase: 2
+phase: 3
 related:
   - "[[_CONVENTIONS]]"
   - "[[ROADMAP]]"
@@ -27,10 +27,10 @@ Current state. Verified-working features. Known issues. Updated at the end of ev
 
 **Phase 3 — DONE.** All sub-phases 3a–3g shipped. Phase 4 (paper art) is next.
 
-Last commit: `072ac5f docs(changelog): add Phase 3 done entry`
+Last commit: `fb781db fix(demo): guard against string encounter (fallback beat when pool doesn't roll)`
 Repo: https://github.com/Bayarddevries/borrowed-space (private)
 Working tree: 9 untracked files (cover_test, overworld controller uid, verification scripts — paid agent mid-stream)
-Headline achievement: 77/78 GUT pass (515 asserts). Full day-1 demo scaffold on main (origin pick → crew readout → ledger row). CQB combat fires end-to-end from travel encounters (CoverTest → grid fight → casualty tribute → Ink beat → ledger write). Content complete: voice corpus, 30 encounter beats, 20 station beats, 15 CQB beats — all bias-clean. PRs #27 and #28 merged. Phase 3 locked.
+Headline achievement: 87/88 GUT pass (574 asserts). First playable end-to-end demo loop on main: origin pick → crew → overworld → transit → encounter → resolve → end run → ledger. All Phase 3 systems integrated. Narrative prose display and player choice during encounters deferred to next session. Phase 4 planning document ready at docs/PHASE_4_PLANNING.md.
 
 ## Verified-working
 
@@ -78,6 +78,7 @@ Headline achievement: 77/78 GUT pass (515 asserts). Full day-1 demo scaffold on 
 
 ## Known issues
 
+- ⚠️ **Narrative prose not wired into encounter display.** The beat files (encounter-pool-beats.json, cqb-ink-beats.json, etc.) contain full prose + choices, but the demo scene doesn't load or display them. Encounters show a one-line `flavor_hook` from the pool entry. Full narrative display + player choice is the next explicit feature gap to close.
 - ⚠️ Some docs use placeholder names like `[G1-NorthAmerica PLACEHOLDER]`. **Rename pass** at end of phase 1 has not been run yet. Defer to a separate issue.
 - ⚠️ Phase 1 has not been "read" by the player-of-record yet. Bias-check on the project's tone has not been formally done. **Read pass** to land before phase 3+.
 - ⚠️ Godot CLI smoke runs print warnings the first time (no save file yet). The persist load_state handles this gracefully.
