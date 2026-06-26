@@ -17,6 +17,8 @@ const ORIGINS_WITH_FRAGMENT := [
 @onready var _brief_label: RichTextLabel = $BriefLabel
 @onready var _trace_label: RichTextLabel = $TraceLabel
 @onready var _ledger_sidebar: RichTextLabel = $LedgerSidebar
+@onready var _origin_dropdown: OptionButton = $OriginDropdown
+@onready var _crew_label: RichTextLabel = $CrewLabel
 
 var ai: Node = null
 var captain: Dictionary = {}
@@ -27,6 +29,7 @@ var ledger_result: Dictionary = {}
 func _ready() -> void:
 	# Resolve dependencies lazily so the script works whether autoload is
 	# "Persist" (production) or stubbed in test.
+	_populate_origin_dropdown()
 	_refresh_view()
 	_persist_message()
 
@@ -70,16 +73,24 @@ func _str_of(d: Dictionary) -> String:
 		str(d.get("arrival_kind", "?")),
 	]
 
-# ── Move 1: Pick Origin ─────────────────────────────────────────
-# Pressing the button runs Captain.generate() through the AI orchestrator
-# and surfaces the origin label so the user sees something change.
+# ── Move 1 + 2: Pick Origin (via OptionButton) ──────────────────
+# Populate dropdown once. Press Pick Origin to call Captain.generate()
+# using whichever origin the player selected.
+func _populate_origin_dropdown() -> void:
+	if _origin_dropdown == null:
+		return
+	_origin_dropdown.clear()
+	for i in ORIGINS_WITH_FRAGMENT.size():
+		var p: Dictionary = ORIGINS_WITH_FRAGMENT[i]
+		_origin_dropdown.add_item(str(p["label"]), i)
+
 func _on_pick_origin_pressed() -> void:
 	if not has_node("/root/Persist"):
 		_trace_label.text = "Persist autoload missing — cannot run."
 		return
-	# Hardcoded reps match ORIGINS_WITH_FRAGMENT[0]. Move 2 swaps them
-	# behind an OptionButton.
 	var pick: Dictionary = ORIGINS_WITH_FRAGMENT[0]
+	if _origin_dropdown != null and _origin_dropdown.selected >= 0:
+		pick = ORIGINS_WITH_FRAGMENT[_origin_dropdown.selected]
 	var AI_Script: GDScript = load("res://scripts/ai.gd")
 	ai = AI_Script.new()
 	add_child(ai)
@@ -99,6 +110,27 @@ func _on_pick_origin_pressed() -> void:
 		captain.get("ship_class", "?"),
 		int(captain.get("h_tier_peak", 0)),
 	]
+
+# ── Move 2 part B: Meet Crew button ───────────────────────────────
+# Calls ai.step_4_meet_crew() and renders the roster.
+func _on_meet_crew_pressed() -> void:
+	if ai == null:
+		# Allow Meet Crew to bootstrap if Pick Origin skipped; fall back
+		# to the first default origin so the player can still see crew.
+		_on_pick_origin_pressed()
+		if captain.is_empty():
+			return
+	crew = ai.step_4_meet_crew()
+	var lines := "[b]Crew Roster[/b]\n"
+	for c in crew:
+		lines += "  - %s (arch=%s variant=%s held_trust=%d)\n" % [
+			c.get("name", "?"),
+			c.get("archetype_id", "?"),
+			c.get("variant_id", "?"),
+			int(c.get("held_trust", 0)),
+		]
+	lines += "\nClick [b]Launch → Overworld[/b] to transit."
+	_crew_label.text = lines
 
 # ── Move 4: Ledger write on encounter return ─────────────────────
 # Called from overworld.tscn via a scene-switch handler after the

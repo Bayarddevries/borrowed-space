@@ -51,6 +51,21 @@ bbcode_enabled = true
 text = "Ledger (sidebar)
   (none yet)"
 
+[node name="OriginDropdown" type="OptionButton" parent="."]
+offset_left = 588.0
+offset_top = 472.0
+offset_right = 924.0
+offset_bottom = 510.0
+text = "[pick origin]"
+
+[node name="CrewLabel" type="RichTextLabel" parent="."]
+offset_left = 24.0
+offset_top = 672.0
+offset_right = 1024.0
+offset_bottom = 856.0
+bbcode_enabled = true
+text = "(crew not yet generated)"
+
 [connection signal="pressed" from="PickOriginButton" to="." method="_on_pick_origin_pressed"]
 [connection signal="pressed" from="MeetCrewButton" to="." method="_on_meet_crew_pressed"]
 [connection signal="pressed" from="LaunchButton" to="." method="_on_launch_pressed"]
