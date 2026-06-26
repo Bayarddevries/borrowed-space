@@ -108,6 +108,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) but adapted for s
 - Bias-check: no ethnic-coded naming in journal fragments; two-corpus system ensures clinical AI voice and captain observational voice are distinct register.
 - Closes #16.
 
+### Phase 3e.4b — voice_fragments.json rewritten 15+15 (branch phase/3e-voice-fragments, PR #25)
+- `narrative/data/voice_fragments.json` — rewritten to 15 die_in_throes (4 AI clinical + 11 last-words, mixed, 6-9 words each) + 15 captain_journal (1-2 sentences, post-collapse observational tone). Removed `_meta` key (spec: two top-level keys only). Removed all genship shorthand codes (NAC/RRA/SAA/ED/B1/B2/B3/T1-T8) — previous entries violated BIAS_GUARDRAILS.md nationality-coding rule. No real geography, no ethnic-coded references.
+- `godot/scripts/narrative_data.gd` — registered `voice_fragments` path in RELATIVE_PATHS (was missing; CasualtyPipeline._resolve_tribute could not load data at runtime without it).
+- **68/68 GUT tests pass** (382 asserts). Zero regressions.
+- Bias-check: all 3 BIAS_GUARDRAILS.md check questions pass (Q1: no genship flattening — names injected at runtime; Q2: no Earth counterpart — no geography; Q3: no eugenics-coded content).
+
 ### Phase 3d.1 — encounter-pool scaffold (commit d5b69c8, branch phase/3d-encounter-pool)
 - `narrative/data/encounter-pool.json` — 6-entry skeleton (2 low / 2 mid / 2 high) across Patrol, Distress, Discovery, Crew, Faction categories. Schema: `id`, `category`, `description`, `weight`, `intensity`, `resolution`, `state_modifiers`, `act_gate`.
 - `godot/scripts/narrative_data.gd` — added `encounter_pool()` static loader.

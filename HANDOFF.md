@@ -59,8 +59,9 @@ Headline achievement: 23/23 GUT tests pass; Phase 3e plan locked + 7 issues open
 
 ## In-progress
 
-| Spotify Entry                  | Issue/PR                        | Status                                     |
-|--------------------------------|----------------------------------|---------------------------------------------|
+|| Spotify Entry                  | Issue/PR                        | Status                                     |
+||--------------------------------|----------------------------------|---------------------------------------------|
+| voice_fragments.json           | PR #25                           | 15+15 entries, bias-checked, staged for casualty_pipeline.gd consumption |
 | Mission board                  | #9                               | Parse clean; awaiting Persist wiring decision |
 | Phase 3f — CQB visual layer    | #20                              | Deferred                                   |
 | Phase 3d — EncounterPool impl  | phase/3d-encounter-pool          | Merged to main (`cc19be2`), 56/56 pass    |
