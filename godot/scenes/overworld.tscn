@@ -1,10 +1,64 @@
 [gd_scene format=3 uid="uid://c7c2xvk9q8o3b"]
 
-[node name="Overworld" type="Node"]
+[ext_resource type="Script" path="res://scripts/overworld_controller.gd" id="1_ow"]
 
-[node name="Label" type="Label" parent="."]
-offset_left = 480.0
-offset_top = 320.0
-offset_right = 800.0
-offset_bottom = 400.0
-text = "Overworld — placeholder. Will render belt node graph in Phase 2g."
+[node name="Overworld" type="Node"]
+script = ExtResource("1_ow")
+
+[node name="HexLabel" type="RichTextLabel" parent="."]
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 640.0
+offset_bottom = 360.0
+bbcode_enabled = true
+text = "Belt Map — loading..."
+
+[node name="EncounterLabel" type="RichTextLabel" parent="."]
+offset_left = 24.0
+offset_top = 368.0
+offset_right = 1024.0
+offset_bottom = 520.0
+bbcode_enabled = true
+text = "(no encounter yet)"
+
+[node name="StatusLabel" type="RichTextLabel" parent="."]
+offset_left = 24.0
+offset_top = 528.0
+offset_right = 1024.0
+offset_bottom = 568.0
+bbcode_enabled = true
+text = "Select destination and click Transit."
+
+[node name="StationDropdown" type="OptionButton" parent="."]
+offset_left = 24.0
+offset_top = 576.0
+offset_right = 340.0
+offset_bottom = 606.0
+text = "[pick destination]"
+
+[node name="TransitButton" type="Button" parent="."]
+offset_left = 352.0
+offset_top = 576.0
+offset_right = 500.0
+offset_bottom = 606.0
+text = "Transit"
+
+[node name="ProceedButton" type="Button" parent="."]
+offset_left = 24.0
+offset_top = 614.0
+offset_right = 240.0
+offset_bottom = 644.0
+text = "Proceed (Cover Test)"
+visible = false
+
+[node name="EndRunButton" type="Button" parent="."]
+offset_left = 600.0
+offset_top = 576.0
+offset_right = 760.0
+offset_bottom = 606.0
+text = "End Run"
+disabled = true
+
+[connection signal="pressed" from="TransitButton" to="." method="_on_transit_pressed"]
+[connection signal="pressed" from="EndRunButton" to="." method="_on_end_run_pressed"]
+[connection signal="pressed" from="ProceedButton" to="." method="_on_proceed_pressed"]
