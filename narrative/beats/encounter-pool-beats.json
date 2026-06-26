@@ -1,0 +1,371 @@
+{
+  "_meta": {
+    "title": "Encounter Pool Narrative Beats",
+    "trigger": "encounter_pool",
+    "description": "Narrative beats for weighted encounter pool selection. One beat per pool entry. Expanded from flavor hooks in encounter-pool.json.",
+    "schema": "manifest-v1",
+    "version": "0.1"
+  },
+  "beats": {
+    "beat_patrol_license_check": {
+      "_id": "beat_patrol_license_check",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Patrol",
+      "prose": "A Helios inspector boards with a transponder scanner and a clipboard. Your registration is clean — but the audit takes six hours of hold time while they check every seal stamp twice. The inspector doesn't blink. This is the point.",
+      "choices": [
+        { "text": "Submit. Let them audit.", "next_beat": "run_end_summary", "delta": { "suspicion_delta": -1, "fuel_delta": -3 } },
+        { "text": "Offer fuel vouchers to expedite.", "next_beat": "run_end_summary", "delta": { "credit_delta": -50, "fuel_delta": -1 } },
+        { "text": "Flag the delay to the AI. Log it.", "next_beat": "run_end_summary", "delta": { "discoveries": ["helios_audit_pattern"], "suspicion_delta": 1 } }
+      ]
+    },
+    "enc_patrol_unregistered_cargo": {
+      "_id": "enc_patrol_unregistered_cargo",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Patrol",
+      "prose": "Forge and Frame hull-scanners lock onto your cargo bay. One container's mass is 14% off the declared manifest. The scan operator asks you to open it. Whatever's inside, someone paid extra to mislabel it.",
+      "choices": [
+        { "text": "Open it. Show them.", "next_beat": "run_end_summary", "delta": { "suspicion_delta": -1, "bond_score": -1 } },
+        { "text": "Refuse. Cite registry privilege.", "next_beat": "run_end_summary", "delta": { "suspicion_delta": 2 } },
+        { "text": "Jettison the container. Cut the weight.", "next_beat": "run_end_summary", "delta": { "fuel_delta": 2, "bond_score": -1 } }
+      ]
+    },
+    "enc_patrol_ghost_ping_chase": {
+      "_id": "enc_patrol_ghost_ping_chase",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Patrol",
+      "prose": "Your scopes catch a phantom signature — steady pulse, no hull echo. Either a ghost ship running dark or a sensor-absorption test someone doesn't want logged. The signal fades toward the anomaly field.",
+      "choices": [
+        { "text": "Pursue the signal. Burn fuel.", "next_beat": "run_end_summary", "delta": { "fuel_delta": -10, "discoveries": ["ghost_ping_origin"], "suspicion_delta": 1 } },
+        { "text": "Log the bearing. Stay on route.", "next_beat": "run_end_summary", "delta": { "discoveries": ["ghost_ping_bearing"] } },
+        { "text": "Jam your own transponder. Hide too.", "next_beat": "run_end_summary", "delta": { "suspicion_delta": 2 } }
+      ]
+    },
+    "enc_patrol_convoy_escort_request": {
+      "_id": "enc_patrol_convoy_escort_request",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Patrol",
+      "prose": "A freighter convoy hails: three hulls carrying He-3 payroll need a rider for the next three hops. The pay is real. So is the target painted on anything escorting a fuel shipment through the deep belt.",
+      "choices": [
+        { "text": "Accept the escort contract.", "next_beat": "run_end_summary", "delta": { "credit_delta": 120, "fuel_delta": -8, "suspicion_delta": 1 } },
+        { "text": "Decline. Too visible.", "next_beat": "run_end_summary", "delta": {} },
+        { "text": "Accept, but reroute through the lane.", "next_beat": "run_end_summary", "delta": { "credit_delta": 80, "fuel_delta": -12 } }
+      ]
+    },
+    "enc_patrol_station_perimeter_sweep": {
+      "_id": "enc_patrol_station_perimeter_sweep",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Patrol",
+      "prose": "Station security asks you to extend your sensor sweep to cover a gap in their perimeter. The blind spot faces deep belt — the direction things drift in from, not out to. They're not asking for charity.",
+      "choices": [
+        { "text": "Extend the sweep. Full coverage.", "next_beat": "run_end_summary", "delta": { "fuel_delta": -5, "bond_score": 1 } },
+        { "text": "Run the sweep but log everything.", "next_beat": "run_end_summary", "delta": { "fuel_delta": -5, "discoveries": ["perimeter_gap_intel"] } },
+        { "text": "Refuse. Your fuel. Your sensors.", "next_beat": "run_end_summary", "delta": { "suspicion_delta": 1 } }
+      ]
+    },
+    "enc_patrol_anomaly_border_check": {
+      "_id": "enc_patrol_anomaly_border_check",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Patrol",
+      "prose": "The AI relays coordinates for an anomaly absent from your charts. The Trust boundary markers here are wrong — displaced two hexes inward. Either the markers drifted, or someone moved them.",
+      "choices": [
+        { "text": "Investigate the anomaly. Burn a tick.", "next_beat": "run_end_summary", "delta": { "fuel_delta": -8, "discoveries": ["displaced_boundary_marker"], "suspicion_delta": 1 } },
+        { "text": "Report the marker displacement. Only.", "next_beat": "run_end_summary", "delta": { "discoveries": ["boundary_marker_displacement"] } },
+        { "text": "Log nothing. Someone's watching.", "next_beat": "run_end_summary", "delta": { "suspicion_delta": -1 } }
+      ]
+    },
+    "enc_distress_beacon_failure": {
+      "_id": "enc_distress_beacon_failure",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Distress",
+      "prose": "A salvage crew's beacon is cycling open-loop — power bus failed, they're burning attitude fuel for heat. Four hours of fuel left. You're the only signal they've reached in two days.",
+      "choices": [
+        { "text": "Rendezvous. Share power cells.", "next_beat": "run_end_summary", "delta": { "fuel_delta": -8, "bond_score": 1, "suspicion_delta": -1 } },
+        { "text": "Remote-guide their repair. No dock.", "next_beat": "run_end_summary", "delta": { "fuel_delta": -3 } },
+        { "text": "Relay their position. Move on.", "next_beat": "run_end_summary", "delta": { "suspicion_delta": 1 } }
+      ]
+    },
+    "enc_distress_hull_breach": {
+      "_id": "enc_distress_hull_breach",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Distress",
+      "prose": "A micro-freighter lost a pressure seal docking. The crew patched it with cargo wrap — it'll hold for hours, not days. They need alloy sheet, not rescue. They have fuel to trade.",
+      "choices": [
+        { "text": "Trade alloy for fuel. Fair deal.", "next_beat": "run_end_summary", "delta": { "fuel_delta": 8, "bond_score": 1 } },
+        { "text": "Give the alloy. Take nothing.", "next_beat": "run_end_summary", "delta": { "bond_score": 2, "suspicion_delta": -1 } },
+        { "text": "Dock and weld it yourself.", "next_beat": "run_end_summary", "delta": { "fuel_delta": -5, "bond_score": 1, "crew_xp": { "eng_tech": 1 } } }
+      ]
+    },
+    "enc_distress_medical_emergency": {
+      "_id": "enc_distress_medical_emergency",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Distress",
+      "prose": "A station medic needs a cold-chain catalyst her supply chain doesn't carry. She's already synthesizing an alternative — she needs your reagent stock, not your pity. She offers a blessing in return.",
+      "choices": [
+        { "text": "Provide the catalyst. Take the blessing.", "next_beat": "run_end_summary", "delta": { "blessing_variant": "medical_reciprocity", "bond_score": 1 } },
+        { "text": "Trade for stored supplies instead.", "next_beat": "run_end_summary", "delta": { "credit_delta": 30, "bond_score": 1 } },
+        { "text": "Refuse. Your supplies are thin.", "next_beat": "run_end_summary", "delta": {} }
+      ]
+    },
+    "enc_distress_raider_siege": {
+      "_id": "enc_distress_raider_siege",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Distress",
+      "prose": "A freight rig holds position against three unflagged interceptors. The rig's captain killed her transponder — she's fighting, not fleeing. Your weapons can reach. So can theirs.",
+      "choices": [
+        { "text": "Move to support. Weapons hot.", "next_beat": "run_end_summary", "delta": { "fuel_delta": -10, "suspicion_delta": 2, "bond_score": 2 } },
+        { "text": "Broadcast on all channels. Bluff.", "next_beat": "run_end_summary", "delta": { "suspicion_delta": 1, "bond_score": 1 } },
+        { "text": "Hold position. Observe only.", "next_beat": "run_end_summary", "delta": { "discoveries": ["raider_tactical_profile"] } }
+      ]
+    },
+    "enc_distress_fuel_line_freeze": {
+      "_id": "enc_distress_fuel_line_freeze",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Distress",
+      "prose": "A supply ship's primary fuel line froze at the coupling. They have a bypass rigged — someone just needs to hold the manual valve while they cut the line over. Fifteen minutes of work in a jetstream.",
+      "choices": [
+        { "text": "Send a crewmate. Hold the valve.", "next_beat": "run_end_summary", "delta": { "bond_score": 1, "crew_xp": { "eng_tech": 1 }, "fuel_delta": -3 } },
+        { "text": "Offer your eng tech. Full support.", "next_beat": "run_end_summary", "delta": { "bond_score": 2, "crew_xp": { "eng_tech": 2 }, "fuel_delta": -5 } },
+        { "text": "Remote-instruct. No EVA risk.", "next_beat": "run_end_summary", "delta": { "bond_score": -1 } }
+      ]
+    },
+    "enc_distress_station_scrubber_failure": {
+      "_id": "enc_distress_station_scrubber_failure",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Distress",
+      "prose": "Kepler station scrubbers are failing. The engineers diagnosed it twelve hours ago — management is waiting for a parts shipment that won't arrive for six days. The air is getting thick. People are coughing in the corridors.",
+      "choices": [
+        { "text": "Offer your scrubber parts. Off-load.", "next_beat": "run_end_summary", "delta": { "bond_score": 2, "credit_delta": -40 } },
+        { "text": "Evacuate crew to your ship. Temp.", "next_beat": "run_end_summary", "delta": { "fuel_delta": -8, "bond_score": 1 } },
+        { "text": "Log the failure. Move on.", "next_beat": "run_end_summary", "delta": { "discoveries": ["kepler_scrubber_failure_log"] } }
+      ]
+    },
+    "enc_discovery_derelict_vessel": {
+      "_id": "enc_discovery_derelict_vessel",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Discovery",
+      "prose": "A pre-launch utility tug sits dark in a debris field. Cargo manifest intact. Crew manifest blank — no one ever signed on. The hull is thirty years old. The fuel lines are warm.",
+      "choices": [
+        { "text": "Board it. Check the fuel lines.", "next_beat": "run_end_summary", "delta": { "fuel_delta": -3, "discoveries": ["derelict_tug_warm_fuel"], "suspicion_delta": 1 } },
+        { "text": "Scan from distance. Log it.", "next_beat": "run_end_summary", "delta": { "discoveries": ["derelict_tug_registry"] } },
+        { "text": "Mark it for salvage. Claim it.", "next_beat": "run_end_summary", "delta": { "credit_delta": 60, "suspicion_delta": 1 } }
+      ]
+    },
+    "enc_discovery_abandoned_station": {
+      "_id": "enc_discovery_abandoned_station",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Discovery",
+      "prose": "A waystation dropped off the network six months ago. Docking clamps still cycle — automated systems or someone maintaining them. The lights are on in section three. No life signs on the scope.",
+      "choices": [
+        { "text": "Dock. Check section three.", "next_beat": "run_end_summary", "delta": { "fuel_delta": -5, "discoveries": ["abandoned_waystation_section3"], "suspicion_delta": 1 } },
+        { "text": "Hail the station. Wait for response.", "next_beat": "run_end_summary", "delta": { "discoveries": ["waystation_auto_response"] } },
+        { "text": "Log it for the Trustee. Move on.", "next_beat": "run_end_summary", "delta": { "discoveries": ["waystation_coordinates"] } }
+      ]
+    },
+    "enc_discovery_anomalous_signal": {
+      "_id": "enc_discovery_anomalous_signal",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Discovery",
+      "prose": "The AI flags a structured signal matching no known broadcast protocol. The origin point is an anomaly that wasn't on yesterday's chart. The signal is repeating. It's not noise.",
+      "choices": [
+        { "text": "Trace the signal to source.", "next_beat": "run_end_summary", "delta": { "fuel_delta": -12, "discoveries": ["unknown_protocol_source"], "suspicion_delta": 2 } },
+        { "text": "Record the signal. Decrypt later.", "next_beat": "run_end_summary", "delta": { "discoveries": ["unknown_protocol_recording"] } },
+        { "text": "Broadcast a reply. See what happens.", "next_beat": "run_end_summary", "delta": { "suspicion_delta": 3 } }
+      ]
+    },
+    "enc_discovery_fatigue_failure_evidence": {
+      "_id": "enc_discovery_fatigue_failure_evidence",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Discovery",
+      "prose": "Salvage crews found a hull fragment with the 18-year fatigue pattern Forge and Frame concealed. The serial traces to your fleet. Your ship left the same yards, the same year.",
+      "choices": [
+        { "text": "Take the fragment. Hide it.", "next_beat": "run_end_summary", "delta": { "discoveries": ["t6_fatigue_fragment"], "suspicion_delta": 1 } },
+        { "text": "Log it to the Trustee's network.", "next_beat": "run_end_summary", "delta": { "discoveries": ["t6_fatigue_whistleblow"], "suspicion_delta": 2 } },
+        { "text": "Leave it. You can't prove anything yet.", "next_beat": "run_end_summary", "delta": {} }
+      ]
+    },
+    "enc_discovery_contested_finds": {
+      "_id": "enc_discovery_contested_finds",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Discovery",
+      "prose": "Two salvage teams staked the same derelict. Both hold legitimate claim tags. One tag's watermark doesn't match the registry edition. The dispute is about to turn from paperwork to hull breaches.",
+      "choices": [
+        { "text": "Mediate. Verify both claims.", "next_beat": "run_end_summary", "delta": { "bond_score": 1, "discoveries": ["contested_claim_winner"] } },
+        { "text": "Side with the legitimate tag.", "next_beat": "run_end_summary", "delta": { "bond_score": -1, "discoveries": ["falsified_claim_evidence"] } },
+        { "text": "Salvage the derelict yourself.", "next_beat": "run_end_summary", "delta": { "credit_delta": 80, "suspicion_delta": 2 } }
+      ]
+    },
+    "enc_discovery_water_vein_mapping": {
+      "_id": "enc_discovery_water_vein_mapping",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Discovery",
+      "prose": "A survey crew is mapping an ice vein they haven't reported to the water registry. If you log it, they lose the claim and the belt gets fair distribution. If you don't, the monopoly holds.",
+      "choices": [
+        { "text": "Log the vein. Break the monopoly.", "next_beat": "run_end_summary", "delta": { "discoveries": ["unregistered_water_vein"], "suspicion_delta": 2 } },
+        { "text": "Trade silence for water access.", "next_beat": "run_end_summary", "delta": { "credit_delta": 50, "bond_score": -1 } },
+        { "text": "Take the coordinates. Decide later.", "next_beat": "run_end_summary", "delta": { "discoveries": ["water_vein_coordinates"] } }
+      ]
+    },
+    "enc_crew_interpersonal_conflict": {
+      "_id": "enc_crew_interpersonal_conflict",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Crew",
+      "prose": "Two crewmates disagree on protocol after a docking procedure goes wrong. Neither is wrong — the procedure is. The nav officer wants to rerun it by the book. The eng tech patched it already and wants to move on.",
+      "choices": [
+        { "text": "Back the nav officer. Redock.", "next_beat": "run_end_summary", "delta": { "fuel_delta": -3, "bond_score": 1, "crew_xp": { "nav_officer": 1 } } },
+        { "text": "Back the eng tech. Move on.", "next_beat": "run_end_summary", "delta": { "bond_score": -1, "crew_xp": { "eng_tech": 1 } } },
+        { "text": "Log the procedure failure. Both win.", "next_beat": "run_end_summary", "delta": { "discoveries": ["docking_procedure_fault"] } }
+      ]
+    },
+    "enc_crew_mutiny_rumor": {
+      "_id": "enc_crew_mutiny_rumor",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Crew",
+      "prose": "A junior officer reports mutiny talk among conscripts. The talk is real — threats, grievances, specific complaints about run length. Whether it's planning or venting, you can't confirm without pressing.",
+      "choices": [
+        { "text": "Address the crew directly. Air it.", "next_beat": "run_end_summary", "delta": { "bond_score": 1, "suspicion_delta": -1 } },
+        { "text": "Pull the ringleaders aside. Quietly.", "next_beat": "run_end_summary", "delta": { "bond_score": -1, "suspicion_delta": 1 } },
+        { "text": "Run shorter shifts. Buy time.", "next_beat": "run_end_summary", "delta": { "fuel_delta": -2, "bond_score": 1 } }
+      ]
+    },
+    "enc_crew_bonding_ritual": {
+      "_id": "enc_crew_bonding_ritual",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Crew",
+      "prose": "Your crew sets a shared meal in the cargo bay after a tense transit. It's not ceremonial — it's how they clear the air. You weren't invited. You hear them through the bulkhead.",
+      "choices": [
+        { "text": "Join them. Eat what they made.", "next_beat": "run_end_summary", "delta": { "bond_score": 2 } },
+        { "text": "Send extra rations. Stay away.", "next_beat": "run_end_summary", "delta": { "bond_score": 1, "fuel_delta": -1 } },
+        { "text": "Stay on the bridge. Give them space.", "next_beat": "run_end_summary", "delta": {} }
+      ]
+    },
+    "enc_crew_skill_gap_training": {
+      "_id": "enc_crew_skill_gap_training",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Crew",
+      "prose": "A navigator is teaching a new conscript to read ice-vein stress patterns. They need someone to quiz them on the scope — just call out readings and check their work. Thirty minutes of your watch.",
+      "choices": [
+        { "text": "Sit in. Quiz the conscript.", "next_beat": "run_end_summary", "delta": { "bond_score": 1, "crew_xp": { "nav_officer": 1 } } },
+        { "text": "Assign a senior crewmate to help.", "next_beat": "run_end_summary", "delta": { "crew_xp": { "eng_tech": 1 } } },
+        { "text": "Skip it. Not your problem.", "next_beat": "run_end_summary", "delta": { "bond_score": -1 } }
+      ]
+    },
+    "enc_crew_resource_tension": {
+      "_id": "enc_crew_resource_tension",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Crew",
+      "prose": "The crew grew a surplus of produce mid-transit. Some want to trade it at the next station for fuel credits. Others want to eat well for once — they've been on ration paste for six hops. Either choice works. Neither is free.",
+      "choices": [
+        { "text": "Trade the surplus. Credits now.", "next_beat": "run_end_summary", "delta": { "credit_delta": 40, "bond_score": -1 } },
+        { "text": "Keep it. Let the crew eat.", "next_beat": "run_end_summary", "delta": { "bond_score": 2 } },
+        { "text": "Split it. Half trade, half keep.", "next_beat": "run_end_summary", "delta": { "credit_delta": 20, "bond_score": 1 } }
+      ]
+    },
+    "enc_crew_loss_tributary": {
+      "_id": "enc_crew_loss_tributary",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Crew",
+      "prose": "A dispatch arrives: a former crewmate died three hops behind. Your crew served with them — you didn't. They want to hold tribute. It means stopping, burning fuel, losing a day. The belt doesn't wait.",
+      "choices": [
+        { "text": "Hold the tribute. Stop the ship.", "next_beat": "run_end_summary", "delta": { "fuel_delta": -5, "bond_score": 2 } },
+        { "text": "Hold a minute of silence. Move on.", "next_beat": "run_end_summary", "delta": { "bond_score": 1 } },
+        { "text": "Log the name for the ledger. That's it.", "next_beat": "run_end_summary", "delta": {} }
+      ]
+    },
+    "enc_faction_ac_union_contract": {
+      "_id": "enc_faction_ac_union_contract",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Faction",
+      "prose": "A union steward needs a contractor to witness a contract dispute with Voidline Logistics. The contract language is airtight — the enforcement isn't. Your signature as witness has weight. Voidline will remember it.",
+      "choices": [
+        { "text": "Witness for the union. Sign.", "next_beat": "run_end_summary", "delta": { "bond_score": 1, "suspicion_delta": 1 } },
+        { "text": "Refuse. Stay out of it.", "next_beat": "run_end_summary", "delta": {} },
+        { "text": "Offer to mediate. Neutral ground.", "next_beat": "run_end_summary", "delta": { "bond_score": 1, "credit_delta": 30 } }
+      ]
+    },
+    "enc_faction_nac_payroll_audit": {
+      "_id": "enc_faction_nac_payroll_audit",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Faction",
+      "prose": "A conscript who worked payroll systems offers to show you the mortality-premium gap — the spread between what the Trust charges insurers and what crews actually cost. She has access codes. She needs someone the system won't flag.",
+      "choices": [
+        { "text": "Take the data. Log it.", "next_beat": "run_end_summary", "delta": { "discoveries": ["payroll_mortality_premium_gap"], "suspicion_delta": 2 } },
+        { "text": "Copy the codes. Don't use them yet.", "next_beat": "run_end_summary", "delta": { "discoveries": ["payroll_access_codes"] } },
+        { "text": "Refuse. Too hot.", "next_beat": "run_end_summary", "delta": {} }
+      ]
+    },
+    "enc_faction_b2_clearance_broker": {
+      "_id": "enc_faction_b2_clearance_broker",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Faction",
+      "prose": "A dispatch broker offers corridor clearance codes that bypass insurance blocks. The codes are real and current. The question is whether the broker owns them or rented them — and who else has the same set.",
+      "choices": [
+        { "text": "Buy the codes. Use them now.", "next_beat": "run_end_summary", "delta": { "credit_delta": -60, "fuel_delta": 5 } },
+        { "text": "Buy them. Sit on them.", "next_beat": "run_end_summary", "delta": { "credit_delta": -60, "discoveries": ["clearance_code_set"] } },
+        { "text": "Refuse. Bad paper trail.", "next_beat": "run_end_summary", "delta": {} }
+      ]
+    },
+    "enc_faction_me_engineering_access": {
+      "_id": "enc_faction_me_engineering_access",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Faction",
+      "prose": "A station engineer offers to show you the maintenance shaft her crew built into the walls. It's not on any blueprint. It goes places the station owners don't monitor — cargo bays, comms relays, the port authority's unwatched server room.",
+      "choices": [
+        { "text": "Accept the tour. Map the route.", "next_beat": "run_end_summary", "delta": { "discoveries": ["hidden_maintenance_shaft"], "bond_score": 1 } },
+        { "text": "Ask for the port authority route only.", "next_beat": "run_end_summary", "delta": { "discoveries": ["shaft_port_authority_access"] } },
+        { "text": "Decline. Too many eyes.", "next_beat": "run_end_summary", "delta": {} }
+      ]
+    },
+    "enc_faction_t4_genetic_leak": {
+      "_id": "enc_faction_t4_genetic_leak",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Faction",
+      "prose": "A clinic ship is quarantined after a gestational trait marker leaked into station water recycling. The director asks for help containing the narrative — not fixing the leak, managing the story. The contamination is real. People are drinking it.",
+      "choices": [
+        { "text": "Document the contamination. Broadcast.", "next_beat": "run_end_summary", "delta": { "discoveries": ["t4_contamination_evidence"], "suspicion_delta": 2, "bond_score": -1 } },
+        { "text": "Help quarantine the water supply.", "next_beat": "run_end_summary", "delta": { "bond_score": 1, "fuel_delta": -5 } },
+        { "text": "Refuse both sides. Walk away.", "next_beat": "run_end_summary", "delta": {} }
+      ]
+    },
+    "enc_faction_saa_overlooked_intel": {
+      "_id": "enc_faction_saa_overlooked_intel",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Faction",
+      "prose": "A Coalition informant has tracked fuel shipments through back-channel manifests. She's overlooked by design — the Trust doesn't watch half-size ships closely. She offers the manifest data. What you do with it is your run.",
+      "choices": [
+        { "text": "Take the manifests. Study them.", "next_beat": "run_end_summary", "delta": { "discoveries": ["t7_backchannel_manifests"], "bond_score": 1 } },
+        { "text": "Forward them to the Trustee's network.", "next_beat": "run_end_summary", "delta": { "discoveries": ["t7_manifest_to_trustee"], "suspicion_delta": 1 } },
+        { "text": "Trade the data for fuel. Pragmatic.", "next_beat": "run_end_summary", "delta": { "fuel_delta": 10, "bond_score": -1 } }
+      ]
+    }
+  }
+}
