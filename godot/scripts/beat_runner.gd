@@ -38,24 +38,36 @@ var _history: Array = []      # visits log for ledger
 func _ready() -> void:
 	_load_manifest()
 
+## Load a manifest from a custom path relative to the Godot project root.
+## Uses the same dev-mode path resolution (globalize_path + manual file walk)
+## as _load_manifest. Returns true on success.
+func load_manifest_from(manifest_rel_path: String) -> bool:
+	var godot_root := ProjectSettings.globalize_path("res://")
+	var path := godot_root + manifest_rel_path.lstrip("/")
+	return _read_manifest_at(path)
+
 func _load_manifest() -> void:
 	# Same dev-mode outside-the-project-root pattern as NarrativeData.
 	var godot_root := ProjectSettings.globalize_path("res://")
 	var path := godot_root + MANIFEST_PATH.lstrip("/")
+	_read_manifest_at(path)
+
+func _read_manifest_at(path: String) -> bool:
 	if not FileAccess.file_exists(path):
 		push_error("[BeatRunner] manifest not found at %s" % path)
-		return
+		return false
 	var f := FileAccess.open(path, FileAccess.READ)
 	if f == null:
 		push_error("[BeatRunner] open failed: %s" % path)
-		return
+		return false
 	var text := f.get_as_text()
 	f.close()
 	var data = JSON.parse_string(text)
 	if typeof(data) != TYPE_DICTIONARY:
 		push_error("[BeatRunner] manifest not a dictionary")
-		return
+		return false
 	_manifest = data
+	return true
 
 func is_loaded() -> bool:
 	return not _manifest.is_empty()
