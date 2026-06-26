@@ -240,6 +240,12 @@ lore(world): rename [G1-NorthAmerica PLACEHOLDER] to Final Name
 
 ## Known pitfalls
 
-*Section to populate as they're encountered. Lessons learned, saved for the next agent.*
+- **Godot 4.6: `class_name Foo` + autoload `Foo` collision.** If a script has `class_name` and is also registered as an autoload in project.godot, Godot throws `'"Foo" hides an autoload singleton'` parse error at import time. Strip `class_name` when the script is autoloaded — the autoload registration alone provides the global symbol.
+- **Godot 4.6: variant-inference warnings are ERRORS.** Use `var x: Type = ...` not `:=` or bare `var x = ...` for typed variables. The engine promotes warnings to errors in 4.6.
+- **`extends GutTest` scripts not matching `test_*` prefix are silently filtered** by `-gdir=res://test` — name them `test_foo.gd` or pass `-gtest=...` explicitly.
+- **Script-mode `-s` boot does not run autoloads** before `_init()`. Run via GUT, or `root.add_child(node)` + `await process_frame`.
+- **GDScript `load()` conflicts with `ResourceLoader.load()`**. The project renames to `load_state()` in persist.gd — follow that pattern.
+- **narrative/ lives outside the Godot project root** per AGENTS.md convention. Use `_resolve_dev_path()` in narrative_data.gd, don't hardcode paths.
+- **`Node.name` property shadows any instance vars named `name`**. Crew dict uses `"name"` key but interpreter-level `name` appears as the property — be explicit in access.
 
 [End of AGENTS.md]

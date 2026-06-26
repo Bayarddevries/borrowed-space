@@ -25,12 +25,12 @@ Current state. Verified-working features. Known issues. Updated at the end of ev
 
 ## Phase
 
-**Phase 3e/21 — CQB combat wired into run loop (DONE).** CoverTest → CqbEngagement → CasualtyPipeline → CQB Ink beats chained through `ai.gd.step_X_meet_aliens()`. Travel encounter rolls route through combat when triggered. 77/78 GUT tests pass (515 asserts). Issue #21 closed.
+**Phase 3 — DONE.** All sub-phases 3a–3g shipped. Phase 4 (paper art) is next.
 
-Last commit: `8e3d006 Merge branch 'phase/day-1-demo-loop'`
+Last commit: `072ac5f docs(changelog): add Phase 3 done entry`
 Repo: https://github.com/Bayarddevries/borrowed-space (private)
-Working tree: clean
-Headline achievement: CQB combat fires end-to-end from travel encounters; full combat flow (CoverTest → grid fight → casualty tribute → Ink beat → ledger write); 77/78 tests pass (0 failures).
+Working tree: 9 untracked files (cover_test, overworld controller uid, verification scripts — paid agent mid-stream)
+Headline achievement: 77/78 GUT pass (515 asserts). Full day-1 demo scaffold on main (origin pick → crew readout → ledger row). CQB combat fires end-to-end from travel encounters (CoverTest → grid fight → casualty tribute → Ink beat → ledger write). Content complete: voice corpus, 30 encounter beats, 20 station beats, 15 CQB beats — all bias-clean. PRs #27 and #28 merged. Phase 3 locked.
 
 ## Verified-working
 
@@ -57,17 +57,22 @@ Headline achievement: CQB combat fires end-to-end from travel encounters; full c
 - ✅ **Phase 3f genship-origin data expanded** (main) — `narrative/data/captain-origins.json` expanded from 5 to 6 origins (ME added). Full per-origin mechanical data: corp_relationships, unique_content chains, narrative_flavor. `test_narrative_data.gd` updated. **55/55 GUT tests pass**. Closes #12.
 - ✅ **Phase 3f genship-origin runtime wired** (main) — `Captain.get_origin()` populates `captain["origin"]`; `ai.gd` pipes origin_flavor + corp_relationships + unique_content_chain into briefing_state; `ledger_writer.gd` writes starting_corp_standing. `test_captain.gd` replace placeholder with 5 real GUT cases. **59/59 GUT tests pass**.
 - ✅ **Phase 3e/21 — CQB combat wired into run loop** — `step_X_meet_aliens()` chains CoverTest → CqbEngagement (full grid turn-loop) → CasualtyPipeline (tribute + ledger) → CQB Ink beats. Travel encounters route through combat when triggered. New: `cqb_engagement.gd`. **77/78 GUT pass** (515 asserts). Closes #21.
+- ✅ **Day-1 demo scaffold (PR #27)** — `run_start.tscn` with origin pick (3 genships), crew readout, ledger row write via `DemoSession` autoload. `demo_controller.gd` drives the scene. No overworld or combat scene wiring yet — those move to Phase 4.
+- ✅ **Phase 3g content complete** — `voice_fragments.json` (52 dit + 52 cj entries), `encounter-pool-beats.json` (30 Schema B beats), `station_arrival_beats.json` (20 beats), `cqb-ink-beats.json` (15 beats). All bias-checked (0 flags).
+- ✅ **RELATIVE_PATHS fix** — `voice_fragments` entry added to `narrative_data.gd` constants. Casualty tribute pipeline no longer returns empty strings.
 
 ## In-progress
 
 | Item                          | Issue/PR                        | Status                                     |
 |--------------------------------|----------------------------------|---------------------------------------------|
-| Phase 3g — voice corpus        | `.agents/prompts/phase-3g-voice-corpus.md` | READY — prompt written, content landed in combined file |
-| Phase 3d — EncounterPool impl  | #10                              | **DONE** — merged                          |
-| NPC state-selection            | #11                              | **DONE** — merged                          |
-| Genship-origin wiring          | #12                              | **DONE** — data expanded + runtime wired   |
-| Phase 3e — CQB combat          | #15–19, #21                      | **DONE** — grid + AI + beats + pipeline + orchestrator wiring |
-| Phase 3f — visual layer        | #20                              | DEFERRED — blocked on DirectionPage design |
+| Phase 3 (all sub-phases)       | #9, #10, #11, #12, #15-19, #21  | **DONE** — 77/78 GUT pass, all content complete |
+| Paid agent — overworld scene   | phase/demo-loop-overworld        | In progress — moves 3+4+5 |
+| Phase 4 planning (paper art)   | #20 (visual layer)               | Deferred — not started |
+
+## Queued (next)
+
+- Phase 4: paper art pass — 1 character + 1 background validates paper pipeline
+- Phase 5: ship out — browser build, README
 
 ---
 
