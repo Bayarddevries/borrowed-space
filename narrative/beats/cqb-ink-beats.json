@@ -55,6 +55,78 @@
       "choices": [
         { "label": "Continue the run.", "to": "end_of_run_1", "delta": { "bond_score": -2 } }
       ]
+    },
+
+    "cqb_cover_fail_caught": {
+      "speaker": "narrator",
+      "text": "The gate at {station} flagged you on sight. Your invoice-code matched a watch-list entry — real or fabricated, it doesn't matter now. The cameras lock on. Security steps out of the corridor. Fight or talk. Both cost something.",
+      "choices": [
+        { "label": "Talk your way out. Play confused.", "to": "end_of_run_1", "delta": { "suspicion_delta": 2 } },
+        { "label": "Draw. Take the gate.", "to": "cqb_enter", "delta": { "suspicion_delta": 3 } }
+      ]
+    },
+
+    "cqb_cover_fail_withdraw": {
+      "speaker": "narrator",
+      "text": "The gate scan turns red. Before security moves, {captain.short_form} keys the override and pulls the crew back through the airlock. You're clear — for now. But your face is in their system and the station is not.",
+      "choices": [
+        { "label": "Burn out. Fast.", "to": "end_of_run_1", "delta": { "fuel_delta": -8, "suspicion_delta": 1 } },
+        { "label": "Loop around. Try another dock.", "to": "end_of_run_1", "delta": { "fuel_delta": -5, "suspicion_delta": 2 } }
+      ]
+    },
+
+    "cqb_flanked_warning": {
+      "speaker": "narrator",
+      "text": "The eng tech's voice crackles on the comm: movement on the side — two hostiles pressing the flank. Full cover on the left is gone. The grid just got smaller. Hold or fold.",
+      "choices": [
+        { "label": "Hold. Redistribute fire.", "to": "end_of_run_1", "delta": { "bond_score": 1 } },
+        { "label": "Fold. Sacrifice the angle.", "to": "cqb_fold_declared", "delta": { "bond_score": -1 } }
+      ]
+    },
+
+    "cqb_fold_declared": {
+      "speaker": "narrator",
+      "text": "Someone calls fold — surrender the firing position, give the enemy the angle. It costs: your crew loses an attack, the hostiles gain one. But it keeps bodies behind hard cover. The math is ugly. The math is the math.",
+      "choices": [
+        { "label": "Accept the fold. Regroup.", "to": "end_of_run_1", "delta": { "bond_score": -1 } },
+        { "label": "Counter-push. Risk the open.", "to": "end_of_run_1", "delta": { "bond_score": 1, "fuel_delta": -2 } }
+      ]
+    },
+
+    "cqb_height_advantage": {
+      "speaker": "narrator",
+      "text": "The nav officer spots a catwalk overhead — two metres up, runs the length of the engagement zone. Height modifies everything: cover thickens, shots land cleaner. Climbing costs a turn. Staying flat costs nothing but accuracy.",
+      "choices": [
+        { "label": "Climb. Take the height.", "to": "end_of_run_1", "delta": { "crew_xp": { "nav_officer": 1 } } },
+        { "label": "Hold ground. Fight flat.", "to": "end_of_run_1", "delta": {} }
+      ]
+    },
+
+    "cqb_end_won_pyrrhic": {
+      "speaker": "narrator",
+      "text": "You won. You won, and the taste of it is ash. Half your ammo is gone, the corridor is wrecked, and the medic is working on two crewmates who won't walk right for a week. The bond holds — barely. The ledger will show the cost.",
+      "choices": [
+        { "label": "Debrief. Count what's left.", "to": "end_of_run_1", "delta": { "bond_score": 1, "fuel_delta": -3 } },
+        { "label": "Skip the debrief. Move on.", "to": "end_of_run_1", "delta": { "bond_score": -1 } }
+      ]
+    },
+
+    "cqb_end_negotiated_exit": {
+      "speaker": "narrator",
+      "text": "Neither side could press the advantage. A voice from behind enemy cover called a corridor ceasefire — three minutes to evacuate. You took it. They took it. The gate stays contested. The run continues with less ammo and a strange respect.",
+      "choices": [
+        { "label": "Log the ceasefire. Move on.", "to": "end_of_run_1", "delta": { "discoveries": ["cqb_ceasefire_intel"], "bond_score": 1 } },
+        { "label": "Say nothing. Don't owe them.", "to": "end_of_run_1", "delta": {} }
+      ]
+    },
+
+    "cqb_fold_sacrifice": {
+      "speaker": "narrator",
+      "text": "The fold wasn't tactical — it was survival. One crewmate held the angle while the rest fell back. The angle held. The crewmate is behind the line, barely. This is what fold costs when there's no good choice.",
+      "choices": [
+        { "label": "Pull them back. No one stays.", "to": "end_of_run_1", "delta": { "bond_score": 2, "fuel_delta": -3 } },
+        { "label": "Hold the new line. They knew.", "to": "end_of_run_1", "delta": { "bond_score": -1 } }
+      ]
     }
   }
 }
