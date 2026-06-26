@@ -116,6 +116,7 @@ func _on_transit_pressed() -> void:
 
 func _on_proceed_pressed() -> void:
 	_proceed_btn.hide()
+	_transit_btn.disabled = false
 	var ai_s: GDScript = load("res://scripts/ai.gd"); var ai: Node = ai_s.new(); add_child(ai)
 	ai.captain = captain; ai.crew = crew
 	var cqb: Dictionary = ai.step_X_meet_aliens(ship)
@@ -188,6 +189,7 @@ func _on_choice_pressed(index: int) -> void:
 		Persist.save()
 
 	_pending_choices = []
+	_transit_btn.disabled = false
 	var choice_text: String = picked.get("text", "Chosen")
 	_status_label.text = "[color=green]%s[/color]" % choice_text
 	_end_run_btn.disabled = false
