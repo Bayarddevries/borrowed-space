@@ -140,6 +140,9 @@ func _on_launch_pressed() -> void:
 	if not has_node("/root/DemoSession"):
 		_brief_label.text = "[b]DemoSession autoload not found.[/b]"
 		return
+	# Auto-generate crew if Meet Crew wasn't clicked
+	if crew.is_empty():
+		crew = ai.step_4_meet_crew() if ai != null else []
 	# Stash captain + crew in DemoSession so overworld.tscn can read them
 	var ds = get_node("/root/DemoSession")
 	ds.captain = captain
