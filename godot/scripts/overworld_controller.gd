@@ -84,7 +84,6 @@ func _on_transit_pressed() -> void:
 	if idx < 0 or idx >= stations.size():
 		_status_label.text = "[color=red]Pick a destination.[/color]"; return
 	var target: Dictionary = stations[idx]
-	Travel.register_encounter("station_hex", "station_arrival_default_1")
 	var result: Dictionary = Travel.transit(ship, int(target.get("q",0)), int(target.get("r",0)), stations)
 	Travel.clear_registry()
 	if not result.get("ok", false):
