@@ -24,6 +24,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) but adapted for s
 
 ## [Unreleased] — Phase 3a content
 
+### Phase 3c — mission board (commit pending)
+- godot/scripts/mission_board.gd — `MissionBoard.generate()` returning 3-5 offers with `id`, `source`, `risk`, `act_gate`, `continuation_of`. Source weights: corps 40% / genship 30% / private 20% / trustee 10%. Standing < -3 blacks out corp source. Neutral (0) drifts to -1 per run. Trust > +3 grows at +1/run. In-place ledger mutation. Guaranteed continuation offer when `run_state.missions` contains an in-progress entry.
+- godot/test/test_mission_board.gd — 8-case acceptance suite (all pass).
+- `.agents/prompts/phase-3c-mission-board.md` — Issue #9 definement prompt.
+- godot/scripts/travel.gd — restored EncounterPool.roll() encounter fallback chain (registry → pool → default). Fixed `_DEFAULT_ENCOUNTER_BEAT` constant.
+- godot/test/test_travel.gd — updated method names for Travel API rename.
+- godot/scripts/ai.gd — fixed `clear_encounters()` → `clear_registry()` rename from Phase 3d.
+- godot/test/test_playable_run.gd — fixed SAA-coalition tag_pool assertion to match content data (`t-P-H-coalition`, `t-P-A`, `t-P-C`).
+- Full GUT suite: 64/64 pass, 278/278 asserts.
+
 ### Phase 3a.0 — content batch (commit 8f4cc55)
 - narrative/beats/empty-space-manifest.json — 16 beats × 4 categories (distress / stranger / failure / crew-fight). Deltas feed LedgerWriter (fuel, suspicion, bond, crew_xp, discoveries).
 - narrative/beats/legacy-trace-prototype.json — 1 beat demonstrating the past-captain ghost-pin mechanic. Includes a data_spec block that documents the contract for the future legacy_trace_system.gd.
