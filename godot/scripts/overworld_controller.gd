@@ -92,7 +92,7 @@ func _on_transit_pressed() -> void:
 	_refresh_view()
 	var rolled: Variant = result.get("encounter_rolled", null)
 	if rolled != null:
-		_encounter_label.text = "[b]Encounter[/b]\n%s" % (rolled.get("description",str(rolled)) if rolled is Dictionary else str(rolled))
+		_encounter_label.text = "[b]Encounter[/b]\n%s" % (rolled.get("flavor_hook", "A belt encounter.") if rolled is Dictionary else "An encounter unfolds.")
 		_proceed_btn.show(); _transit_btn.disabled = true
 		_status_label.text = "[color=yellow]Encounter — proceed?[/color]"
 	else:
@@ -106,9 +106,11 @@ func _on_proceed_pressed() -> void:
 	var cqb: Dictionary = ai.step_X_meet_aliens(ship)
 	var fired: bool = cqb.get("combat_fired", false)
 	var outcome: String = cqb.get("outcome", "unknown")
+	var outcome_labels := {"pass-clean": "You pass through cleanly.", "pass-rough": "You squeeze through — someone noticed.", "fail-soft": "CQB combat breaks out.", "fail-hard": "Detained. No combat this run.", "won": "Combat won. Crew battered but alive.", "lost": "Combat lost. The aliens take the field.", "fled": "You retreat under fire.", "casualty": "A crew member falls."}
 	if fired:
 		var cas: Array = cqb.get("casualties", [])
-		_encounter_label.text = "[b]CQB — %s[/b]\nCasualties: %d" % [outcome.to_upper(), cas.size()]
+		var label: String = outcome_labels.get(outcome, "Combat resolved.")
+		_encounter_label.text = "[b]Combat — %s[/b]\n%s\nCasualties: %d" % [outcome.to_upper(), label, cas.size()]
 	else: _encounter_label.text = "[b]Cover Pass — %s[/b]" % outcome
 	_status_label.text = "[color=green]Resolved.[/color]"
 	_end_run_btn.disabled = false
