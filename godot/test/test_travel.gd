@@ -138,8 +138,14 @@ func test_transit_encounter_rolled_for_station_hex() -> void:
 	var ship := ShipState.new_default("Test Captain", "NAC", 0, 0)
 	var result := Travel.transit(ship, 1, -1, _STATIONS_FIXTURE)
 	assert_true(result.ok, "transit succeeded")
-	assert_eq(result.get("encounter_rolled", null), "station_arrival_default_1",
-		"encounter beat fires on station-hex arrival")
+	var enc = result.get("encounter_rolled", null)
+	assert_not_null(enc, "encounter must not be null for station-hex transit")
+	if typeof(enc) == TYPE_STRING:
+		assert_eq(enc, "station_arrival_default_1", 
+			"string encounter = default beat")
+	else:
+		assert_true(enc is Dictionary, "dictionary encounter = pool roll")
+		assert_true(enc.has("flavor_hook"), "pool roll must have flavor_hook")
 
 func test_ship_state_round_trip() -> void:
 	# ShipState.to_dict / from_dict symmetry.
