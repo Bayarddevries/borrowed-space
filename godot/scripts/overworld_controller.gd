@@ -109,6 +109,7 @@ func _on_transit_pressed() -> void:
 			_proceed_btn.hide()
 			_end_run_btn.disabled = false
 			_status_label.text = "[color=green]Docked.[/color]"
+			_transit_btn.disabled = false  # keep Transit active for routine arrivals
 		_transit_btn.disabled = true
 	else:
 		_encounter_label.text = "[b]Arrived.[/b] No encounter."
