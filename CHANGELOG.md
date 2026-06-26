@@ -22,7 +22,31 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) but adapted for s
 
 ---
 
-## [Unreleased] — Phase 3g ready
+## [Unreleased] — Phase 3 done, Phase 4 next
+
+### Paid agent — #21 CQB integration shipped (PR #28)
+- `godot/scripts/cqb_engagement.gd` — full grid turn-loop orchestrator (CqbEngagement.run())
+- `godot/scripts/ai.gd` — step_X_meet_aliens() chaining CoverTest → CQB → CasualtyPipeline → Ink beat
+- `godot/scripts/beat_runner.gd` — load_manifest_from() for CQB beat manifest
+- `godot/scripts/casualty_pipeline.gd` — process → process_casualties rename, static-context fix
+- `godot/scripts/narrative_data.gd` — RELATIVE_PATHS voice_fragments fix (one-liner)
+- `godot/test/test_cqb_engagement.gd` — 8-test suite
+- **Suite: 77/78 pass, 515 asserts** (was 68/70/388)
+- Closes #21
+
+### Local — day-1 demo scaffold (PR #27)
+- `godot/scripts/demo_controller.gd` — run_start.tscn driver
+- `godot/scenes/run_start.tscn` — RichTextLabel + origin pick + crew readout + ledger
+- `godot/scripts/demo_session.gd` — cross-scene state autoload (no class_name, 4.6-safe)
+- `godot/project.godot` — DemoSession autoload registration
+- Moves 3+4+5 (overworld, encounter display, return-to-briefing) deferred — wired by paid agent next
+
+### Remote — content batch (Phase 3g complete)
+- `voice_fragments.json` — 52 die_in_throes + 52 captain_journal entries, bias-clean
+- `encounter-pool-beats.json` — 30 Schema B beats matching pool entries
+- `station_arrival_beats.json` — 20 beats (10 original + 10 second-visit variants)
+- `cqb-ink-beats.json` — 15 beats (7 original + 8 new: flanked, fold, height-advantage variants)
+- All content bias-checked (0 flags across all files)
 
 ### Reconciliation commit (this session)
 - docs(ROADMAP): full rewrite of Phase 2+3 sections, module table updated to actual architecture (11→15 nodes), content data inventory (13 files)
