@@ -100,12 +100,16 @@ func _on_transit_pressed() -> void:
 		if rolled is Dictionary:
 			var beat_id: String = rolled.get("beat_id", "")
 			if beat_id != "" and _load_encounter_beat(beat_id):
-				return  # choices are now showing
+				return  # choices are now showing, no Proceed needed
 			_encounter_label.text = "[b]Encounter — %s[/b]\n%s" % [rolled.get("category","?"), rolled.get("flavor_hook","A belt encounter unfolds.")]
+			_proceed_btn.show()
+			_status_label.text = "[color=yellow]Encounter — proceed?[/color]"
 		else:
-			_encounter_label.text = "[b]Encounter[/b]\n%s" % str(rolled)
-		_proceed_btn.show(); _transit_btn.disabled = true
-		_status_label.text = "[color=yellow]Encounter — proceed?[/color]"
+			_encounter_label.text = "[b]Routine arrival.[/b] No eventful encounter this trip."
+			_proceed_btn.hide()
+			_end_run_btn.disabled = false
+			_status_label.text = "[color=green]Docked.[/color]"
+		_transit_btn.disabled = true
 	else:
 		_encounter_label.text = "[b]Arrived.[/b] No encounter."
 		_end_run_btn.disabled = false
