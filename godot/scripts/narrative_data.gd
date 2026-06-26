@@ -28,6 +28,7 @@ const RELATIVE_PATHS := {
 	"cartography": "/../narrative/data/cartography.json",
 	"aliens":      "/../narrative/data/aliens.json",
 	"encounter_pool": "/../narrative/data/encounter-pool.json",
+	"voice_fragments": "/../narrative/data/voice_fragments.json",
 }
 
 # Cache so we don't re-parse every call.
