@@ -15,6 +15,7 @@ var crew: Array = []
 var transit_result: Dictionary = {}
 var ledger_written: bool = false
 var run_states: Array = []   # ledger rows from finalised runs
+var ship: Object = null      # ShipState object carried across scenes
 
 func reset() -> void:
 	captain.clear()
