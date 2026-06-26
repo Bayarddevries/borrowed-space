@@ -1,7 +1,7 @@
 ---
 title: Borrowed Space — Handoff State
 status: review
-last_edited: 2026-06-23
+last_edited: 2026-06-26
 tags:
   - workflow
   - handoff
@@ -30,7 +30,7 @@ Current state. Verified-working features. Known issues. Updated at the end of ev
 Last commit: `529463b docs(handoff): post-merge update for Phase 3a.1 + 3a.2`
 Repo: https://github.com/Bayarddevries/borrowed-space (private)
 Working tree: clean
-Headline achievement: 23/23 GUT tests pass; Phase 3e plan locked + 7 issues opened; Phase 3a combat scaffolding parallel-tracked with Phase 3d-3f via separate sub-agents.
+Headline achievement: 64/64 GUT tests pass (278 asserts); Phase 3a/3c/3d/3e/3f shipped; Phase 3g ready to build; Roadmap + TODO + ISSUES reconciled to disk state.
 
 ## Verified-working
 
@@ -61,11 +61,12 @@ Headline achievement: 23/23 GUT tests pass; Phase 3e plan locked + 7 issues open
 
 | Spotify Entry                  | Issue/PR                        | Status                                     |
 |--------------------------------|----------------------------------|---------------------------------------------|
-| Mission board                  | #9                               | Parse clean; awaiting Persist wiring decision |
-| Phase 3f — CQB visual layer    | #20                              | Deferred                                   |
-| Phase 3d — EncounterPool impl  | phase/3d-encounter-pool          | Merged to main (`cc19be2`), 56/56 pass    |
-| NPC state-selection            | phase/3d-npc-state-selection     | 1fadf25, 8/8 pass, merged to main         |
-| Genship-origin wiring          | #12                              | **DONE** — data expanded (6 origins incl. ME) + runtime wired (Captain.get_origin, ai briefing, persist). |
+| Phase 3g — voice corpus        | `.agents/prompts/phase-3g-voice-corpus.md` | READY — prompt written, 50+50 entries to build |
+| Mission board                  | #9                               | **DONE** — merged, 64/64 GUT pass           |
+| Phase 3d — EncounterPool impl  | phase/3d-encounter-pool          | **DONE** — merged to main                   |
+| NPC state-selection            | phase/3d-npc-state-selection     | **DONE** — merged to main                   |
+| Genship-origin wiring          | #12                              | **DONE** — data expanded + runtime wired    |
+| Phase 3e — CQB combat          | #15–19                           | **DONE** — grid + AI + beats + casualty pipeline |
 
 ---
 
@@ -82,12 +83,13 @@ Headline achievement: 23/23 GUT tests pass; Phase 3e plan locked + 7 issues open
 ## What to read first (next agent)
 
 1. `docs/VISION.md`
-2. `docs/ROADMAP.md`
-3. `AGENTS.md` (just-completed commit)
-4. Current GitHub issue assigned to you
-5. Relevant docs/wiki links from the issue body
-6. If working on narrative data: read `godot/scripts/narrative_data.gd` and `narrative/data/` schema docs.
-7. If working on persistence: read `godot/scripts/persist.gd` to understand the autoload pattern.
+2. `docs/ROADMAP.md` (just-updated — Phase 3 sub-phases tracked)
+3. `AGENTS.md`
+4. `.agents/prompts/phase-3g-voice-corpus.md` — **the next build item**
+5. `docs/BIAS_GUARDRAILS.md` — mandatory before writing any narrative content
+6. `narrative/data/voice_fragments.json` — existing 50+50 entries (staging file; 3g splits into two separate files)
+7. `godot/scripts/casualty_pipeline.gd` — runtime that consumes `die_in_throes` fragments
+8. `godot/scripts/captains_journal.gd` — runtime that consumes `captain_journal` fragments
 
 ---
 

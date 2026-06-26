@@ -1,14 +1,14 @@
 ---
 title: Borrowed Space — TODO Board
-status: review
-last_edited: 2026-06-24
+status: locked
+last_edited: 2026-06-26
 tags:
   - workflow
   - todo
   - phase
 aliases:
   - TODO
-phase: 3a
+phase: 3g
 related:
   - "[[ROADMAP]]"
   - "[[ISSUES]]"
@@ -22,17 +22,26 @@ Active work, in-progress, queued. Updated at the end of every session.
 
 ## In-progress
 
-- [~] **Narrative beat content.** Shipped: station encounters (14 beats), empty-space encounters (16 beats), legacy-trace prototype (1 beat). Draft PR #13 waiting for merge. More beats will be needed as Phase 3 modules wire in.
-- [ ] **Phase 3e — CQB runtime + tests.** `cqb_grid.gd` and `test_cqb.gd` shipped on `phase/3e-cqb-grid`. 15/15 GUT tests pass. Issues #15, #19 closed. Remaining open issues: #16 CasualtyPipeline, #17 cqb_ai + aliens.json, #18 Ink beats, #20 visual layer (deferred), #21 ai.gd integration.
+- [~] **Phase 3g — Voice corpus.** Prompt ready at `.agents/prompts/phase-3g-voice-corpus.md`. Build target: `narrative/data/die_in_throes.json` (50 entries) + `narrative/data/captains_journal.json` (50 entries). Schema + bias-check rules in prompt. No code changes required — content only.
 
 ## Queued (Phase 3 sub-deliverables)
 
-- [~] **Phase 3e.1 — cqb_grid.** CqbGrid runtime + 15/15 GUT tests on `phase/3e-cqb-grid`.
-- [~] **Phase 3a.2 — Encounter pool system.** Spec ready. Implementation pending merge of Phase 3e cqb_grid.
-- [ ] **3b. — Combat module.** Cover-test in run + CQB grid + space combat. Plan locked in COMBAT.md.
-- [ ] **3c. — Mission board module.** Implementation spec written; development pending.
-- [ ] **3d. — NPC state-selection.** Spec at `docs/NPC_STATE_SELECTION.md`.
-- [ ] **3f. — Genship-origin mechanicals.** Implementation spec not yet written.
+- [ ] **Phase 3g — Voice corpus (die_in_throes + captain_journal, 50 each).** Prompt: `.agents/prompts/phase-3g-voice-corpus.md`.
+- [ ] **#21 — ai.gd CQB integration wiring.** Wire CQB combat outcomes into the ai.gd orchestrator flow. Depends on 3g landing first (needs voice fragments for combat beats).
+- [ ] **#20 — CQB visual layer.** Deferred, blocked on Phase 3f DirectionPage. Do not start.
+
+## Done (Phase 3 shipped)
+
+- [x] Phase 3a.0 — content batch (16 empty-space beats + 1 legacy-trace prototype)
+- [x] Phase 3a.1 — travel system (hex.gd, cartography.gd, ship.gd, travel.gd, 9 GUT tests)
+- [x] Phase 3a.2 — stations content (10 named stations + arrival beats)
+- [x] Phase 3c — Mission board (mission_board.gd + 8 GUT tests)
+- [x] Phase 3d — Encounter pool (encounter_pool.gd + 30-entry expansion)
+- [x] Phase 3e.1 — CqbGrid runtime (cqb_grid.gd + 15 GUT tests)
+- [x] Phase 3e.2 — CqbAI + aliens.json (cqb_ai.gd + 4 GUT tests)
+- [x] Phase 3e.3 — Ink beats for cover-test + CQB outcomes (8 GUT tests)
+- [x] Phase 3e.4 — CasualtyPipeline + CaptainsJournal (50 GUT tests)
+- [x] Phase 3f — Genship-origin data expansion (6 origins) + runtime wiring
 
 ## Deferred / non-blocking
 
