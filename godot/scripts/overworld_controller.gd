@@ -12,11 +12,14 @@ class_name OverworldController
 @onready var _transit_btn: Button         = $TransitButton
 @onready var _end_run_btn: Button         = $EndRunButton
 @onready var _proceed_btn: Button         = $ProceedButton
+@onready var _choice_btns: Array[Button] = [$Choice1Button, $Choice2Button, $Choice3Button]
 
 var ship: ShipState = null
 var stations: Array = []
 var captain: Dictionary = {}
 var crew: Array = []
+var _beat_manifest: Dictionary = {}
+var _pending_choices: Array = []  # current encounter's choices
 
 func _ready() -> void:
 	captain = DemoSession.captain.duplicate(true)
@@ -36,6 +39,9 @@ func _ready() -> void:
 	_transit_btn.disabled = false
 	_end_run_btn.disabled = true
 	_proceed_btn.hide()
+	for i in range(3):
+		_choice_btns[i].pressed.connect(_on_choice_pressed.bind(i))
+		_choice_btns[i].hide()
 
 func _populate_station_dropdown() -> void:
 	_station_dropdown.clear()
@@ -92,6 +98,9 @@ func _on_transit_pressed() -> void:
 	var rolled: Variant = result.get("encounter_rolled", null)
 	if rolled != null:
 		if rolled is Dictionary:
+			var beat_id: String = rolled.get("beat_id", "")
+			if beat_id != "" and _load_encounter_beat(beat_id):
+				return  # choices are now showing
 			_encounter_label.text = "[b]Encounter — %s[/b]\n%s" % [rolled.get("category","?"), rolled.get("flavor_hook","A belt encounter unfolds.")]
 		else:
 			_encounter_label.text = "[b]Encounter[/b]\n%s" % str(rolled)
@@ -127,3 +136,54 @@ func _on_end_run_pressed() -> void:
 	DemoSession.reset()
 	await get_tree().create_timer(2.0).timeout
 	get_tree().change_scene_to_file("res://scenes/run_start.tscn")
+
+# ── Load an encounter beat and show prose + choice buttons ────────
+func _load_encounter_beat(beat_id: String) -> bool:
+	var godot_root := ProjectSettings.globalize_path("res://")
+	var beat_path := godot_root + "../narrative/beats/encounter-pool-beats.json"
+	if not FileAccess.file_exists(beat_path):
+		_encounter_label.text = "[b]Encounter[/b]\n(beat file not found)"
+		return false
+	var file := FileAccess.open(beat_path, FileAccess.READ)
+	if file == null:
+		return false
+	var raw := file.get_as_text()
+	file.close()
+	var data = JSON.parse_string(raw)
+	if data == null or not data.has("beats"):
+		return false
+	var beat: Dictionary = data["beats"].get(beat_id, {})
+	if beat.is_empty() or not beat.has("prose"):
+		return false
+
+	# Show prose and choices
+	_pending_choices = beat.get("choices", [])
+	_encounter_label.text = "[b]%s[/b]\n%s" % [beat.get("category", "Encounter"), beat.get("prose", "")]
+	_proceed_btn.hide()
+	for i in range(3):
+		if i < _pending_choices.size():
+			_choice_btns[i].text = _pending_choices[i].get("text", "")
+			_choice_btns[i].show()
+		else:
+			_choice_btns[i].hide()
+	_status_label.text = "[color=yellow]Make a choice.[/color]"
+	return true
+
+# ── Choice button clicked ──────────────────────────────────────────
+func _on_choice_pressed(index: int) -> void:
+	if index < 0 or index >= _pending_choices.size():
+		return
+	var picked: Dictionary = _pending_choices[index]
+	# Hide choices
+	for b in _choice_btns:
+		b.hide()
+
+	# Apply delta to Persist
+	if picked.has("delta") and not picked["delta"].is_empty():
+		Persist.patch(picked["delta"])
+		Persist.save()
+
+	_pending_choices = []
+	var choice_text: String = picked.get("text", "Chosen")
+	_status_label.text = "[color=green]%s[/color]" % choice_text
+	_end_run_btn.disabled = false
