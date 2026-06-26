@@ -132,6 +132,20 @@ func _on_meet_crew_pressed() -> void:
 	lines += "\nClick [b]Launch → Overworld[/b] to transit."
 	_crew_label.text = lines
 
+# ── Move 3: Launch to overworld ─────────────────────────────────────
+func _on_launch_pressed() -> void:
+	if captain.is_empty():
+		_brief_label.text = "[b]Pick an origin first.[/b]"
+		return
+	if not has_node("/root/DemoSession"):
+		_brief_label.text = "[b]DemoSession autoload not found.[/b]"
+		return
+	# Stash captain + crew in DemoSession so overworld.tscn can read them
+	var ds = get_node("/root/DemoSession")
+	ds.captain = captain
+	ds.crew = crew
+	get_tree().change_scene_to_file("res://scenes/overworld.tscn")
+
 # ── Move 4: Ledger write on encounter return ─────────────────────
 # Called from overworld.tscn via a scene-switch handler after the
 # transit completes. Builds a ledger row from captain + crew.
