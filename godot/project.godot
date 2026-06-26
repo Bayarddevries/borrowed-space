@@ -19,6 +19,7 @@ config/icon="res://assets/sprites/icon.svg"
 [autoload]
 
 Persist="*res://scripts/persist.gd"
+DemoSession="*res://scripts/demo_session.gd"
 
 [editor_plugins]
 
