@@ -1,7 +1,7 @@
 ---
 title: Borrowed Space — Roadmap
 status: locked
-last_edited: 2026-06-22
+last_edited: 2026-06-26
 tags:
   - roadmap
   - phase-2
@@ -50,9 +50,9 @@ Why:
 - Text-first *proves the storytelling* before thousands of lines of combat/art code exist.
 
 **Implications:**
-- Phase 2 produces a text-first playable run with placeholder paper-blocks.
-- Phase 3 is *visual only* — never functional.
-- Phase 4 layers combat on top, *as a module*, with the narrative layer calling it through a hook.
+- Phase 2 produces a text-first playable run with placeholder paper-blocks. **Done.**
+- Phase 3 is *system-rich*: overworld, mission board, encounter pool, CQB combat, genship origins, voice corpus — all wired through the narrative layer. Art remains paper-blocks throughout.
+- Phase 4 is the *only* visual phase — art pass on top of the proven narrative+combat skeleton.
 - Phase 5 ships.
 
 ---
@@ -65,45 +65,47 @@ The system has eight modules plus one cross-cutting glue layer. They are *interf
 
 | # | Module | Responsibility |
 |---|---|---|
-| 1 | **State machine** | Captain + crew + ledger state. Persists across runs and beats. Singleton. |
-| 2 | **Captain generation** | Origin matrix × archetype × trait pool × He-3 literacy tier. |
-| 3 | **Narrative runner** | Ink story layer. Ledger-bound variables. Crew-aware choices. |
-| 4 | **Crew system** | Procedural generation, bond mechanism, departure, casualty. |
+| 1 | **State machine** | Captain + crew + ledger state. Persists across runs and beats. Singleton (`Persist`). |
+| 2 | **Captain generation** | Origin matrix × archetype × trait pool × He-3 literacy tier. 6 genships (incl. Coalition). |
+| 3 | **Narrative runner** | Ink/JSON-beat story layer. Ledger-bound variables. Crew-aware choices. |
+| 4 | **Crew system** | Procedural generation, bond mechanism, departure, casualty pipeline + journal. |
 
-### Gameplay phases (5–8)
+### Gameplay systems (5–9, Phase 3 actual split)
 
-| # | Module | Responsibility |
-|---|---|---|
-| 5 | **Overworld / station map** | Node graph for selecting destinations. |
-| 6 | **Combat** | Tactical grid. Ship-battle + CQB modes. Calls into the narrative layer. |
-| 7 | **Ship management** | Damage / repair / refit loop. |
-| 8 | **Ledger + cross-run arc** | Trustee reveal arc, He-3 dismantling progress, MO shifts. |
+| # | Module | Responsibility | Phase |
+|---|---|---|---|
+| 5 | **Overworld / travel** | Hex-axial belt map, per-move clock (fuel/suspicion/day), station nodes, cartography. | 3a |
+| 6 | **Mission board** | Offer generation (corps/genship/private/trustee sources), standing-gated availability, continuation threads. | 3c |
+| 7 | **Encounter pool** | Weighted encounter selection by hex kind + ship state, 30+ entries across 5 categories. | 3d |
+| 8 | **CQB combat** | 6×6 tactical grid, 2 AP/turn, cover/fold/flanking, aggro AI, casualty→tribute→ledger pipeline. | 3e |
+| 9 | **Genship origins** | Per-origin mechanical data (corp relationships, unique content chains, narrative flavor, AI tone). | 3f |
 
 ### Cross-cutting
 
-| 9 | **UI / art** | Paper pipeline. Station interiors, paper-frame staging. |
+| # | Module | Responsibility |
+|---|---|---|
+| 10 | **Voice corpus** | `die_in_throes` + `captain_journal` fragments. Feeds casualty tributes + journal entries. |
+| 11 | **UI / art** | Paper pipeline. Station interiors, paper-frame staging. **Phase 4 only.** |
 
 ### Module dependencies
 
 ```
-[1 State] → [2 CaptainGen] → [3 Narrative] → [5 Overworld]
+[1 State] → [2 CaptainGen] → [3 Narrative] → [5 Travel]
    ↓            ↓              ↓               ↓
-  [8 Ledger] ← [4 Crew]    [6 Combat]    [7 Ship]
-                                 ↓
-                          [9 UI/Art] (visual-only)
+  [Ledger] ← [4 Crew]    [8 CQB] ← [7 Encounter]
+   ↓                         ↓              ↓
+[6 Mission Board] ← [9 Genship Origins]  [10 Voice]
 ```
 
-The combat module **calls into** the narrative layer; the narrative layer does *not* depend on combat. This asymmetry means combat can be swapped or rewritten without narrative refactoring.
-
----
+The combat module **calls into** the narrative layer through Ink beats; the narrative layer does *not* depend on combat. This asymmetry means combat can be swapped or rewritten without narrative refactoring.
 
 ## Phase boundaries (current)
 
 | Phase | Title | Goal | Output | Status |
 |---|---|---|---|---|
 | **1** | World bible | Lock the setting, lore, mechanics, narrative layer | 9 docs + 2 sample beats | **DONE** — `f0426c9` |
-| **2** | Text-first scaffold | Repo conventions, Godot 4 layout, ink wrapper, persistence, narrative-data, test harness, sample playable run | One playable text-first run, no art, no combat | **IN PROGRESS** — 4 of 7 sub-deliverables committed (#1, #2, #3 + ROADMAP) |
-| **3** | Combat module | Ship grid + CQB, cover-test mechanics, fold mechanic, ledger persistence from combat | Combat delivers story content; modules 5, 6, 7, 8 wired | PLANNED |
+| **2** | Text-first scaffold | Repo conventions, Godot 4 layout, ink wrapper, persistence, narrative-data, test harness, sample playable run | One playable text-first run, no art, no combat | **DONE** — 55/55 GUT pass, 7/7 sub-deliverables shipped |
+| **3** | Encounter + combat + narrative systems | Overworld travel, mission board, encounter pool, CQB combat, genship origins, voice corpus — all wired into the narrative layer | Combat delivers story; modules 5–8 (per old split) or 3a–3g (actual split) shipped | **IN PROGRESS** — 3a/3c/3d/3e/3f shipped; 3g ready for build |
 | **4** | Paper art pass | One character + one background validates paper pipeline | 1 character, 1 background, color tests; rendering validated | PLANNED |
 | **5** | Ship out | Build, publish, README polish | Publicly playable browser build | PLANNED |
 
@@ -165,7 +167,7 @@ The narrative layer talks to a thin Godot wrapper, not to inkjs directly. Wrappe
 
 Compiled `ink.json` outputs live in `res://narrative/build/`, regenerated from `godot/narrative/beats/*.ink` sources on save. A Node auto-rebuilds on save.
 
-### 2d. Persistence layer — 🟡 queued (#4)
+### 2d. Persistence layer — ✅ done
 
 Single `data/persist.json` per save slot.
 
@@ -181,7 +183,7 @@ Implementation:
 - JSON-encoded. Schema validated against `docs/PERSISTENCE.md` §1 shape.
 - Mutex-locked reads/writes (GDScript doesn't have native mutex; we use a flag-based lock).
 
-### 2e. Narrative-data shape — 🟡 queued (#5)
+### 2e. Narrative-data shape — ✅ done
 
 Three JSON files in `narrative/data/`:
 
@@ -191,7 +193,7 @@ Three JSON files in `narrative/data/`:
 
 **Zero lore in these files** — just structure. The Ink reads them as text-tables.
 
-### 2f. Test harness — 🟡 queued (#6)
+### 2f. Test harness — ✅ done
 
 GUT (Godot Unit Test) — runs headless.
 
@@ -204,7 +206,7 @@ Tests to write:
 
 A `scripts/test.sh` shell wrapper aggregating Godot CLI output.
 
-### 2g. Sample playable run — 🟡 queued (#7, BLOCKING)
+### 2g. Sample playable run — ✅ done
 
 **Phase 2's ONLY deliverable.** A single playable run.
 
@@ -223,19 +225,23 @@ Acceptance: Godot project builds + runs in headless; playthrough logs all 7 step
 
 ---
 
-## Phase 3 — Combat module (draft)
+## Phase 3 — Encounter + Combat + Narrative Systems (shipped sub-phases tracked)
 
-**Goal:** Make ship battles v0 functional: 4 turns, two ships, 1 grid, tactical resolution. Combat must deliver story content.
+**Goal:** Wire the full run loop: overworld travel, mission board, encounter pool, CQB combat, genship origins, and voice corpus — all feeding through the narrative layer. Art stays paper-blocks throughout.
 
-- 3a: ship-battle grid (god math + grid rendering)
-- 3b: cover-test in run
-- 3c: bond-shift moments during combat
-- 3d: ledger persistence after combat
-- 3e: CQB mode (smaller grid, fires on initiative)
+| Sub-phase | Title | Status |
+|---|---|---|
+| 3a | Overworld + travel system (hex belt, ship state, per-move clock) | **DONE** |
+| 3b | *(skipped — merged into 3e)* | — |
+| 3c | Mission board (offer generation, standing gates, continuation) | **DONE** |
+| 3d | Encounter pool (schema + 30-entry expansion + NarrativeData loader) | **DONE** |
+| 3e | CQB combat (grid + AI + Ink beats + casualty pipeline) | **DONE** |
+| 3f | Genship origins (data expansion + runtime wiring) | **DONE** |
+| 3g | Voice corpus (`die_in_throes` + `captain_journal`, 50 each) | READY |
 
-The narrative layer *calls* into combat through a hook (`narrative/combat_trigger.ink`). Combat runs to resolution; outcomes write back to the ledger.
+Design lock: `docs/COMBAT.md` (CQB-first, space combat deferred). The narrative layer calls into combat through Ink beats; casualty outcomes write to ledger + journal.
 
-**Modular:** if combat doesn't pan out, we can swap it for a different resolution mechanism without rewriting narrative logic.
+**Modular:** if any subsystem doesn't pan out, it can be swapped without rewriting narrative logic (the narrative layer depends on data contracts, not implementations).
 
 ---
 
@@ -302,10 +308,9 @@ These are questions I want answered *before* they bite us later:
 
 ## What *is* blocked
 
-- Phase 2 block: **#4 (persist) + #5 (data) + #6 (test) + #7 (playable run)** are the open work to finish phase 2.
-- Phase 3 block: phase 2 must be playable with placeholder build before 2nd-character drawing.
-- Phase 4 block: phase 3 must show combat delivering story content before art is committed.
-- Phase 5 block: phases 3 + 4 must be done.
+- Phase 3g (voice corpus): ready to build; no blockers.
+- Phase 4: blocked on Phase 3 completion (3g remaining).
+- Phase 5: blocked on Phase 4.
 
 ---
 
