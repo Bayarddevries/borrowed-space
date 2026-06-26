@@ -96,6 +96,8 @@ static func roll(ship_state: Dictionary, arrival_kind: String, stations: Array) 
 	return {
 		"category": str(picked.get("category", "")),
 		"variant_id": str(picked.get("id", "")),
+		"flavor_hook": str(picked.get("flavor_hook", "A belt encounter unfolds.")),
+		"beat_id": str(picked.get("beat_id", "")),
 		"intensity": str(picked.get("intensity", "mid")),
 		"resolution_hint": str(picked.get("resolution", "dialog")),
 	}

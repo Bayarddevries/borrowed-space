@@ -91,7 +91,7 @@ func _on_transit_pressed() -> void:
 	_refresh_view()
 	var rolled: Variant = result.get("encounter_rolled", null)
 	if rolled != null:
-		_encounter_label.text = "[b]Encounter[/b]\n%s" % (rolled.get("flavor_hook", "A belt encounter.") if rolled is Dictionary else "An encounter unfolds.")
+		_encounter_label.text = "[b]Encounter — %s[/b]\n%s" % [rolled.get("category","?"), rolled.get("flavor_hook","A belt encounter unfolds.")]
 		_proceed_btn.show(); _transit_btn.disabled = true
 		_status_label.text = "[color=yellow]Encounter — proceed?[/color]"
 	else:
