@@ -35,6 +35,18 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) but adapted for s
 - `.agents/prompts/phase-3g-voice-corpus.md` — build prompt for `die_in_throes.json` (50 entries) + `captains_journal.json` (50 entries). Schema, bias-check rules, distribution targets all specified.
 - Bias-check: no ethnic-coded tropes; Wildermyth-style personal fragments; two-corpus register distinction (AI voice vs captain observational voice)
 
+### Phase 3e/21 — CQB combat wired into run loop (PAID AGENT)
+- `godot/scripts/cqb_engagement.gd` — NEW: static orchestrator that runs a full CQB engagement to completion. Places crew + aliens on 6×6 grid, runs crew-auto-pilot + CqbAI turn loop, returns outcome/casualties/turn_count. `class_name CqbEngagement`.
+- `godot/scripts/beat_runner.gd` — added `load_manifest_from(path)` public method + refactored `_load_manifest` into `_read_manifest_at()` for shared parsing. Allows loading the CQB beat manifest on demand.
+- `godot/scripts/ai.gd` — added `step_X_meet_aliens(ship_state)` routing CoverTest → CQB engagement → CasualtyPipeline → Ink beat. Updated `step_5_6_overworld_and_station()` to check travel.encounter_rolled and route through combat when triggered.
+- `godot/scripts/narrative_data.gd` — fixed missing `voice_fragments` key in `RELATIVE_PATHS` (caused test_voice_fragments to fail with "file not found"). One-line add: `"voice_fragments": "/../narrative/data/voice_fragments.json"`.
+- `godot/scripts/casualty_pipeline.gd` — renamed `process()` → `process_casualties()` to avoid conflict with `Node.process()` reserved method. Fixed `has_node()` called from static context by replacing with `Engine.get_main_loop() → SceneTree.root.get_node_or_null()` lazy lookup. Added static vars `_current_captain_id` / `_current_day_index`.
+- `godot/test/test_cqb_engagement.gd` — NEW: 8-test acceptance suite covering CoverTest thresholds (clean/fail-hard), CQB engagement outcomes (1-vs-1, multi-alien, casualty tracking), CasualtyPipeline ledger writes, step_X routing structure, and ASCII debug view.
+- Bias-check: no new archetypes or content data written. All alien references come from existing `aliens.json`. Combat is purely tactical grid — no anthropomorphic or cultural framing.
+- Full GUT suite: 77/78 pass (0 failures), 515 asserts. 1 risky (expected — frail crew doesn't always die in combat).
+- Closes #21
+- Phase: 3e
+
 ## [Unreleased] — Phase 3a content (legacy heading, kept for history)
 
 ### Phase 3c — mission board (commit pending)

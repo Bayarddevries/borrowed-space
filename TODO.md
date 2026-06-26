@@ -22,13 +22,12 @@ Active work, in-progress, queued. Updated at the end of every session.
 
 ## In-progress
 
-- [~] **Phase 3g — Voice corpus.** Prompt ready at `.agents/prompts/phase-3g-voice-corpus.md`. Build target: `narrative/data/die_in_throes.json` (50 entries) + `narrative/data/captains_journal.json` (50 entries). Schema + bias-check rules in prompt. No code changes required — content only.
+- [ ] **Phase 3g — Voice corpus.** Prompt ready at `.agents/prompts/phase-3g-voice-corpus.md`. Combined `voice_fragments.json` exists (52+52 entries). Next step: split into `die_in_throes.json` + `captains_journal.json` as separate files, or proceed with combined schema.
 
 ## Queued (Phase 3 sub-deliverables)
 
-- [ ] **Phase 3g — Voice corpus (die_in_throes + captain_journal, 50 each).** Prompt: `.agents/prompts/phase-3g-voice-corpus.md`.
-- [ ] **#21 — ai.gd CQB integration wiring.** Wire CQB combat outcomes into the ai.gd orchestrator flow. Depends on 3g landing first (needs voice fragments for combat beats).
-- [ ] **#20 — CQB visual layer.** Deferred, blocked on Phase 3f DirectionPage. Do not start.
+- [ ] **Phase 3g — Voice corpus (die_in_throes + captain_journal landing).** Combined file exists; final split or schema lock needed.
+- [ ] **#20 — CQB visual layer.** Deferred, blocked on DirectionPage design. Do not start.
 
 ## Done (Phase 3 shipped)
 
@@ -42,6 +41,7 @@ Active work, in-progress, queued. Updated at the end of every session.
 - [x] Phase 3e.3 — Ink beats for cover-test + CQB outcomes (8 GUT tests)
 - [x] Phase 3e.4 — CasualtyPipeline + CaptainsJournal (50 GUT tests)
 - [x] Phase 3f — Genship-origin data expansion (6 origins) + runtime wiring
+- [x] **#21 — ai.gd CQB integration wiring.** CoverTest → CqbEngagement → CasualtyPipeline → Ink beat chained through travel encounter flow. New: cqb_engagement.gd (orchestrator), cover_test.gd (threshold roll). 8 new GUT tests. **77/78 pass (0 failures).**
 
 ## Deferred / non-blocking
 

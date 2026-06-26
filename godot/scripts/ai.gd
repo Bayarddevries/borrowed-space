@@ -106,7 +106,7 @@ func step_5_6_overworld_and_station() -> Dictionary:
 	beat_runner.apply_to_state({"discoveries_caught": ["ink_first_arrival"]})
 	discoveries.append("ink_first_arrival")
 
-	# Phase 3a.1: real travel-system integration.
+# Phase 3a.1: real travel-system integration.
 	ship = ShipState.new_default(captain.get("name", "Play-Captain"),
 		captain.get("genship_id", "NAC"), 0, 0)
 	Travel.register_encounter("station_hex", "station_arrival_default_1")
@@ -114,11 +114,152 @@ func step_5_6_overworld_and_station() -> Dictionary:
 	# Real transit: from (0,0) to STATION_10 at (1,-1).
 	var transit_result := Travel.transit(ship, 1, -1, stations)
 	Travel.clear_registry()
+
+	# Phase 3e/21: if transit rolled an encounter, check if it routes to CQB.
+	if transit_result.get("encounter_rolled", null) != null:
+		var cqb_outcome := step_X_meet_aliens(ship)
+		if cqb_outcome.get("combat_fired", false):
+			# CQB ran. Append combat outcome to the discoveries list so the
+			# ledger records it. The beat_runner state already has the CQB
+			# beat loaded — stash the outcome for the end-of-run summary.
+			discoveries.append("cqb_%s" % cqb_outcome.get("outcome", "unknown"))
+			discoveries.append("cqb_combat_fired")
+			return cqb_outcome.get("beat_result", station)
+
 	if transit_result.get("ok", false):
 		persist_ship_snapshot(transit_result)
 	return station
 
-## Patch the ShipState into Persist.run_state under a per-captain key.
+# ── Phase 3e/21: CoverTest → CQB → CasualtyPipeline → Ink beat ──
+# Called when a travel encounter has a combat resolution. Runs the
+# full combat flow and returns the resulting beat text.
+#
+# Returns:
+#   { combat_fired: bool, outcome: String, beat_result: Dictionary }
+#   When combat_fired is false, the calling code should fall through
+#   to the normal station-arrival flow.
+func step_X_meet_aliens(ship_state: ShipState) -> Dictionary:
+	# 1) Pick crew for contact — all alive crew members.
+	if crew.is_empty():
+		return {"combat_fired": false, "outcome": "no_crew", "beat_result": {}}
+	var crew_stats: Array = []
+	for c in crew:
+		crew_stats.append(int(c.get("bond_score", 0)))
+
+	# 2) Run CoverTest.
+	var cover: Dictionary = CoverTest.roll(captain, crew_stats)
+	var tier: String = cover.get("tier", "fail-hard")
+
+	# 3) Route by CoverTest tier.
+	if tier == "pass-clean":
+		return _route_cover_pass("cqb_cover_pass_clean", {})
+	if tier == "pass-rough":
+		return _route_cover_pass("cqb_cover_pass_rough", {"suspicion_delta": 1})
+
+	# fail-soft → CQB engagement
+	if tier == "fail-soft":
+		return _trigger_cqb_engagement()
+
+	# fail-hard → detention arc (Ink beat placeholder)
+	return _route_cover_pass("cqb_cover_pass_rough", {"suspicion_delta": 2,
+		"note": "cover_fail_hard"})
+
+# Route to a pass-through Ink beat (clean or rough).
+# Loads the cqb manifest briefly, navigates to the beat, returns.
+func _route_cover_pass(beat_id: String, extra_delta: Dictionary) -> Dictionary:
+	var loaded: bool = beat_runner.load_manifest_from(
+			"/../narrative/beats/cqb-ink-beats.json")
+	if not loaded:
+		return {"combat_fired": false, "outcome": "beat_missing", "beat_result": {}}
+	var result: Dictionary = beat_runner.run_beat(beat_id)
+	if not extra_delta.is_empty():
+		beat_runner.apply_to_state(extra_delta)
+	return {
+		"combat_fired": false,
+		"outcome": "cover_pass",
+		"beat_result": result,
+	}
+
+# Run a full CQB engagement, process casualties, route to outcome beat.
+func _trigger_cqb_engagement() -> Dictionary:
+	# Build crew actor data for the grid.
+	var crew_actors: Array = []
+	for c in crew:
+		crew_actors.append({
+			"id": c.get("crew_name", c.get("name", "crew_x")),
+			"hp_max": 10,
+			"weapon_id": "light_pistol",
+		})
+
+	# Build alien actor data from the aliens JSON.
+	var aliens_data: Variant = NarrativeData.aliens()
+	var alien_actors: Array = []
+	if aliens_data != null:
+		var archetypes: Array = aliens_data.get("archetypes", [])
+		for a in archetypes:
+			alien_actors.append({
+				"id": a.get("id", "alien"),
+				"hp_max": int(a.get("hp_max", 6)),
+				"weapon_id": a.get("weapon_id", "claw"),
+				"display_name": a.get("display_name", "Alien"),
+			})
+
+	if alien_actors.is_empty():
+		# Fallback: one generic alien
+		alien_actors.append({"id": "alien_0", "hp_max": 6, "weapon_id": "claw"})
+
+	# Run the engagement.
+	var engagement: Dictionary = CqbEngagement.run(crew_actors, alien_actors)
+	var outcome: String = engagement.get("outcome", "won")
+	var casualties: Array = engagement.get("casualties", [])
+
+	# Process casualties through the pipeline (if any crew died).
+	var pipeline_result: Dictionary = {}
+	if not casualties.is_empty():
+		pipeline_result = CasualtyPipeline.process_casualties(casualties)
+		# Write the casualty summary to the ledger.
+		Persist.patch({"run_state": {"cqb_casualties": pipeline_result}})
+		Persist.save()
+
+	# Load the CQB manifest and route to the outcome beat.
+	var beat_id: String = _cqb_outcome_beat(outcome, casualties)
+	var loaded: bool = beat_runner.load_manifest_from(
+		"/../narrative/beats/cqb-ink-beats.json")
+	if not loaded:
+		push_error("[AI] CQB manifest not found — combat ran but beat missing")
+		return {"combat_fired": true, "outcome": outcome, "beat_result": {}}
+
+	# Bind combat outcome state into beat_runner for Ink variable interpolation.
+	beat_runner.bind_state({
+		"station": "Transit Lane",
+		"captain": {"short_form": captain.get("name", "Captain")},
+		"alien_archetype": alien_actors[0].get("display_name", "entity") if alien_actors.size() > 0 else "entity",
+		"grid_size": CqbEngagement.GRID_SIZE,
+		"tribute_cite": pipeline_result.get("tributes", [""])[0] if pipeline_result.get("tributes", []).size() > 0 else "",
+	})
+
+	var beat: Dictionary = beat_runner.run_beat(beat_id)
+	return {
+		"combat_fired": true,
+		"outcome": outcome,
+		"casualties": casualties,
+		"pipeline": pipeline_result,
+		"beat_result": beat,
+	}
+
+# Map engagement outcome + casualties to the right CQB beat id.
+func _cqb_outcome_beat(outcome: String, casualties: Array) -> String:
+	if not casualties.is_empty():
+		return "cqb_end_casualty"
+	match outcome:
+		"won":
+			return "cqb_end_won"
+		"lost":
+			return "cqb_end_lost"
+		"fled":
+			return "cqb_end_fled"
+		_:
+			return "cqb_end_fled"
 ## Phase 3a.1 stub: a sentinel captain_n of <run_iteration> is used here
 ## because we don't have the finalised captain_n yet from step_7 — that
 ## wiring lands when LedgerWriter adopts run_state.* keys (Phase 3c).

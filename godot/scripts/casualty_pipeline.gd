@@ -1,9 +1,14 @@
 extends Node
 ## CasualtyPipeline — ledger writes + journal + Ink tribute on HP=0.
+## Phase 3e.4 casualty pipeline.
 class_name CasualtyPipeline
 
+# In-run state for journal batching.
+static var _current_captain_id: String = ""
+static var _current_day_index: int = 0
+
 # ── API ──────────────────────────────────────────────────────────
-static func process(casualties: Array) -> Dictionary:
+static func process_casualties(casualties: Array) -> Dictionary:
     var result := {"casualties": [], "tributes": [], "journal_entries": []}
     for entry in casualties:
         if not entry is Dictionary:
@@ -33,13 +38,23 @@ static func _resolve_tribute(actor_id: String) -> String:
     return str(pool[int(randi() % pool.size())])
 
 static func _journal_append(actor_id: String, tribute: String) -> void:
-    if not has_node("/root/CaptainsJournal"):
+    var cj: Node = _resolve_captains_journal()
+    if cj == null:
         return
-    var cj: Object = get_node("/root/CaptainsJournal")
     var actor_data = _get_actor_meta(actor_id)
     var captain_id: String = actor_data.get("captain_id", "unknown")
     var day: int = actor_data.get("day_index", 0)
     cj.append(captain_id, actor_id, day, tribute)
+
+static func _resolve_captains_journal() -> Node:
+    ## Lazy singleton lookup via scene tree root.
+    ## Cannot use has_node/get_node from static context, so we walk
+    ## through Engine.get_main_loop -> SceneTree.root.
+    var main: MainLoop = Engine.get_main_loop()
+    if main == null or not main is SceneTree:
+        return null
+    var tree: SceneTree = main as SceneTree
+    return tree.root.get_node_or_null(NodePath("CaptainsJournal"))
 
 static func _current_run_id() -> String:
     return Time.get_datetime_string_from_system().replace(" ", "T")

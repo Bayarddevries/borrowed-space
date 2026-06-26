@@ -25,12 +25,12 @@ Current state. Verified-working features. Known issues. Updated at the end of ev
 
 ## Phase
 
-**Phase 3e (combat) plan locked.** 6×6 default grid, 2 AP/turn, half/full cover (25%/50%), flanked-waives. Single aggro AI, JSON-driven stats. Casualty pipeline: HP=0 → Ink tribute + ledger entry. Fold mechanic two-way cost (crews −1 attack, enemies +1 attack). Ship ASCII prototype first. Specs at `docs/COMBAT.md`. Issues #15–19, #21 opened. #20 (visual layer) deferred to Phase 3f.
+**Phase 3e/21 — CQB combat wired into run loop (DONE).** CoverTest → CqbEngagement → CasualtyPipeline → CQB Ink beats chained through `ai.gd.step_X_meet_aliens()`. Travel encounter rolls route through combat when triggered. 77/78 GUT tests pass (515 asserts). Issue #21 closed.
 
-Last commit: `529463b docs(handoff): post-merge update for Phase 3a.1 + 3a.2`
+Last commit: `8e3d006 Merge branch 'phase/day-1-demo-loop'`
 Repo: https://github.com/Bayarddevries/borrowed-space (private)
 Working tree: clean
-Headline achievement: 64/64 GUT tests pass (278 asserts); Phase 3a/3c/3d/3e/3f shipped; Phase 3g ready to build; Roadmap + TODO + ISSUES reconciled to disk state.
+Headline achievement: CQB combat fires end-to-end from travel encounters; full combat flow (CoverTest → grid fight → casualty tribute → Ink beat → ledger write); 77/78 tests pass (0 failures).
 
 ## Verified-working
 
@@ -56,17 +56,18 @@ Headline achievement: 64/64 GUT tests pass (278 asserts); Phase 3a/3c/3d/3e/3f s
 - ✅ **Phase 3d NPC state-selection shipped** (`phase/3d-npc-state-selection`) — `godot/scripts/npc_state.gd` (`class_name NpcState`): weighted scoring (30/25/15/30), 3-tier memory compression, Trustee visibility chain, Random Mode. `godot/test/test_npc_state.gd` — **8/8 GUT tests pass**. Closes #11.
 - ✅ **Phase 3f genship-origin data expanded** (main) — `narrative/data/captain-origins.json` expanded from 5 to 6 origins (ME added). Full per-origin mechanical data: corp_relationships, unique_content chains, narrative_flavor. `test_narrative_data.gd` updated. **55/55 GUT tests pass**. Closes #12.
 - ✅ **Phase 3f genship-origin runtime wired** (main) — `Captain.get_origin()` populates `captain["origin"]`; `ai.gd` pipes origin_flavor + corp_relationships + unique_content_chain into briefing_state; `ledger_writer.gd` writes starting_corp_standing. `test_captain.gd` replace placeholder with 5 real GUT cases. **59/59 GUT tests pass**.
+- ✅ **Phase 3e/21 — CQB combat wired into run loop** — `step_X_meet_aliens()` chains CoverTest → CqbEngagement (full grid turn-loop) → CasualtyPipeline (tribute + ledger) → CQB Ink beats. Travel encounters route through combat when triggered. New: `cqb_engagement.gd`. **77/78 GUT pass** (515 asserts). Closes #21.
 
 ## In-progress
 
-| Spotify Entry                  | Issue/PR                        | Status                                     |
+| Item                          | Issue/PR                        | Status                                     |
 |--------------------------------|----------------------------------|---------------------------------------------|
-| Phase 3g — voice corpus        | `.agents/prompts/phase-3g-voice-corpus.md` | READY — prompt written, 50+50 entries to build |
-| Mission board                  | #9                               | **DONE** — merged, 64/64 GUT pass           |
-| Phase 3d — EncounterPool impl  | phase/3d-encounter-pool          | **DONE** — merged to main                   |
-| NPC state-selection            | phase/3d-npc-state-selection     | **DONE** — merged to main                   |
-| Genship-origin wiring          | #12                              | **DONE** — data expanded + runtime wired    |
-| Phase 3e — CQB combat          | #15–19                           | **DONE** — grid + AI + beats + casualty pipeline |
+| Phase 3g — voice corpus        | `.agents/prompts/phase-3g-voice-corpus.md` | READY — prompt written, content landed in combined file |
+| Phase 3d — EncounterPool impl  | #10                              | **DONE** — merged                          |
+| NPC state-selection            | #11                              | **DONE** — merged                          |
+| Genship-origin wiring          | #12                              | **DONE** — data expanded + runtime wired   |
+| Phase 3e — CQB combat          | #15–19, #21                      | **DONE** — grid + AI + beats + pipeline + orchestrator wiring |
+| Phase 3f — visual layer        | #20                              | DEFERRED — blocked on DirectionPage design |
 
 ---
 
