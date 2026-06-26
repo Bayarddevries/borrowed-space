@@ -8,8 +8,8 @@ extends Node
 ##
 ## Registered as autoload in project.godot:
 ##   DemoSession="*res://scripts/demo_session.gd"
-class_name DemoSession
-
+## NOTE: class_name is omitted — the autoload registration already
+## provides the DemoSession name globally.
 var captain: Dictionary = {}
 var crew: Array = []
 var transit_result: Dictionary = {}
