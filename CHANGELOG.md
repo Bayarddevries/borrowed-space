@@ -22,7 +22,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) but adapted for s
 
 ---
 
-## [Unreleased] — Phase 3 done, Phase 4 next
+## [Unreleased] — Phase 3 fully done, Phase 4 next
+
+### Phase 3g — Voice corpus split (this session)
+- `voice_fragments.json` split into `narrative/data/die_in_throes.json` (52 entries) + `narrative/data/captains_journal.json` (52 entries)
+- `godot/scripts/narrative_data.gd` — added `die_in_throes()` and `captains_journal_frags()` static loaders + RELATIVE_PATHS entries; removed `voice_fragments()`
+- `godot/scripts/casualty_pipeline.gd` — `_resolve_tribute` now calls `NarrativeData.die_in_throes()` instead of `NarrativeData.voice_fragments()`
+- `godot/test/test_voice_fragments.gd` — rewritten for split loaders (4 tests: both load, content count)
+- `godot/test/verify_demo_loop_fixes_2026_06_26.gd` — updated for new loader API
+- **91/90+1 GUT pass, 576 asserts** (was 89/88/574)
+- **Phase 3 formally complete — all sub-phases 3a-3g shipped**
 
 ### Paid agent — #21 CQB integration shipped (PR #28)
 - `godot/scripts/cqb_engagement.gd` — full grid turn-loop orchestrator (CqbEngagement.run())

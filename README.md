@@ -1,6 +1,6 @@
 # Borrowed Space
 
-**Project status:** Phase 1 in progress. World bible in review.
+**Project status:** Phase 3 done, Phase 4 (paper art) next.
 
 A 2.5D roguelike space RPG about *being promoted into uncertainty*. Defector-oligarch-funded captains sail the asteroid belt, slowly dismantling the He-3 monopoly that oligarchs engineered 80+ years ago. The ship's AI holds memory across runs.
 

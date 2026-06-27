@@ -22,12 +22,17 @@ Active work, in-progress, queued. Updated at the end of every session.
 
 ## In-progress
 
-- [ ] **Phase 3g — Voice corpus.** Prompt ready at `.agents/prompts/phase-3g-voice-corpus.md`. Combined `voice_fragments.json` exists (52+52 entries). Next step: split into `die_in_throes.json` + `captains_journal.json` as separate files, or proceed with combined schema.
+- [ ] **Phase 4 — Paper art pass.** Planning doc at `docs/PHASE_4_PLANNING.md`. Pipeline approach pending decision.
+- [ ] **Narrative prose display.** Encounter prose + player choice UI not yet wired into demo. (See HANDOFF known issues.)
 
-## Queued (Phase 3 sub-deliverables)
+## Phase 3 done (all sub-phases shipped)
 
-- [ ] **Phase 3g — Voice corpus (die_in_throes + captain_journal landing).** Combined file exists; final split or schema lock needed.
-- [ ] **#20 — CQB visual layer.** Deferred, blocked on DirectionPage design. Do not start.
+- [x] Phase 3a — travel system (hex, cartography, ship, transit, content)
+- [x] Phase 3c — mission board
+- [x] Phase 3d — encounter pool (30-entry expansion)
+- [x] Phase 3e — CQB combat (grid, AI, Ink beats, casualty pipeline)
+- [x] Phase 3f — genship origins (data expansion + runtime wiring)
+- [x] **Phase 3g — Voice corpus split.** `voice_fragments.json` split into `die_in_throes.json` (52 entries) + `captains_journal.json` (52 entries). `NarrativeData.die_in_throes()` and `NarrativeData.captains_journal_frags()` loaders added. `casualty_pipeline.gd` consumes split die_in_throes. **91/90+1 GUT pass, 576 asserts.**
 
 ## Done (Phase 3 shipped)
 

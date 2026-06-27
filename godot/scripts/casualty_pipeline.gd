@@ -29,10 +29,10 @@ static func process_casualties(casualties: Array) -> Dictionary:
     return result
 
 static func _resolve_tribute(actor_id: String) -> String:
-    var frags = NarrativeData.voice_fragments()
-    if frags == null or not frags is Dictionary:
+    var pool_data = NarrativeData.die_in_throes()
+    if pool_data == null or not pool_data is Dictionary:
         return ""
-    var pool: Array = frags.get("die_in_throes", [])
+    var pool: Array = pool_data.get("die_in_throes", [])
     if pool.is_empty():
         return ""
     return str(pool[int(randi() % pool.size())])

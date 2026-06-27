@@ -27,10 +27,10 @@ Current state. Verified-working features. Known issues. Updated at the end of ev
 
 **Phase 3 — DONE.** All sub-phases 3a–3g shipped. Phase 4 (paper art) is next.
 
-Last commit: `fb781db fix(demo): guard against string encounter (fallback beat when pool doesn't roll)`
+Last commit: `503ec09 fix(tests): update encounter assertion to accept pool roll Dict or fallback string`
 Repo: https://github.com/Bayarddevries/borrowed-space (private)
-Working tree: 9 untracked files (cover_test, overworld controller uid, verification scripts — paid agent mid-stream)
-Headline achievement: 87/88 GUT pass (574 asserts). First playable end-to-end demo loop on main: origin pick → crew → overworld → transit → encounter → resolve → end run → ledger. All Phase 3 systems integrated. Narrative prose display and player choice during encounters deferred to next session. Phase 4 planning document ready at docs/PHASE_4_PLANNING.md.
+Working tree: clean (Phase 3g content split committed)
+Headline achievement: **91/90+1 GUT pass (576 asserts)**. Voice corpus split into dedicated `die_in_throes.json` + `captains_journal.json` files with dedicated loaders. All Phase 3 systems shipped and tested. Phase 4 planning document ready at `docs/PHASE_4_PLANNING.md`.
 
 ## Verified-working
 
@@ -58,16 +58,15 @@ Headline achievement: 87/88 GUT pass (574 asserts). First playable end-to-end de
 - ✅ **Phase 3f genship-origin runtime wired** (main) — `Captain.get_origin()` populates `captain["origin"]`; `ai.gd` pipes origin_flavor + corp_relationships + unique_content_chain into briefing_state; `ledger_writer.gd` writes starting_corp_standing. `test_captain.gd` replace placeholder with 5 real GUT cases. **59/59 GUT tests pass**.
 - ✅ **Phase 3e/21 — CQB combat wired into run loop** — `step_X_meet_aliens()` chains CoverTest → CqbEngagement (full grid turn-loop) → CasualtyPipeline (tribute + ledger) → CQB Ink beats. Travel encounters route through combat when triggered. New: `cqb_engagement.gd`. **77/78 GUT pass** (515 asserts). Closes #21.
 - ✅ **Day-1 demo scaffold (PR #27)** — `run_start.tscn` with origin pick (3 genships), crew readout, ledger row write via `DemoSession` autoload. `demo_controller.gd` drives the scene. No overworld or combat scene wiring yet — those move to Phase 4.
-- ✅ **Phase 3g content complete** — `voice_fragments.json` (52 dit + 52 cj entries), `encounter-pool-beats.json` (30 Schema B beats), `station_arrival_beats.json` (20 beats), `cqb-ink-beats.json` (15 beats). All bias-checked (0 flags).
-- ✅ **RELATIVE_PATHS fix** — `voice_fragments` entry added to `narrative_data.gd` constants. Casualty tribute pipeline no longer returns empty strings.
+- ✅ **Phase 3g content shipped** — `voice_fragments.json` split into `narrative/data/die_in_throes.json` (52 entries) + `narrative/data/captains_journal.json` (52 entries). `NarrativeData.die_in_throes()` and `NarrativeData.captains_journal_frags()` loaders added. `casualty_pipeline.gd` updated to consume split die_in_throes. Old `NarrativeData.voice_fragments()` removed. `verify_demo_loop_fixes_2026_06_26.gd` updated for new loader API. **91/90+1 GUT pass, 576 asserts. Phase 3 formally complete.**
+- ✅ **RELATIVE_PATHS updated** — `voice_fragments` key removed; `die_in_throes` and `captains_journal` entries added. Casualty tribute pipeline now calls `NarrativeData.die_in_throes()`.
 
 ## In-progress
 
 | Item                          | Issue/PR                        | Status                                     |
 |--------------------------------|----------------------------------|---------------------------------------------|
-| Phase 3 (all sub-phases)       | #9, #10, #11, #12, #15-19, #21  | **DONE** — 77/78 GUT pass, all content complete |
-| Paid agent — overworld scene   | phase/demo-loop-overworld        | In progress — moves 3+4+5 |
-| Phase 4 planning (paper art)   | #20 (visual layer)               | Deferred — not started |
+| Phase 3 (all sub-phases)       | #9, #10, #11, #12, #15-19, #21  | **DONE** — 91/90+1 GUT pass, 576 asserts   |
+| Phase 4 planning (paper art)   | #20 (visual layer)               | Not started — planning doc ready |
 
 ## Queued (next)
 

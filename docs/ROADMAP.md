@@ -124,7 +124,7 @@ The combat module **calls into** the narrative layer through Ink beats; the narr
 |---|---|---|---|---|
 | **1** | World bible | Lock the setting, lore, mechanics, narrative layer | 9 docs + 2 sample beats | **DONE** — `f0426c9` |
 | **2** | Text-first scaffold | Repo conventions, Godot 4 layout, ink wrapper, persistence, narrative-data, test harness, sample playable run | One playable text-first run, no art, no combat | **DONE** — 55/55 GUT pass, 7/7 sub-deliverables shipped |
-| **3** | Encounter + combat + narrative systems | Overworld travel, mission board, encounter pool, CQB combat, genship origins, voice corpus — all wired into the narrative layer | Combat delivers story; modules 5–8 (per old split) or 3a–3g (actual split) shipped | **IN PROGRESS** — 3a/3c/3d/3e/3f shipped; 3g ready for build |
+| **3** | **Encounter + combat + narrative systems** | Overworld travel, mission board, encounter pool, CQB combat, genship origins, voice corpus — all wired into the narrative layer | Combat delivers story; modules 5–8 (per old split) or 3a–3g (actual split) shipped | **DONE** — 91/90+1 GUT pass, 576 asserts |
 | **4** | Paper art pass | One character + one background validates paper pipeline | 1 character, 1 background, color tests; rendering validated | PLANNED |
 | **5** | Ship out | Build, publish, README polish | Publicly playable browser build | PLANNED |
 
@@ -256,7 +256,7 @@ Acceptance: Godot project builds + runs in headless; playthrough logs all 7 step
 | 3d | Encounter pool (schema + 30-entry expansion + NarrativeData loader) | **DONE** |
 | 3e | CQB combat (grid + AI + Ink beats + casualty pipeline) | **DONE** |
 | 3f | Genship origins (data expansion + runtime wiring) | **DONE** |
-| 3g | Voice corpus (`die_in_throes` + `captain_journal`, 50 each) | READY |
+| 3g | Voice corpus split (`die_in_throes` + `captains_journal`, 50 each) | **DONE** |
 
 Design lock: `docs/COMBAT.md` (CQB-first, space combat deferred). The narrative layer calls into combat through Ink beats; casualty outcomes write to ledger + journal.
 

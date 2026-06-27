@@ -22,13 +22,14 @@ extends Node
 class_name NarrativeData
 
 const RELATIVE_PATHS := {
-	"origins":     "/../narrative/data/captain-origins.json",
-	"npcs":        "/../narrative/data/npc-archetypes.json",
-	"ledger":      "/../narrative/data/ledger.json",
-	"cartography": "/../narrative/data/cartography.json",
-	"aliens":      "/../narrative/data/aliens.json",
-	"encounter_pool": "/../narrative/data/encounter-pool.json",
-	"voice_fragments": "/../narrative/data/voice_fragments.json",
+	"origins":          "/../narrative/data/captain-origins.json",
+	"npcs":             "/../narrative/data/npc-archetypes.json",
+	"ledger":           "/../narrative/data/ledger.json",
+	"cartography":      "/../narrative/data/cartography.json",
+	"aliens":           "/../narrative/data/aliens.json",
+	"encounter_pool":   "/../narrative/data/encounter-pool.json",
+	"die_in_throes":    "/../narrative/data/die_in_throes.json",
+	"captains_journal": "/../narrative/data/captains_journal.json",
 }
 
 # Cache so we don't re-parse every call.
@@ -71,8 +72,11 @@ static func ledger_template() -> Variant:
 static func aliens() -> Variant:
 	return _read_json("aliens", _resolve_dev_path("aliens"))
 
-static func voice_fragments() -> Variant:
-	return _read_json("voice_fragments", _resolve_dev_path("voice_fragments"))
+static func die_in_throes() -> Variant:
+	return _read_json("die_in_throes", _resolve_dev_path("die_in_throes"))
+
+static func captains_journal_frags() -> Variant:
+	return _read_json("captains_journal", _resolve_dev_path("captains_journal"))
 
 static func encounter_pool() -> Variant:
 	return _read_json("encounter_pool", _resolve_dev_path("encounter_pool"))
