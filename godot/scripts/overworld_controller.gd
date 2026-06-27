@@ -19,7 +19,11 @@ var stations: Array = []
 var captain: Dictionary = {}
 var crew: Array = []
 var _beat_manifest: Dictionary = {}
-var _pending_choices: Array = []  # current encounter's choices
+var _pending_choices: Array = []
+
+# ── Beat-file cache ──────────────────────────────────────────────
+var _beat_cache: Dictionary = {}
+var _last_beat_id: String = ""
 
 func _ready() -> void:
 	captain = DemoSession.captain.duplicate(true)
@@ -100,20 +104,29 @@ func _on_transit_pressed() -> void:
 		if rolled is Dictionary:
 			var beat_id: String = rolled.get("beat_id", "")
 			if beat_id != "" and _load_encounter_beat(beat_id):
-				return  # choices are now showing, no Proceed needed
-			_encounter_label.text = "[b]Encounter — %s[/b]\n%s" % [rolled.get("category","?"), rolled.get("flavor_hook","A belt encounter unfolds.")]
-			_proceed_btn.show()
-			_status_label.text = "[color=yellow]Encounter — proceed?[/color]"
+				return
+			_fallback_encounter_display(rolled)
 		else:
-			_encounter_label.text = "[b]Routine arrival.[/b] No eventful encounter this trip."
-			_proceed_btn.hide()
-			_end_run_btn.disabled = false
-			_status_label.text = "[color=green]Docked.[/color]"
-			_transit_btn.disabled = false  # keep Transit active for routine arrivals
+			_fallback_encounter_display(rolled)
 		_transit_btn.disabled = true
 	else:
+		# Routine station arrival — show station arrival beat if available
+		var sid: String = str(target.get("id", ""))
+		if sid != "" and _load_station_arrival_beat(sid):
+			return
 		_encounter_label.text = "[b]Arrived.[/b] No encounter."
 		_end_run_btn.disabled = false
+
+func _fallback_encounter_display(rolled: Variant) -> void:
+	if rolled is Dictionary:
+		_encounter_label.text = "[b]Encounter — %s[/b]\n%s" % [rolled.get("category","?"), rolled.get("flavor_hook","A belt encounter unfolds.")]
+		_proceed_btn.show()
+		_status_label.text = "[color=yellow]Encounter — proceed?[/color]"
+	else:
+		_encounter_label.text = "[b]Routine arrival.[/b] No eventful encounter this trip."
+		_proceed_btn.hide()
+		_end_run_btn.disabled = false
+		_status_label.text = "[color=green]Docked.[/color]"
 
 func _on_proceed_pressed() -> void:
 	_proceed_btn.hide()
@@ -122,13 +135,22 @@ func _on_proceed_pressed() -> void:
 	ai.captain = captain; ai.crew = crew
 	var cqb: Dictionary = ai.step_X_meet_aliens(ship)
 	var fired: bool = cqb.get("combat_fired", false)
+
+	# Check if the CQB flow returned a rich beat with prose + choices
+	var beat_result: Dictionary = cqb.get("beat_result", {})
+	if beat_result.has("text") and str(beat_result.get("text", "")) != "":
+		_show_beat(beat_result)
+		return
+
+	# Fallback: hardcoded outcome labels
 	var outcome: String = cqb.get("outcome", "unknown")
 	var outcome_labels := {"pass-clean": "You pass through cleanly.", "pass-rough": "You squeeze through — someone noticed.", "fail-soft": "CQB combat breaks out.", "fail-hard": "Detained. No combat this run.", "won": "Combat won. Crew battered but alive.", "lost": "Combat lost. The aliens take the field.", "fled": "You retreat under fire.", "casualty": "A crew member falls."}
 	if fired:
 		var cas: Array = cqb.get("casualties", [])
 		var label: String = outcome_labels.get(outcome, "Combat resolved.")
 		_encounter_label.text = "[b]Combat — %s[/b]\n%s\nCasualties: %d" % [outcome.to_upper(), label, cas.size()]
-	else: _encounter_label.text = "[b]Cover Pass — %s[/b]" % outcome
+	else:
+		_encounter_label.text = "[b]Cover Pass — %s[/b]" % outcome
 	_status_label.text = "[color=green]Resolved.[/color]"
 	_end_run_btn.disabled = false
 
@@ -143,44 +165,30 @@ func _on_end_run_pressed() -> void:
 	await get_tree().create_timer(2.0).timeout
 	get_tree().change_scene_to_file("res://scenes/run_start.tscn")
 
-# ── Load an encounter beat and show prose + choice buttons ────────
-func _load_encounter_beat(beat_id: String) -> bool:
-	var godot_root := ProjectSettings.globalize_path("res://")
-	var beat_path := godot_root + "../narrative/beats/encounter-pool-beats.json"
-	if not FileAccess.file_exists(beat_path):
-		_encounter_label.text = "[b]Encounter[/b]\n(beat file not found)"
-		return false
-	var file := FileAccess.open(beat_path, FileAccess.READ)
-	if file == null:
-		return false
-	var raw := file.get_as_text()
-	file.close()
-	var data = JSON.parse_string(raw)
-	if data == null or not data.has("beats"):
-		return false
-	var beat: Dictionary = data["beats"].get(beat_id, {})
-	if beat.is_empty() or not beat.has("prose"):
-		return false
+# ── Shared beat display ──────────────────────────────────────────
 
-	# Show prose and choices
-	_pending_choices = beat.get("choices", [])
-	_encounter_label.text = "[b]%s[/b]\n%s" % [beat.get("category", "Encounter"), beat.get("prose", "")]
+## Display a beat dict with prose text + up to 3 choice buttons.
+## beat_dict must have `text` (prose string) and optionally `choices` (Array).
+func _show_beat(beat_dict: Dictionary) -> void:
+	var prose: String = str(beat_dict.get("text", ""))
+	var choices: Array = beat_dict.get("choices", [])
+	_pending_choices = choices
+	_encounter_label.text = prose
 	_proceed_btn.hide()
 	for i in range(3):
-		if i < _pending_choices.size():
-			_choice_btns[i].text = _pending_choices[i].get("text", "")
+		if i < choices.size():
+			var label: String = choices[i].get("text", choices[i].get("label", ""))
+			_choice_btns[i].text = label
 			_choice_btns[i].show()
 		else:
 			_choice_btns[i].hide()
 	_status_label.text = "[color=yellow]Make a choice.[/color]"
-	return true
 
-# ── Choice button clicked ──────────────────────────────────────────
+# ── Choice button clicked ────────────────────────────────────────
 func _on_choice_pressed(index: int) -> void:
 	if index < 0 or index >= _pending_choices.size():
 		return
 	var picked: Dictionary = _pending_choices[index]
-	# Hide choices
 	for b in _choice_btns:
 		b.hide()
 
@@ -189,8 +197,102 @@ func _on_choice_pressed(index: int) -> void:
 		Persist.patch(picked["delta"])
 		Persist.save()
 
+	var next_beat_id: String = picked.get("next_beat", picked.get("to", ""))
 	_pending_choices = []
+
+	# If the choice chains to a known beat in a loaded manifest, advance.
+	if next_beat_id != "" and next_beat_id != "run_end_summary" and _load_manifest_beat(next_beat_id):
+		return  # multi-turn encounter — next beat now showing
+
+	# Terminal choice — return to overworld
 	_transit_btn.disabled = false
-	var choice_text: String = picked.get("text", "Chosen")
+	var choice_text: String = picked.get("text", picked.get("label", "Chosen"))
 	_status_label.text = "[color=green]%s[/color]" % choice_text
 	_end_run_btn.disabled = false
+
+# ── Beat-file loaders ────────────────────────────────────────────
+
+## Load a beat file relative to repo root and return its data dict.
+## Caches by path to avoid re-parsing.
+func _load_beat_file(relative_path: String) -> Dictionary:
+	if _beat_cache.has(relative_path):
+		return _beat_cache[relative_path]
+	var godot_root := ProjectSettings.globalize_path("res://")
+	var path := godot_root + relative_path.lstrip("/")
+	if not FileAccess.file_exists(path):
+		push_warning("[Overworld] beat file not found: %s" % path)
+		return {}
+	var f := FileAccess.open(path, FileAccess.READ)
+	if f == null:
+		return {}
+	var raw := f.get_as_text()
+	f.close()
+	var data = JSON.parse_string(raw)
+	if data == null or not data is Dictionary:
+		return {}
+	_beat_cache[relative_path] = data
+	return data
+
+## Load and display an encounter beat from encounter-pool-beats.json.
+func _load_encounter_beat(beat_id: String) -> bool:
+	var data: Dictionary = _load_beat_file("/../narrative/beats/encounter-pool-beats.json")
+	if data.is_empty() or not data.has("beats"):
+		return false
+	var beats: Dictionary = data["beats"]
+	if not beats.has(beat_id):
+		return false
+	var beat: Dictionary = beats[beat_id]
+	if beat.is_empty() or not beat.has("prose"):
+		return false
+
+	# Build a display dict in BeatRunner-compatible shape
+	var display: Dictionary = {
+		"text": beat.get("prose", ""),
+		"choices": beat.get("choices", []),
+		"speaker": "narrator",
+	}
+	_show_beat(display)
+	return true
+
+## Load and display a station arrival beat from station_arrival_beats.json.
+## Station IDs like STATION_01 map to beat keys like station_arrival_KASHNER_01.
+func _load_station_arrival_beat(station_id: String) -> bool:
+	var data: Dictionary = _load_beat_file("/../narrative/beats/station_arrival_beats.json")
+	if data.is_empty() or not data.has("beats"):
+		return false
+	var beats: Dictionary = data["beats"]
+	# Try direct station-beat match
+	var beat_key: String = ""
+	for key in beats.keys():
+		if key.to_upper().ends_with(station_id.replace("STATION_", "").lstrip("0")):
+			beat_key = key
+			break
+	if beat_key == "":
+		return false
+	var beat: Dictionary = beats[beat_key]
+	if beat.is_empty():
+		return false
+	var display: Dictionary = {
+		"text": beat.get("text", ""),
+		"choices": beat.get("choices", []),
+		"speaker": beat.get("speaker", "narrator"),
+	}
+	_show_beat(display)
+	return true
+
+## Load a beat by ID from the currently cached manifest (used for multi-turn chains).
+func _load_manifest_beat(beat_id: String) -> bool:
+	# Check if we already have encounter-pool-beats.json cached — it's the most
+	# likely source for chain beats not using the run_end_summary terminal.
+	var data: Dictionary = _load_beat_file("/../narrative/beats/encounter-pool-beats.json")
+	if data.has("beats") and data["beats"].has(beat_id):
+		var beat: Dictionary = data["beats"][beat_id]
+		var display: Dictionary = {
+			"text": beat.get("prose", beat.get("text", "")),
+			"choices": beat.get("choices", []),
+			"speaker": "narrator",
+		}
+		if str(display["text"]) != "":
+			_show_beat(display)
+			return true
+	return false
