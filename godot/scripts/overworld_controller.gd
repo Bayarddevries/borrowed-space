@@ -263,10 +263,11 @@ func _load_station_arrival_beat(station_id: String) -> bool:
 	if data.is_empty() or not data.has("beats"):
 		return false
 	var beats: Dictionary = data["beats"]
-	# Try direct station-beat match
+	# Match on the full _NN suffix to avoid ambiguity (e.g. _01 vs _11)
+	var num_part: String = station_id.replace("STATION_", "")
 	var beat_key: String = ""
 	for key in beats.keys():
-		if key.to_upper().ends_with(station_id.replace("STATION_", "").lstrip("0")):
+		if key.to_upper().ends_with("_" + num_part):
 			beat_key = key
 			break
 	if beat_key == "":
