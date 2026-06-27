@@ -7,8 +7,8 @@
       "distress": 7,
       "discovery": 7,
       "crew": 7,
-      "faction": 8,
-      "total": 36,
+      "faction": 7,
+      "total": 35,
       "arrival_kinds": ["lane", "deep_belt", "derelict_hex", "anomaly_hex", "station_hex"]
     }
   },
