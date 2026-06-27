@@ -106,9 +106,11 @@ func _on_transit_pressed() -> void:
 			if beat_id != "" and _load_encounter_beat(beat_id):
 				return
 			_fallback_encounter_display(rolled)
+			_transit_btn.disabled = true
 		else:
+			# String fallback (_DEFAULT_ENCOUNTER_BEAT) = routine arrival, keep transit active
 			_fallback_encounter_display(rolled)
-		_transit_btn.disabled = true
+			_transit_btn.disabled = false
 	else:
 		# Routine station arrival — show station arrival beat if available
 		var sid: String = str(target.get("id", ""))
