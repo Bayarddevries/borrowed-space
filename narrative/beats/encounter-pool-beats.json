@@ -366,6 +366,66 @@
         { "text": "Forward them to the Trustee's network.", "next_beat": "run_end_summary", "delta": { "discoveries": ["t7_manifest_to_trustee"], "suspicion_delta": 1 } },
         { "text": "Trade the data for fuel. Pragmatic.", "next_beat": "run_end_summary", "delta": { "fuel_delta": 10, "bond_score": -1 } }
       ]
+    },
+    "enc_patrol_t2_voidline_checkpoint": {
+      "_id": "enc_patrol_t2_voidline_checkpoint",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Patrol",
+      "prose": "The unmarked checkpoint sits across the lane like a locked door in a hallway that was never locked before. T2 Voidline's hull markings are faded, deliberately, and the crew on approach doesn't salute. They're running registry checks against a database they won't show you. One of your crew — the one with the sketchiest genship record — tightens their grip on the armrest. This isn't a customs stop. This is a fishing line.",
+      "choices": [
+        { "text": "Comply. Let them scan the cargo bay.", "next_beat": "run_end_summary", "delta": { "suspicion_delta": -1, "bond_score": -1, "fuel_delta": -5 } },
+        { "text": "Challenge their authority. Demand documentation.", "next_beat": "run_end_summary", "delta": { "suspicion_delta": 2 } },
+        { "text": "Run a counter-hack on their registry scanner.", "next_beat": "run_end_summary", "delta": { "suspicion_delta": 3, "discoveries": ["t2_checkpoint_breach_id"] } }
+      ]
+    },
+    "enc_distress_t8_enforcement_siege": {
+      "_id": "enc_distress_t8_enforcement_siege",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Distress",
+      "prose": "T8 doesn't negotiate in public. The two corvettes are holding position at three hundred metres, their hull markings clean, their transponders broadcasting a lawful collection warrant under registered bond. The B3 crew is pressed flat against the asteroid face in a salvage frame that's not rated for combat stress. They can't run. They can't fight. The T8 commander isn't answering hails — she's counting down. You have thirty seconds to declare yourself a witness, a shield, or a passer-by.",
+      "choices": [
+        { "text": "Broadcast witness status. Buy them time.", "next_beat": "run_end_summary", "delta": { "bond_score": 1, "suspicion_delta": 2, "discoveries": ["t8_enforcement_pattern"] } },
+        { "text": "Open fire on the lead corvette.", "next_beat": "run_end_summary", "delta": { "bond_score": 2, "suspicion_delta": 3, "fuel_delta": -10, "credit_delta": -50 } },
+        { "text": "Ignore the signal. Stay on course.", "next_beat": "run_end_summary", "delta": { "bond_score": -2 } }
+      ]
+    },
+    "enc_discovery_t2_voidline_derelict": {
+      "_id": "enc_discovery_t2_voidline_derelict",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Discovery",
+      "prose": "The derelict drifts with its running lights still on — a T2 Voidline courier that went quiet three days ago, according to B1 dispatch chatter. The hull is intact, no breach marks, no scorch. The airlock cycles with a clean seal tone. Inside, the cabin is tidy: a half-drunk bulb of rehydrated coffee, a terminal with the last navigation entry still up, and one personal locker that's been opened with cutting equipment, not a key. The logs have been wiped sector by sector, but whoever did it left the temperature logs intact — and there's a seven-minute gap where the cabin went to -40 degrees.",
+      "choices": [
+        { "text": "Pull the nav terminal. Upload the last route.", "next_beat": "run_end_summary", "delta": { "discoveries": ["t2_courier_last_route"], "suspicion_delta": 1 } },
+        { "text": "Take the locker contents. File a salvage claim.", "next_beat": "run_end_summary", "delta": { "credit_delta": 40, "bond_score": -1 } },
+        { "text": "Leave a recording buoy. Mark it for T2 recovery.", "next_beat": "run_end_summary", "delta": { "bond_score": 1, "credit_delta": -5 } }
+      ]
+    },
+    "enc_crew_b1_dispatch_loyalty": {
+      "_id": "enc_crew_b1_dispatch_loyalty",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Crew",
+      "prose": "The chip sits on the mess table between you and your navigator. It's unmarked — no B1 Dispatch seal, no routing code, just a standard Liberty-format data shard in a static bag. Your navigator found it in their kit after the last station stop. They're telling you about it now, which is a choice in itself. Whoever passed it knew the navigator's shift pattern. The chip doesn't have your name on it — it has theirs.",
+      "choices": [
+        { "text": "Open it together. Shared intel.", "next_beat": "run_end_summary", "delta": { "bond_score": 2, "discoveries": ["b1_dispatch_chip_content"] } },
+        { "text": "Have the navigator open it privately. Report back.", "next_beat": "run_end_summary", "delta": { "bond_score": 1, "suspicion_delta": 1 } },
+        { "text": "Destroy the chip. Don't read it.", "next_beat": "run_end_summary", "delta": { "bond_score": -1, "discoveries": ["b1_chip_destroyed_refusal"] } }
+      ]
+    },
+    "enc_faction_trustee_experiment_hook": {
+      "_id": "enc_faction_trustee_experiment_hook",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Faction",
+      "prose": "The channel opens without a handshake — a priority routing flag that doesn't exist on any civil or genship protocol stack. The message is short, automated, and addressed to your captain's registration: a coordinate pair in the deep belt and a window of six hours. The AI annotates: this is a Trustee program beacon, one of several. They don't activate for every captain. The fact that it activated for you means your clearance signature matches a profile they built. The question isn't whether to go — it's whether the Trustee knows something about your record that you don't.",
+      "choices": [
+        { "text": "Follow the beacon. Answers ahead.", "next_beat": "run_end_summary", "delta": { "fuel_delta": -15, "discoveries": ["trustee_experiment_bay"], "suspicion_delta": 2 } },
+        { "text": "Log the coordinates. Research first.", "next_beat": "run_end_summary", "delta": { "discoveries": ["trustee_beacon_coordinates"] } },
+        { "text": "Ignore it. Trustee programs cost more than they pay.", "next_beat": "run_end_summary", "delta": { "bond_score": 1 } }
+      ]
     }
   }
 }

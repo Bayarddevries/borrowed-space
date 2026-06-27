@@ -3,12 +3,12 @@
     "procedural_encounter_index": "index of all belt encounters available to the parsing runtime; shared between dev-mode JSON loaders and production build. Zero lore — IDs, structural flags, and one-line flavor hooks only.",
     "version": "0.3-expansion",
     "coverage": {
-      "patrol": 6,
-      "distress": 6,
-      "discovery": 6,
-      "crew": 6,
-      "faction": 6,
-      "total": 30,
+      "patrol": 7,
+      "distress": 7,
+      "discovery": 7,
+      "crew": 7,
+      "faction": 8,
+      "total": 36,
       "arrival_kinds": ["lane", "deep_belt", "derelict_hex", "anomaly_hex", "station_hex"]
     }
   },
@@ -436,6 +436,76 @@
       "intensity": "mid",
       "resolution": "dialog",
       "state_modifiers": {"early": 1.0, "mid": 1.0, "late": 1.3}
+    },
+    {
+      "id": "enc_patrol_t2_voidline_checkpoint_07",
+      "category": "Patrol",
+      "weight": 2.6,
+      "arrival_kinds": ["lane", "station_hex"],
+      "giver_source": "corps",
+      "giver_faction": "T2",
+      "beat_id": "enc_patrol_t2_voidline_checkpoint",
+      "flavor_hook": "A T2 Voidline checkpoint floats in the lane — unregistered, unmarked, but broadcasting enforcement authority. They're checking cargo manifests against a list they won't show you.",
+      "tags": ["corps", "T2", "checkpoint", "unregistered", "authority-beyond-mandate"],
+      "intensity": "mid",
+      "resolution": "combat",
+      "state_modifiers": {"early": 1.0, "mid": 1.2, "late": 1.1}
+    },
+    {
+      "id": "enc_distress_t8_enforcement_siege_07",
+      "category": "Distress",
+      "weight": 2.5,
+      "arrival_kinds": ["deep_belt", "derelict_hex"],
+      "giver_source": "private",
+      "giver_faction": "B3",
+      "beat_id": "enc_distress_t8_enforcement_siege",
+      "flavor_hook": "T8 enforcement corvettes have a B3 Holdfast salvage crew penned against an asteroid face. The crew's transponder is screaming emergency. T8 is broadcasting a debt-collection warrant.",
+      "tags": ["corps", "T8", "debt-enforcement", "B3", "salvage-crew", "holdfast"],
+      "intensity": "high",
+      "resolution": "combat",
+      "state_modifiers": {"early": 0.8, "mid": 1.1, "late": 1.3}
+    },
+    {
+      "id": "enc_discovery_t2_voidline_derelict_07",
+      "category": "Discovery",
+      "weight": 2.8,
+      "arrival_kinds": ["derelict_hex", "deep_belt"],
+      "giver_source": "private",
+      "giver_faction": "B1",
+      "beat_id": "enc_discovery_t2_voidline_derelict",
+      "flavor_hook": "A B1 dispatch runner reports a T2 Voidline marked derelict that wasn't on the registry yesterday. The hull is intact. The logs are wiped. The airlock cycles open on approach.",
+      "tags": ["private", "B1", "T2", "derelict", "wiped-logs", "dispatch-runner"],
+      "intensity": "mid",
+      "resolution": "dialog",
+      "state_modifiers": {"early": 1.0, "mid": 1.3, "late": 0.9}
+    },
+    {
+      "id": "enc_crew_b1_dispatch_loyalty_07",
+      "category": "Crew",
+      "weight": 1.8,
+      "arrival_kinds": ["station_hex", "lane"],
+      "giver_source": "private",
+      "giver_faction": "B1",
+      "beat_id": "enc_crew_b1_dispatch_loyalty",
+      "flavor_hook": "A B1 Dispatch agent slides your navigator a sealed comms chip. Who it's from isn't written down — if you open it, you own the content. The navigator hasn't decided whether to tell you.",
+      "tags": ["private", "B1", "loyalty-test", "comms-chip", "crew-dynamic"],
+      "intensity": "mid",
+      "resolution": "dialog",
+      "state_modifiers": {"early": 1.0, "mid": 1.1, "late": 1.0}
+    },
+    {
+      "id": "enc_faction_trustee_experiment_hook_07",
+      "category": "Faction",
+      "weight": 1.0,
+      "arrival_kinds": ["anomaly_hex", "deep_belt"],
+      "giver_source": "trustee",
+      "beat_id": "enc_faction_trustee_experiment_hook",
+      "flavor_hook": "The AI flags a sealed priority channel from Trustee routing — an experimental program beacon that only activates when a captain with the right clearance signature is in range. Your signature matches.",
+      "tags": ["trustee", "experiment", "priority-channel", "clearance-signature", "inkling"],
+      "intensity": "high",
+      "resolution": "dialog",
+      "state_modifiers": {"early": 0.6, "mid": 1.0, "late": 1.6},
+      "act_gate": "act_2"
     }
   ]
 }

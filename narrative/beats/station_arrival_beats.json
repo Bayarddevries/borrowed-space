@@ -190,11 +190,101 @@
 
     "station_arrival_CORAL_11": {
       "speaker": "narrator",
-      "text": "Coral's union hall has a petition on the board — crew conditions, transit fees, the usual. But this one has signatures from four different genship affiliations. That hasn't happened before. The table where crews used to talk is empty. They're at the petition board instead.",
+      "text": "Coral's union hall has a petition on the board \u2014 crew conditions, transit fees, the usual. But this one has signatures from four different genship affiliations. That hasn't happened before. The table where crews used to talk is empty. They're at the petition board instead.",
       "choices": [
         { "label": "Read the petition. Add your signature.", "to": "crew_meetup_at_CORAL_11", "delta": { "bond_score": 1, "suspicion_delta": 1, "discoveries": ["cross_genship_petition"] } },
         { "label": "Copy the petition. File it privately.", "to": "crew_meetup_at_CORAL_11", "delta": { "discoveries": ["cross_genship_petition_copy"] } },
         { "label": "Fuel and leave. Not your fight.", "to": "crew_meetup_at_CORAL_11", "delta": { "fuel_delta": 15 } }
+      ]
+    },
+    "station_arrival_KASHNER_12": {
+      "speaker": "narrator",
+      "text": "Kashner Iceworks, third visit. The bay officer recognises your hull and waves you to a priority berth without checking your paperwork. The ice mountains are lower than last time \u2014 they've been cutting deeper. A notice on the bulkhead announces a water-rationing schedule starting next rotation.",
+      "choices": [
+        { "label": "Ask the bay officer about the rationing.", "to": "crew_meetup_at_KASHNER_12", "delta": { "suspicion_delta": 1, "discoveries": ["kashner_rationing_notice"] } },
+        { "label": "Top off fuel. Prices might rise.", "to": "crew_meetup_at_KASHNER_12", "delta": { "fuel_delta": 25, "credit_delta": -15 } },
+        { "label": "File a quiet query with the H2O registry.", "to": "crew_meetup_at_KASHNER_12", "delta": { "suspicion_delta": 2, "discoveries": ["kashner_water_discrepancy"] } }
+      ]
+    },
+    "station_arrival_BENTIC_12": {
+      "speaker": "narrator",
+      "text": "Bentic Penal, third time. The security officer on the gate doesn't reach for your invoice-code \u2014 she waves you through with a nod. The yard has fewer conscripts this rotation. A crewmate notices: 'They're transferring people out faster than they're coming in. That's not Bentic's model.'",
+      "choices": [
+        { "label": "Ask about the lower population.", "to": "crew_meetup_at_BENTIC_12", "delta": { "suspicion_delta": 1, "discoveries": ["bentic_population_drop"] } },
+        { "label": "Check the labour logs against last visit.", "to": "crew_meetup_at_BENTIC_12", "delta": { "suspicion_delta": 2, "discoveries": ["bentic_labour_discrepancy_v2"] } },
+        { "label": "Complete business. Leave quietly.", "to": "crew_meetup_at_BENTIC_12", "delta": { "credit_delta": -5 } }
+      ]
+    },
+    "station_arrival_CORVALLO_12": {
+      "speaker": "narrator",
+      "text": "Corvallo Station, third docking. The public bay is fuller than before \u2014 more genship-affiliated hulls than independent. The three-crew table that watched you on first arrival isn't there anymore. In their place: a single dispatcher with a sealed manifest binder and an open chair.",
+      "choices": [
+        { "label": "Sit at the dispatcher's table. Listen.", "to": "crew_meetup_at_CORVALLO_12", "delta": { "discoveries": ["corvallo_dispatcher_intel"], "suspicion_delta": 1 } },
+        { "label": "Take the private traders' deck again.", "to": "crew_meetup_at_CORVALLO_12", "delta": { "bond_score": -1, "discoveries": ["corvallo_private_deck_v2"] } },
+        { "label": "Dock briefly. Just fuel.", "to": "crew_meetup_at_CORVALLO_12", "delta": { "fuel_delta": 20, "credit_delta": -8 } }
+      ]
+    },
+    "station_arrival_SXHALO_12": {
+      "speaker": "narrator",
+      "text": "SX Halo, third approach. The halo's curve catches the Martian light at a different angle this rotation \u2014 the station has adjusted its orbit slightly, the first time in a decade. The immaculate bay is quieter. The receptionist's smile is unchanged. Behind her, a corridor door that was always closed is now ajar.",
+      "choices": [
+        { "label": "Investigate the open door.", "to": "crew_meetup_at_SXHALO_12", "delta": { "suspicion_delta": 2, "discoveries": ["sxhalo_open_door"] } },
+        { "label": "Query the orbit adjustment at the desk.", "to": "crew_meetup_at_SXHALO_12", "delta": { "suspicion_delta": 1, "discoveries": ["sxhalo_orbit_change"] } },
+        { "label": "Complete your business. Don't linger.", "to": "crew_meetup_at_SXHALO_12", "delta": { "credit_delta": -10 } }
+      ]
+    },
+    "station_arrival_ORPHEUM_12": {
+      "speaker": "narrator",
+      "text": "Orpheum Astrogrowth, third docking. The hydroponics deck has expanded into a cargo bay since your last visit \u2014 they're growing more than algae now. Tall stalks under UV. A technician says the yield is up, but the water-to-biomass ratio is off. Someone is cutting the nutrient mix.",
+      "choices": [
+        { "label": "Ask about the nutrient shortage.", "to": "crew_meetup_at_ORPHEUM_12", "delta": { "discoveries": ["orpheum_nutrient_gap"] } },
+        { "label": "Offer to source better mix on your route.", "to": "crew_meetup_at_ORPHEUM_12", "delta": { "bond_score": 1, "credit_delta": -10 } },
+        { "label": "Take a sample. Log it privately.", "to": "crew_meetup_at_ORPHEUM_12", "delta": { "suspicion_delta": 1, "discoveries": ["orpheum_mix_sample"] } }
+      ]
+    },
+    "station_arrival_PROPHET_12": {
+      "speaker": "narrator",
+      "text": "Prophet's Threshold, third visit. The refuge is quieter \u2014 not emptier, but the sounds have changed. Fewer footsteps in the corridors. More silence in the common hall. A child draws a ship on the wall with charcoal, next to a row of other ships. Yours is among them.",
+      "choices": [
+        { "label": "Find the child. Ask about the drawing.", "to": "crew_meetup_at_PROPHET_12", "delta": { "bond_score": 2, "discoveries": ["prophet_wall_drawing"] } },
+        { "label": "Check the refuge's supply stores.", "to": "crew_meetup_at_PROPHET_12", "delta": { "credit_delta": -20, "bond_score": 1 } },
+        { "label": "Leave supplies anonymously.", "to": "crew_meetup_at_PROPHET_12", "delta": { "credit_delta": -30, "bond_score": 2 } }
+      ]
+    },
+    "station_arrival_DENISE_12": {
+      "speaker": "narrator",
+      "text": "Denise Mar, third approach. The refugee quarter has built a secondary corridor through two joined cargo containers \u2014 someone is expanding without permits. The NAC administrator's office light is off. A note on the door says 'At hearing \u2014 back next rotation.' No date.",
+      "choices": [
+        { "label": "Tour the new corridor. Talk to residents.", "to": "crew_meetup_at_DENISE_12", "delta": { "bond_score": 1, "discoveries": ["denise_mar_secondary_corridor"] } },
+        { "label": "Report the expansion to NAC admin.", "to": "crew_meetup_at_DENISE_12", "delta": { "suspicion_delta": -1, "bond_score": -1 } },
+        { "label": "Leave a supply drop. Don't engage.", "to": "crew_meetup_at_DENISE_12", "delta": { "credit_delta": -15, "bond_score": 1 } }
+      ]
+    },
+    "station_arrival_BEREZINA_12": {
+      "speaker": "narrator",
+      "text": "Berezina Drift, third arrival. The frontier station has a new addition \u2014 a pre-fab clinic module that wasn't on the docking schematics last time. The module has T7 Helion medical markings, but no T7 crew. A Berezina engineer says they salvaged it from a debris field. The equipment inside is still running.",
+      "choices": [
+        { "label": "Volunteer your medic. Check the gear.", "to": "crew_meetup_at_BEREZINA_12", "delta": { "bond_score": 2, "discoveries": ["berezina_salvaged_clinic"] } },
+        { "label": "Scan the module's serial against T7 registry.", "to": "crew_meetup_at_BEREZINA_12", "delta": { "suspicion_delta": 1, "discoveries": ["berezina_t7_serial"] } },
+        { "label": "Mind your business. Fuel and go.", "to": "crew_meetup_at_BEREZINA_12", "delta": { "fuel_delta": 10 } }
+      ]
+    },
+    "station_arrival_MOSCOW_12": {
+      "speaker": "narrator",
+      "text": "Moscow Prospekt, third docking. The lawful station has a new security screening protocol \u2014 biometric scan at the airlock, keyed to genship registration. Your navigator's scan returns a flag. A screen flashes yellow, then clears. The officer says nothing. The navigator says nothing.",
+      "choices": [
+        { "label": "Ask the officer what the flag means.", "to": "crew_meetup_at_MOSCOW_12", "delta": { "suspicion_delta": 2 } },
+        { "label": "Pull the navigator aside. Check in.", "to": "crew_meetup_at_MOSCOW_12", "delta": { "bond_score": 2, "discoveries": ["moscow_flag_discussion"] } },
+        { "label": "Let it pass. Don't make it a thing.", "to": "crew_meetup_at_MOSCOW_12", "delta": { "bond_score": -1 } }
+      ]
+    },
+    "station_arrival_CORAL_12": {
+      "speaker": "narrator",
+      "text": "Coral, third docking. The petition board is gone. In its place: a single notice from the station administration confirming that cross-genship petitions require RRA review before posting. The union steward is at the bar, drinking alone. The table where crews used to meet is occupied by two people in unmarked jackets.",
+      "choices": [
+        { "label": "Join the steward. Ask what happened.", "to": "crew_meetup_at_CORAL_12", "delta": { "bond_score": 2, "discoveries": ["coral_petition_suppression"] } },
+        { "label": "Note the jackets. Log the descriptions.", "to": "crew_meetup_at_CORAL_12", "delta": { "suspicion_delta": 1, "discoveries": ["coral_unmarked_jackets"] } },
+        { "label": "Fill up and leave. Too visible here.", "to": "crew_meetup_at_CORAL_12", "delta": { "fuel_delta": 15, "bond_score": -1 } }
       ]
     }
   }

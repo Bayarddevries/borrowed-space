@@ -96,26 +96,43 @@ func test_weighted_selection_respects_weight() -> void:
 			"heavier entries should not underperform lighter entries on a per-entry basis")
 
 func test_act_gate_filters_by_current_act() -> void:
-	# enc_discovery_water_vein_mapping_06 has act_gate=act_1 and is eligible
-	# on deep_belt + anomaly_hex.
-	var eligible_act1: int = 0
-	for seed in range(300):
-		var r: Variant = _roll_with_seed(_make_ship({"act": "act_1"}), "deep_belt", [], seed)
-		if r != null:
-			var vid: String = str(r.get("variant_id", ""))
-			if vid == "enc_discovery_water_vein_mapping_06":
-				eligible_act1 += 1
-	assert_true(eligible_act1 > 0, "act_1 entry should be eligible when act=act_1")
+	# EncounterPool._is_eligible checks act_gate against the ship's act.
+	# Test the eligibility logic directly (deterministic) rather than
+	# relying on random rolls.
 
-	var eligible_act2: int = 0
-	for seed in range(300):
-		var r: Variant = _roll_with_seed(_make_ship({"act": "act_2"}), "deep_belt", [], seed)
-		if r != null:
-			var vid: String = str(r.get("variant_id", ""))
-			if vid == "enc_discovery_water_vein_mapping_06":
-				eligible_act2 += 1
-	assert_true(eligible_act2 == 0,
-			"act_1 entry should NOT be eligible when act=act_2")
+	# enc_discovery_water_vein_mapping_06 has act_gate=act_1
+	var pool_data: Variant = null
+	var godot_root := ProjectSettings.globalize_path("res://")
+	var path := godot_root + "../narrative/data/encounter-pool.json"
+	var f := FileAccess.open(path, FileAccess.READ)
+	if f != null:
+		var raw := f.get_as_text(); f.close()
+		pool_data = JSON.parse_string(raw)
+
+	assert_not_null(pool_data, "encounter-pool.json must parse")
+	var entries: Array = pool_data.get("entries", [])
+	var target_entry: Dictionary = {}
+	for e in entries:
+		if e.get("id", "") == "enc_discovery_water_vein_mapping_06":
+			target_entry = e
+			break
+	assert_false(target_entry.is_empty(), "water_vein_mapping entry found")
+	assert_eq(target_entry.get("act_gate", ""), "act_1",
+		"water_vein_mapping has act_gate=act_1")
+
+	# Test _is_eligible directly via EncounterPool internals
+	var ship_act1 := _make_ship({"act": "act_1"})
+	var ship_act2 := _make_ship({"act": "act_2"})
+	var ship_no_act := _make_ship({"act": ""})
+
+	# _is_eligible is a static method on EncounterPool
+	var eligible_act1 = EncounterPool._is_eligible(target_entry, ship_act1)
+	var eligible_act2 = EncounterPool._is_eligible(target_entry, ship_act2)
+	var eligible_no_act = EncounterPool._is_eligible(target_entry, ship_no_act)
+
+	assert_true(eligible_act1, "act_1 entry should be eligible when act=act_1")
+	assert_false(eligible_act2, "act_1 entry should NOT be eligible when act=act_2")
+	assert_true(eligible_no_act, "act_1 entry should be eligible when no act set")
 
 func _roll_with_seed(ship: Dictionary, arrival_kind: String, stations: Array, seed: int) -> Variant:
 	var saved: int = randi()
