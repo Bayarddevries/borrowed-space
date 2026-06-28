@@ -1,6 +1,19 @@
-[gd_scene format=3 uid="uid://d3f7yw8p5n2vh"]
+[gd_scene load_steps=2 format=3 uid="uid://d3f7yw8p5n2vh"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/bg_station.png" id="1_bg"]
 
 [node name="Station" type="Node"]
+
+[node name="Bg" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 1400.0
+offset_bottom = 800.0
+expand_mode = 1
+stretch_mode = 5
+texture = ExtResource("1_bg")
+mouse_filter = 2
 
 [node name="Label" type="Label" parent="."]
 offset_left = 480.0
