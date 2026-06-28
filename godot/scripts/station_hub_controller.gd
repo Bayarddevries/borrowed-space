@@ -13,9 +13,9 @@ class_name StationHubController
 @onready var _visit_label: Label         = $HubMenu/VisitLabel
 @onready var _encounter_label: RichTextLabel = $EncounterLabel
 @onready var _stat_panel = $StatPanel
-@onready var _dialogue_panel = $DialoguePanel
 
 var _station_data: Dictionary = {}
+var _dialogue_panel = null
 
 func _ready() -> void:
 	# Get station data from DemoSession
@@ -48,8 +48,7 @@ func _ready() -> void:
 	_store_screen.visible = false
 
 	# Init dialogue panel (hidden until first dialogue)
-	_dialogue_panel.visible = false
-	_dialogue_panel.dialogue_ended.connect(_on_hub_dialogue_ended)
+	_dialogue_panel = null
 
 	# Update stat panel
 	var ship_dict: Dictionary = DemoSession.ship.to_dict() if DemoSession.ship != null else {}
@@ -109,6 +108,15 @@ func _on_back_pressed() -> void:
 # ── Hub dialogue ────────────────────────────────────────────────
 
 func _start_hub_dialogue(dialogue_id: String) -> void:
+	# Lazy-init dialogue panel
+	if _dialogue_panel == null:
+		var scene = load("res://scenes/dialogue_panel.tscn")
+		if scene == null:
+			push_error("Failed to load dialogue_panel.tscn")
+			return
+		_dialogue_panel = scene.instantiate()
+		add_child(_dialogue_panel)
+		_dialogue_panel.dialogue_ended.connect(_on_hub_dialogue_ended)
 	var dlg_path: String = ProjectSettings.globalize_path("res://") + "/../narrative/dialogues/%s.json" % dialogue_id
 	if not FileAccess.file_exists(dlg_path):
 		# Fallback: generic greeting

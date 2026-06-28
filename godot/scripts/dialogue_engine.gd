@@ -31,10 +31,6 @@ func _ready() -> void:
 	_default_npc_portrait = preload("res://assets/sprites/captain_placeholder.png")
 	_default_player_portrait = preload("res://assets/sprites/crew_placeholder.png")
 
-	# Connect choice buttons
-	for i in 3:
-		_choice_btns[i].pressed.connect(_on_choice.bind(i))
-
 
 # ── Public API ────────────────────────────────────────────────────
 
@@ -67,6 +63,11 @@ func start_dialogue(beat: Dictionary, state: Dictionary, npc_portraits: Dictiona
 	# Start
 	visible = true
 	_show_current_line()
+
+	# Connect choice buttons (lazy — children may not be ready at _ready())
+	for i in 3:
+		if _choice_btns[i] != null and not _choice_btns[i].pressed.is_connected(_on_choice):
+			_choice_btns[i].pressed.connect(_on_choice.bind(i))
 
 
 ## Advance to the next line (used after a non-choice line auto-advances).

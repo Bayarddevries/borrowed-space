@@ -17,7 +17,6 @@ class_name OverworldController
 @onready var _hex_map = $MapContainer/HexMap
 @onready var _camera: Camera2D = $Camera2D
 @onready var _stat_panel = $StatPanel
-@onready var _dialogue_panel = $DialoguePanel
 
 var ship: ShipState = null
 var stations: Array = []
@@ -29,6 +28,7 @@ var _cartography_data: Dictionary = {}
 # NPC state
 var _npc_rogues: Dictionary = {}
 var _npc_portraits: Dictionary = {}
+var _dialogue_panel = null
 
 # Camera drag state
 var _dragging: bool = false
@@ -78,8 +78,7 @@ func _ready() -> void:
 						_npc_portraits[npc_id] = tex
 
 	# Init dialogue panel (hidden until first dialogue)
-	_dialogue_panel.visible = false
-	_dialogue_panel.dialogue_ended.connect(_on_dialogue_ended)
+	_dialogue_panel = null
 
 	_populate_station_dropdown()
 	_refresh_view()
@@ -87,8 +86,10 @@ func _ready() -> void:
 	_end_run_btn.disabled = true
 	_proceed_btn.hide()
 	for i in range(3):
-		_choice_btns[i].pressed.connect(_on_choice_pressed.bind(i))
-		_choice_btns[i].hide()
+		if _choice_btns[i] != null:
+			_choice_btns[i].pressed.connect(_on_choice_pressed.bind(i))
+		if _choice_btns[i] != null:
+			_choice_btns[i].hide()
 	_mission_btn.hide()
 
 
@@ -528,6 +529,15 @@ func _load_manifest_beat(beat_id: String) -> bool:
 
 ## Start a dialogue beat by ID. Loads from narrative/dialogues/.
 func _start_dialogue(dialogue_id: String) -> void:
+	# Lazy-init dialogue panel (load() not preload() — avoids Godot 4 sub-scene bug)
+	if _dialogue_panel == null:
+		var scene = load("res://scenes/dialogue_panel.tscn")
+		if scene == null:
+			push_error("Failed to load dialogue_panel.tscn")
+			return
+		_dialogue_panel = scene.instantiate()
+		add_child(_dialogue_panel)
+		_dialogue_panel.dialogue_ended.connect(_on_dialogue_ended)
 	var dlg_path: String = ProjectSettings.globalize_path("res://") + "/../narrative/dialogues/%s.json" % dialogue_id
 	if not FileAccess.file_exists(dlg_path):
 		# Try encounter-pool-beats as fallback (Schema B -> Schema C converter)
