@@ -111,6 +111,7 @@ func _on_transit_pressed() -> void:
 			# String fallback (_DEFAULT_ENCOUNTER_BEAT) = routine arrival, keep transit active
 			_fallback_encounter_display(rolled)
 			_transit_btn.disabled = false
+			DemoSession.encounter_log.append({"type": "arrival", "name": "routine", "outcome": "docked"})
 	else:
 		# Routine station arrival — show station arrival beat if available,
 		# using visit count to pick the right variant (_01, _11, or _12)
@@ -154,13 +155,13 @@ func _on_proceed_pressed() -> void:
 	ai.captain = captain; ai.crew = crew
 	var cqb: Dictionary = ai.step_X_meet_aliens(ship)
 	var fired: bool = cqb.get("combat_fired", false)
+	var outcome: String = cqb.get("outcome", "unknown")
 
 	var beat_result: Dictionary = cqb.get("beat_result", {})
 	if beat_result.has("text") and str(beat_result.get("text", "")) != "":
 		_show_beat(beat_result)
+		DemoSession.encounter_log.append({"type": "combat", "name": outcome, "outcome": outcome})
 		return
-
-	var outcome: String = cqb.get("outcome", "unknown")
 	var outcome_labels := {"pass-clean": "You pass through cleanly.", "pass-rough": "You squeeze through — someone noticed.", "fail-soft": "CQB combat breaks out.", "fail-hard": "Detained. No combat this run.", "won": "Combat won. Crew battered but alive.", "lost": "Combat lost. The aliens take the field.", "fled": "You retreat under fire.", "casualty": "A crew member falls."}
 	if fired:
 		var cas: Array = cqb.get("casualties", [])
@@ -173,13 +174,56 @@ func _on_proceed_pressed() -> void:
 
 func _on_end_run_pressed() -> void:
 	if captain.is_empty(): return
+
+	# Build run summary
+	var cap_name: String = captain.get("name", "Captain")
+	var genship: String = captain.get("genship_id", "?")
+	var origin_label: String = captain.get("origin", {}).get("genship_label", "?")
+	var days: int = ship.time_elapsed if ship != null else 0
+	var fuel_used: int = ship.fuel_total_consumed if ship != null else 0
+
+	var summary: String = "[b]Run Complete[/b]\n\n"
+	summary += "[b]Captain:[/b] %s (%s — %s)\n" % [cap_name, genship, origin_label]
+	summary += "[b]Duration:[/b] %d days\n" % days
+	summary += "[b]Fuel consumed:[/b] %d units\n" % fuel_used
+
+	# Crew roster
+	summary += "\n[b]Crew:[/b]\n"
+	if crew.is_empty():
+		summary += "  (none)\n"
+	else:
+		for c in crew:
+			var cname: String = c.get("name", c.get("crew_name", "?"))
+			var arch: String = c.get("archetype_id", "?")
+			summary += "  • %s (%s)\n" % [cname, arch]
+
+	# Encounter log
+	if not DemoSession.encounter_log.is_empty():
+		summary += "\n[b]Encounters:[/b]\n"
+		for e in DemoSession.encounter_log:
+			summary += "  • %s — %s\n" % [e.get("type", "?"), e.get("name", e.get("outcome", "?"))]
+
+	# Update ship fuel display from any deltas applied during run
+	if ship != null:
+		summary += "\n[b]Fuel remaining:[/b] %d" % ship.fuel
+
+	summary += "\n\n[b]The ledger records another captain.[/b]"
+
+	_encounter_label.text = summary
+	_hex_label.text = ""
+	_status_label.text = ""
+	_mission_btn.hide()
+	_end_run_btn.disabled = true
+	_transit_btn.disabled = true
+	_station_dropdown.hide()
+
+	# Write to Persist
 	var LW: GDScript = load("res://scripts/ledger_writer.gd"); var lw: Node = LW.new(); add_child(lw)
 	var n: int = lw.finalise_run({"outcome":"ledger-closed","discoveries_caught":["demo_run"]}, captain, crew, ["demo_run"])
-	var total: int = int(Persist.get_state().get("run_counts",{}).get("started",0))
-	_status_label.text = "[b]Run complete.[/b] Captain #%d\nCaptains so far: %d\nReturning..." % [n, total]
-	_end_run_btn.disabled = true; _transit_btn.disabled = true
+
+	# Return to briefing after a pause
+	await get_tree().create_timer(4.0).timeout
 	DemoSession.reset()
-	await get_tree().create_timer(2.0).timeout
 	get_tree().change_scene_to_file("res://scenes/run_start.tscn")
 
 # ── Shared beat display ──────────────────────────────────────────
