@@ -177,7 +177,7 @@ func _per_hop_encounter(q: int, r: int) -> bool:
 	var hex_kind: String = _get_hex_kind(q, r)
 	var result: Variant = EncounterPool.roll(ship.to_dict(), hex_kind, stations)
 
-	if result.is_empty():
+	if result == null or result.is_empty():
 		# No encounter this hop
 		_status_label.text = "[color=dim]Hop to (%d, %d)... clear.[/color]" % [q, r]
 		return false
