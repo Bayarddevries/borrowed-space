@@ -80,6 +80,15 @@ offset_bottom = 606.0
 text = "End Run"
 disabled = true
 
+[node name="MissionButton" type="Button" parent="."]
+offset_left = 776.0
+offset_top = 576.0
+offset_right = 940.0
+offset_bottom = 606.0
+text = "Missions"
+visible = false
+
 [connection signal="pressed" from="TransitButton" to="." method="_on_transit_pressed"]
 [connection signal="pressed" from="EndRunButton" to="." method="_on_end_run_pressed"]
 [connection signal="pressed" from="ProceedButton" to="." method="_on_proceed_pressed"]
+[connection signal="pressed" from="MissionButton" to="." method="_on_mission_pressed"]

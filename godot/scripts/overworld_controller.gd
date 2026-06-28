@@ -13,6 +13,7 @@ class_name OverworldController
 @onready var _end_run_btn: Button         = $EndRunButton
 @onready var _proceed_btn: Button         = $ProceedButton
 @onready var _choice_btns: Array[Button] = [$Choice1Button, $Choice2Button, $Choice3Button]
+@onready var _mission_btn: Button = $MissionButton
 
 var ship: ShipState = null
 var stations: Array = []
@@ -44,6 +45,7 @@ func _ready() -> void:
 	for i in range(3):
 		_choice_btns[i].pressed.connect(_on_choice_pressed.bind(i))
 		_choice_btns[i].hide()
+	_mission_btn.hide()
 
 func _populate_station_dropdown() -> void:
 	_station_dropdown.clear()
@@ -119,6 +121,7 @@ func _on_transit_pressed() -> void:
 				return
 		_encounter_label.text = "[b]Arrived.[/b] No encounter."
 		_end_run_btn.disabled = false
+		_mission_btn.show()
 
 func _track_visit(station_id: String) -> void:
 	var count: int = DemoSession.visited_stations.get(station_id, 0) + 1
@@ -247,6 +250,29 @@ func _on_choice_pressed(index: int) -> void:
 	_status_label.text = "[color=green]%s[/color]" % choice_text
 	_end_run_btn.disabled = false
 
+# ── Mission board ────────────────────────────────────────────────
+func _on_mission_pressed() -> void:
+	var state: Dictionary = Persist.get_state()
+	var ledger: Dictionary = state.get("ledger", {})
+	var run_count: int = state.get("run_counts", {}).get("started", 1)
+	var offers: Array = MissionBoard.generate(ship.to_dict(), ledger, run_count)
+
+	# Show offers in the encounter label
+	var text := "[b]Mission Board[/b]\n\n"
+	if offers.is_empty():
+		text += "No missions available at this station."
+		_encounter_label.text = text
+		return
+
+	for i in offers.size():
+		var o: Dictionary = offers[i]
+		text += "[b]%d.[/b] %s\n" % [i + 1, o.get("title", "Untitled")]
+		text += "  Source: %s | Risk: %s\n" % [o.get("source", "?"), o.get("risk", "?")]
+		text += "  %s\n\n" % o.get("flavor_hook", "")
+
+	_encounter_label.text = text
+	_status_label.text = "[color=yellow]Missions available.[/color]"
+
 # ── Beat-file loaders ────────────────────────────────────────────
 
 func _load_beat_file(relative_path: String) -> Dictionary:
@@ -332,6 +358,7 @@ func _load_station_arrival_beat(station_id: String) -> bool:
 	if visit_num > 1:
 		display["text"] = "[b](Visit %d)[/b]\n\n%s" % [visit_num, beat.get("text", "")]
 	_show_beat(display)
+	_mission_btn.show()
 	return true
 
 func _load_manifest_beat(beat_id: String) -> bool:
