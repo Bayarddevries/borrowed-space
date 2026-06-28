@@ -100,8 +100,8 @@ static func transit(ship: ShipState, to_q: int, to_r: int, stations: Array) -> D
 
 ## Fuel cost from `(from)` to `(to)` using hazard + distance.
 static func transit_cost(from_q: int, from_r: int,
-                          to_q: int, to_r: int,
-                          stations: Array) -> int:
+                         to_q: int, to_r: int,
+                         stations: Array) -> int:
 	var from_hex := Vector2i(from_q, from_r)
 	var to_hex := Vector2i(to_q, to_r)
 	var distance := Hex.distance(from_hex, to_hex)
@@ -110,3 +110,18 @@ static func transit_cost(from_q: int, from_r: int,
 	var kind := Cartography.hex_kind_at(to_q, to_r, stations)
 	var modifier := Cartography.hazard_modifier(kind)
 	return int(round(float(distance) * modifier))
+
+## Fuel cost for a given hex distance (no stations lookup needed).
+## Uses generic deep_belt modifier (1.0) as floor.
+static func fuel_cost_for_distance(dist: int) -> int:
+	if dist <= 0:
+		return 0
+	var modifier := Cartography.hazard_modifier("deep_belt")
+	return int(round(float(dist) * modifier))
+
+## Consume fuel from ship. Returns actual amount consumed.
+static func consume_fuel(ship: ShipState, amount: int) -> int:
+	var actual := mini(amount, ship.fuel)
+	ship.fuel -= actual
+	ship.fuel_total_consumed += actual
+	return actual

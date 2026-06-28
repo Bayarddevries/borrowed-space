@@ -1,25 +1,33 @@
 extends Node
 ## OverworldController — moves 3-5 of the Day-1 demo loop.
 ##
-## Attached to overworld.tscn. Owns the hex display, transit,
+## Attached to overworld.tscn. Owns the visual hex map, transit,
 ## encounter display, and end-of-run flow.
 class_name OverworldController
 
-@onready var _hex_label: RichTextLabel    = $HexLabel
-@onready var _encounter_label: RichTextLabel = $EncounterLabel
-@onready var _status_label: RichTextLabel = $StatusLabel
-@onready var _station_dropdown: OptionButton = $StationDropdown
-@onready var _transit_btn: Button         = $TransitButton
-@onready var _end_run_btn: Button         = $EndRunButton
-@onready var _proceed_btn: Button         = $ProceedButton
-@onready var _choice_btns: Array[Button] = [$Choice1Button, $Choice2Button, $Choice3Button]
-@onready var _mission_btn: Button = $MissionButton
+@onready var _hex_label: RichTextLabel         = $HexLabel
+@onready var _encounter_label: RichTextLabel    = $EncounterLabel
+@onready var _status_label: RichTextLabel       = $StatusLabel
+@onready var _station_dropdown: OptionButton    = $StationDropdown
+@onready var _transit_btn: Button               = $TransitButton
+@onready var _end_run_btn: Button               = $EndRunButton
+@onready var _proceed_btn: Button               = $ProceedButton
+@onready var _choice_btns: Array[Button]        = [$Choice1Button, $Choice2Button, $Choice3Button]
+@onready var _mission_btn: Button               = $MissionButton
+@onready var _hex_map: HexMap = $MapContainer/HexMap
+@onready var _camera: Camera2D = $Camera2D
 
 var ship: ShipState = null
 var stations: Array = []
 var captain: Dictionary = {}
 var crew: Array = []
 var _pending_choices: Array = []
+var _cartography_data: Dictionary = {}
+
+# Camera drag state
+var _dragging: bool = false
+var _drag_start_mouse: Vector2 = Vector2.ZERO
+var _drag_start_cam: Vector2 = Vector2.ZERO
 
 # ── Beat-file cache ──────────────────────────────────────────────
 var _beat_cache: Dictionary = {}
@@ -32,11 +40,22 @@ func _ready() -> void:
 		_end_run_btn.disabled = false
 		_transit_btn.disabled = true
 		return
+
+	# Load cartography + stations
+	_cartography_data = Cartography.load_map()
 	stations = Cartography.load_stations()
+
+	# Build visual hex map
 	ship = ShipState.new_default(
 		captain.get("name", "Captain"),
-		captain.get("genship_id", "NAC"), 0, 0 )
+		captain.get("genship_id", "NAC"), 0, 0)
 	DemoSession.ship = ship
+	_hex_map.build_map(_cartography_data, stations, ship.current_q, ship.current_r)
+
+	# Connect hex map signals
+	_hex_map.station_clicked.connect(_on_station_clicked)
+	_hex_map.travel_finished.connect(_on_travel_finished)
+
 	_populate_station_dropdown()
 	_refresh_view()
 	_transit_btn.disabled = false
@@ -46,6 +65,7 @@ func _ready() -> void:
 		_choice_btns[i].pressed.connect(_on_choice_pressed.bind(i))
 		_choice_btns[i].hide()
 	_mission_btn.hide()
+
 
 func _populate_station_dropdown() -> void:
 	_station_dropdown.clear()
@@ -57,6 +77,7 @@ func _populate_station_dropdown() -> void:
 		var faction: String = str(s.get("faction_id", "?"))
 		_station_dropdown.add_item("%s (%d,%d) — %d ly — %s" % [sid, q, r, dist, faction])
 
+
 func _refresh_view() -> void:
 	if ship == null: return
 	var msg := "[b]Belt Map — Sector View[/b]\n"
@@ -65,64 +86,121 @@ func _refresh_view() -> void:
 	msg += "Hull: %d / 100\n" % ship.hull
 	msg += "Time: %d days\n" % ship.time_elapsed
 	_hex_label.text = msg
-	_render_debug_hex()
 
-func _render_debug_hex() -> void:
+
+# ── Station clicked on hex map ──────────────────────────────────
+
+func _on_station_clicked(station: Dictionary) -> void:
+	if _hex_map.is_travel_animating():
+		return
 	if ship == null: return
-	var lines: Array = []
-	var radius: int = 3
-	for r in range(-radius, radius + 1):
-		var row: String = "  ".repeat(abs(r)) if r != 0 else ""
-		for q in range(-radius, radius + 1):
-			var d: int = Hex.distance(Vector2i(ship.current_q + q, ship.current_r + r), Vector2i(ship.current_q, ship.current_r))
-			if d > radius: row += "  .  "; continue
-			if q == 0 and r == 0: row += "[ X ] "
-			else:
-				var is_station := false
-				var sid: String = ""
-				for s in stations:
-					if int(s.get("q",-999)) == ship.current_q+q and int(s.get("r",-999)) == ship.current_r+r:
-						is_station = true; sid = str(s.get("id","")).substr(-2,2); break
-				if is_station: row += "[%s] " % sid
-				else: row += "  .  "
-		lines.append(row)
-	_hex_label.text += "\n[code]" + "\n".join(lines) + "[/code]"
+
+	var sq: int = int(station.get("q", 0))
+	var sr: int = int(station.get("r", 0))
+	_begin_transit_to(sq, sr, station)
+
+
+# ── Transit (from dropdown or hex-map click) ────────────────────
 
 func _on_transit_pressed() -> void:
+	if _hex_map.is_travel_animating():
+		return
 	if ship == null or stations.is_empty(): return
 	var idx: int = _station_dropdown.selected
 	if idx < 0 or idx >= stations.size():
 		_status_label.text = "[color=red]Pick a destination.[/color]"; return
 	var target: Dictionary = stations[idx]
-	var result: Dictionary = Travel.transit(ship, int(target.get("q",0)), int(target.get("r",0)), stations)
-	Travel.clear_registry()
-	if not result.get("ok", false):
-		_status_label.text = "[color=red]Transit failed: %s[/color]" % result.get("reason","unknown"); return
+	var sq: int = int(target.get("q", 0))
+	var sr: int = int(target.get("r", 0))
+	_begin_transit_to(sq, sr, target)
+
+
+func _begin_transit_to(tq: int, tr: int, target: Dictionary) -> void:
+	var dist: int = Hex.distance(Vector2i(ship.current_q, ship.current_r), Vector2i(tq, tr))
+	if dist < 1:
+		_status_label.text = "[color=yellow]Already at this station.[/color]"
+		return
+
+	# Check fuel
+	var fuel_cost: float = Travel.fuel_cost_for_distance(dist)
+	if ship.fuel < fuel_cost:
+		_status_label.text = "[color=red]Not enough fuel! (%d needed)[/color]" % fuel_cost
+		return
+
+	# Pathfind
+	var path: Array[Vector2i] = _hex_map.pathfind(ship.current_q, ship.current_r, tq, tr)
+	if path.size() < 2:
+		_status_label.text = "[color=red]No path found.[/color]"
+		return
+
+	_status_label.text = "[color=yellow]Traveling to %s...[/color]" % target.get("id", "?")
+
+	# Animate ship along path, rolling encounters per hop
+	_hex_map.animate_travel(path, _per_hop_encounter)
+
+	# Apply fuel cost immediately (the move is committed)
+	Travel.consume_fuel(ship, fuel_cost)
 	_refresh_view()
-	var rolled: Variant = result.get("encounter_rolled", null)
-	if rolled != null:
-		if rolled is Dictionary:
-			var beat_id: String = rolled.get("beat_id", "")
-			if beat_id != "" and _load_encounter_beat(beat_id):
-				return
-			_fallback_encounter_display(rolled)
-			_transit_btn.disabled = true
-		else:
-			# String fallback (_DEFAULT_ENCOUNTER_BEAT) = routine arrival, keep transit active
-			_fallback_encounter_display(rolled)
-			_transit_btn.disabled = false
-			DemoSession.encounter_log.append({"type": "arrival", "name": "routine", "outcome": "docked"})
-	else:
-		# Routine station arrival — show station arrival beat if available,
-		# using visit count to pick the right variant (_01, _11, or _12)
-		var sid: String = str(target.get("id", ""))
-		if sid != "":
-			_track_visit(sid)
-			if _load_station_arrival_beat(sid):
-				return
-		_encounter_label.text = "[b]Arrived.[/b] No encounter."
-		_end_run_btn.disabled = false
-		_mission_btn.show()
+
+
+## Called per hop during hex map travel animation.
+## Returns true if the encounter consumed the turn (stop further travel).
+func _per_hop_encounter(q: int, r: int) -> bool:
+	ship.current_q = q
+	ship.current_r = r
+	ship.time_elapsed += 1
+	_refresh_view()
+
+	# Roll encounter for this hex
+	var hex_kind: String = _get_hex_kind(q, r)
+	var result: Variant = EncounterPool.roll(ship.to_dict(), hex_kind, stations)
+
+	if result.is_empty():
+		# No encounter this hop
+		_status_label.text = "[color=dim]Hop to (%d, %d)... clear.[/color]" % [q, r]
+		return false
+
+	# Encounters that stop travel (hostile, combat, major events)
+	var stop: bool = result.get("stop_on_encounter", false)
+
+	# Display encounter
+	_fallback_encounter_display(result)
+	return stop
+
+
+func _get_hex_kind(q: int, r: int) -> String:
+	var key: String = "%d,%d" % [q, r]
+	if _cartography_data.has("hex_kinds"):
+		return _cartography_data["hex_kinds"].get(key, "deep_belt")
+	if _cartography_data.has("features"):
+		for f in _cartography_data["features"]:
+			if int(f.get("q", 0)) == q and int(f.get("r", 0)) == r:
+				return f.get("kind", "deep_belt")
+	return "deep_belt"
+
+
+func _on_travel_finished() -> void:
+	# Ship arrived at destination
+	_transit_btn.disabled = false
+
+	var sid: String = ""
+	for s in stations:
+		if int(s.get("q", 0)) == ship.current_q and int(s.get("r", 0)) == ship.current_r:
+			sid = str(s.get("id", ""))
+			break
+
+	if sid != "":
+		_track_visit(sid)
+		if _load_station_arrival_beat(sid):
+			return
+
+	_encounter_label.text = "[b]Arrived.[/b] Docked at station."
+	_end_run_btn.disabled = false
+	_mission_btn.show()
+	_status_label.text = "[color=green]Docked.[/color]"
+
+
+# ── Transit result display (copied from existing code) ──────────
 
 func _track_visit(station_id: String) -> void:
 	var count: int = DemoSession.visited_stations.get(station_id, 0) + 1
@@ -148,6 +226,7 @@ func _fallback_encounter_display(rolled: Variant) -> void:
 		_end_run_btn.disabled = false
 		_status_label.text = "[color=green]Docked.[/color]"
 
+
 func _on_proceed_pressed() -> void:
 	_proceed_btn.hide()
 	_transit_btn.disabled = false
@@ -172,10 +251,10 @@ func _on_proceed_pressed() -> void:
 	_status_label.text = "[color=green]Resolved.[/color]"
 	_end_run_btn.disabled = false
 
+
 func _on_end_run_pressed() -> void:
 	if captain.is_empty(): return
 
-	# Build run summary
 	var cap_name: String = captain.get("name", "Captain")
 	var genship: String = captain.get("genship_id", "?")
 	var origin_label: String = captain.get("origin", {}).get("genship_label", "?")
@@ -187,7 +266,6 @@ func _on_end_run_pressed() -> void:
 	summary += "[b]Duration:[/b] %d days\n" % days
 	summary += "[b]Fuel consumed:[/b] %d units\n" % fuel_used
 
-	# Crew roster
 	summary += "\n[b]Crew:[/b]\n"
 	if crew.is_empty():
 		summary += "  (none)\n"
@@ -195,15 +273,13 @@ func _on_end_run_pressed() -> void:
 		for c in crew:
 			var cname: String = c.get("name", c.get("crew_name", "?"))
 			var arch: String = c.get("archetype_id", "?")
-			summary += "  • %s (%s)\n" % [cname, arch]
+			summary += "  \u2022 %s (%s)\n" % [cname, arch]
 
-	# Encounter log
 	if not DemoSession.encounter_log.is_empty():
 		summary += "\n[b]Encounters:[/b]\n"
 		for e in DemoSession.encounter_log:
-			summary += "  • %s — %s\n" % [e.get("type", "?"), e.get("name", e.get("outcome", "?"))]
+			summary += "  \u2022 %s \u2014 %s\n" % [e.get("type", "?"), e.get("name", e.get("outcome", "?"))]
 
-	# Update ship fuel display from any deltas applied during run
 	if ship != null:
 		summary += "\n[b]Fuel remaining:[/b] %d" % ship.fuel
 
@@ -217,14 +293,13 @@ func _on_end_run_pressed() -> void:
 	_transit_btn.disabled = true
 	_station_dropdown.hide()
 
-	# Write to Persist
 	var LW: GDScript = load("res://scripts/ledger_writer.gd"); var lw: Node = LW.new(); add_child(lw)
 	var n: int = lw.finalise_run({"outcome":"ledger-closed","discoveries_caught":["demo_run"]}, captain, crew, ["demo_run"])
 
-	# Return to briefing after a pause
 	await get_tree().create_timer(4.0).timeout
 	DemoSession.reset()
 	get_tree().change_scene_to_file("res://scenes/run_start.tscn")
+
 
 # ── Shared beat display ──────────────────────────────────────────
 
@@ -243,7 +318,6 @@ func _show_beat(beat_dict: Dictionary) -> void:
 			_choice_btns[i].hide()
 	_status_label.text = "[color=yellow]Make a choice.[/color]"
 
-## Convert a delta dict to a human-readable string like "-5 fuel, +1 suspicion"
 func _describe_delta(delta: Dictionary) -> String:
 	var parts: Array = []
 	if delta.has("fuel_delta"):
@@ -268,7 +342,9 @@ func _describe_delta(delta: Dictionary) -> String:
 		return "No immediate effect."
 	return "Effects: " + ", ".join(parts)
 
+
 # ── Choice button clicked ────────────────────────────────────────
+
 func _on_choice_pressed(index: int) -> void:
 	if index < 0 or index >= _pending_choices.size():
 		return
@@ -286,7 +362,6 @@ func _on_choice_pressed(index: int) -> void:
 	if next_beat_id != "" and next_beat_id != "run_end_summary" and _load_manifest_beat(next_beat_id):
 		return
 
-	# Terminal choice — show result and return to overworld
 	_transit_btn.disabled = false
 	var choice_text: String = picked.get("text", picked.get("label", "Chosen"))
 	var delta_text: String = _describe_delta(picked.get("delta", {}))
@@ -294,14 +369,15 @@ func _on_choice_pressed(index: int) -> void:
 	_status_label.text = "[color=green]%s[/color]" % choice_text
 	_end_run_btn.disabled = false
 
+
 # ── Mission board ────────────────────────────────────────────────
+
 func _on_mission_pressed() -> void:
 	var state: Dictionary = Persist.get_state()
 	var ledger: Dictionary = state.get("ledger", {})
 	var run_count: int = state.get("run_counts", {}).get("started", 1)
 	var offers: Array = MissionBoard.generate(ship.to_dict(), ledger, run_count)
 
-	# Show offers in the encounter label
 	var text := "[b]Mission Board[/b]\n\n"
 	if offers.is_empty():
 		text += "No missions available at this station."
@@ -316,6 +392,7 @@ func _on_mission_pressed() -> void:
 
 	_encounter_label.text = text
 	_status_label.text = "[color=yellow]Missions available.[/color]"
+
 
 # ── Beat-file loaders ────────────────────────────────────────────
 
@@ -356,15 +433,11 @@ func _load_encounter_beat(beat_id: String) -> bool:
 	_show_beat(display)
 	return true
 
-## Load the correct station arrival beat based on visit count.
-## First visit: _01/_02/..._10 suffix. Second: _11 suffix. Third+: _12 suffix.
 func _load_station_arrival_beat(station_id: String) -> bool:
 	var data: Dictionary = _load_beat_file("/../narrative/beats/station_arrival_beats.json")
 	if data.is_empty() or not data.has("beats"):
 		return false
 	var beats: Dictionary = data["beats"]
-
-	# First, find the base beat (the _01 variant for this station)
 	var num_part: String = station_id.replace("STATION_", "")
 	var base_key: String = ""
 	for key in beats.keys():
@@ -374,20 +447,16 @@ func _load_station_arrival_beat(station_id: String) -> bool:
 	if base_key == "":
 		return false
 
-	# Extract the station name from the base key (e.g. "KASHNER" from "station_arrival_KASHNER_01")
 	var prefix := "station_arrival_"
 	var name_part: String = base_key.replace(prefix, "")
-	# Strip the _NN suffix to get just the name
 	var last_underscore: int = name_part.rfind("_")
 	if last_underscore < 0:
 		return false
 	var station_name: String = name_part.left(last_underscore)
 
-	# Determine visit variant suffix
 	var visit_suffix: String = _visit_suffix(station_id)
 	var visit_key: String = prefix + station_name + visit_suffix
 
-	# Try the visit-specific beat; fall back to the base beat
 	var beat_key: String = visit_key if beats.has(visit_key) else base_key
 	var beat: Dictionary = beats[beat_key]
 	if beat.is_empty():
@@ -406,7 +475,6 @@ func _load_station_arrival_beat(station_id: String) -> bool:
 	return true
 
 func _load_manifest_beat(beat_id: String) -> bool:
-	# Check all cached beat files for the next beat ID
 	var sources := [
 		"/../narrative/beats/encounter-pool-beats.json",
 		"/../narrative/beats/cqb-ink-beats.json",
@@ -425,3 +493,27 @@ func _load_manifest_beat(beat_id: String) -> bool:
 				_show_beat(display)
 				return true
 	return false
+
+
+# ── Camera drag-to-pan ──────────────────────────────────────────
+
+func _input(event: InputEvent) -> void:
+	# Mouse wheel zoom
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_WHEEL_UP and event.pressed:
+			_camera.zoom *= 1.1
+		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.pressed:
+			_camera.zoom = max(_camera.zoom * 0.9, Vector2(0.5, 0.5))
+
+	# Right-click drag pan
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT:
+		if event.pressed:
+			_dragging = true
+			_drag_start_mouse = get_viewport().get_mouse_position()
+			_drag_start_cam = _camera.position
+		else:
+			_dragging = false
+
+	if event is InputEventMouseMotion and _dragging:
+		var delta: Vector2 = get_viewport().get_mouse_position() - _drag_start_mouse
+		_camera.position = _drag_start_cam - delta * (1.0 / _camera.zoom.x)

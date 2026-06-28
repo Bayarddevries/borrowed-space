@@ -100,6 +100,24 @@ static func validate(stations: Array) -> Dictionary:
 			issues.append("missing_faction_id_%s" % id)
 	return { "ok": issues.is_empty(), "issues": issues }
 
+## Load the full cartography map data from narrative/data/cartography.json.
+## Returns the top-level Dictionary (may contain "stations", "features", "hex_kinds").
+static func load_map() -> Dictionary:
+	var path: String = NarrativeData._resolve_path("cartography")
+	if not FileAccess.file_exists(path):
+		push_error("Cartography: file not found at %s" % path)
+		return {}
+	var f := FileAccess.open(path, FileAccess.READ)
+	if f == null:
+		push_error("Cartography: cannot open %s" % path)
+		return {}
+	var raw := f.get_as_text()
+	var parsed = JSON.parse_string(raw)
+	if typeof(parsed) != TYPE_DICTIONARY:
+		push_error("Cartography: top-level not an object at %s" % path)
+		return {}
+	return parsed
+
 ## Load stations from narrative/data/cartography.json via NarrativeData.
 ## Returns Array of station dicts; mirrors the shape in .json.
 static func load_stations() -> Array:
