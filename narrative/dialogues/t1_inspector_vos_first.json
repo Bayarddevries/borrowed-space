@@ -1,0 +1,179 @@
+{
+  "t1_inspector_vos_first": {
+    "id": "t1_inspector_vos_first",
+    "metadata": {
+      "mode": "overlay",
+      "bg": "res://assets/sprites/bg_briefing.png",
+      "npc": "t1_inspector_vos"
+    },
+    "lines": [
+      {
+        "speaker": "t1_inspector_vos",
+        "text": "Your transponder's clean. I know. This is theatre.",
+        "choices": null
+      },
+      {
+        "speaker": "t1_inspector_vos",
+        "text": "Someone filed a priority override on your route. Means a Trust audit — but the override code traces to a genship signature, not a Trust one.",
+        "choices": null
+      },
+      {
+        "speaker": "t1_inspector_vos",
+        "text": "I'm supposed to hold you here while they verify. I'm not going to do that.",
+        "choices": null
+      },
+      {
+        "speaker": "player",
+        "text": "",
+        "choices": [
+          {
+            "label": "\"Why let me go?\"",
+            "next": "t1_vos_why"
+          },
+          {
+            "label": "\"I have priority clearance. Check the file.\"",
+            "condition": {
+              "fact": "captain.genship",
+              "op": "==",
+              "value": "NAC"
+            },
+            "next": "t1_vos_clearance"
+          },
+          {
+            "label": "Stay quiet. See what else they offer.",
+            "delta": {
+              "suspicion_delta": -1
+            },
+            "next": "t1_vos_silence"
+          }
+        ]
+      }
+    ]
+  },
+
+  "t1_vos_why": {
+    "id": "t1_vos_why",
+    "metadata": {
+      "mode": "overlay",
+      "npc": "t1_inspector_vos"
+    },
+    "lines": [
+      {
+        "speaker": "t1_inspector_vos",
+        "text": "Because the audit isn't about you. It's about whoever filed that override. They used a code that traces to a genship quartermaster — a supply officer who's been dead for six years.",
+        "choices": null
+      },
+      {
+        "speaker": "t1_inspector_vos",
+        "text": "Someone is using dead credentials to move ships through the belt. I want to know who. Letting you through is the fastest way to find out.",
+        "choices": null
+      },
+      {
+        "speaker": "player",
+        "text": "",
+        "choices": [
+          {
+            "label": "\"I'll keep an eye out. Send word if I find something.\"",
+            "next": "t1_vos_end"
+          },
+          {
+            "label": "\"Not my problem. I'm just passing through.\"",
+            "delta": {
+              "suspicion_delta": 1
+            },
+            "next": ""
+          }
+        ]
+      }
+    ]
+  },
+
+  "t1_vos_clearance": {
+    "id": "t1_vos_clearance",
+    "metadata": {
+      "mode": "overlay",
+      "npc": "t1_inspector_vos"
+    },
+    "lines": [
+      {
+        "speaker": "t1_inspector_vos",
+        "text": "NAC code. I should have guessed. Your people don't file overrides — they file requisitions and expect the universe to approve.",
+        "choices": null
+      },
+      {
+        "speaker": "t1_inspector_vos",
+        "text": "Pass through, Captain. And tell your quartermaster their dead friend's credentials are being used. They'll want to know.",
+        "choices": null
+      },
+      {
+        "speaker": "player",
+        "text": "",
+        "choices": [
+          {
+            "label": "\"I'll pass the message.\"",
+            "delta": {
+              "credit_delta": 50
+            },
+            "next": ""
+          },
+          {
+            "label": "\"I don't have a quartermaster. I'm not fleet.\"",
+            "delta": {
+              "suspicion_delta": 2
+            },
+            "next": ""
+          }
+        ]
+      }
+    ]
+  },
+
+  "t1_vos_silence": {
+    "id": "t1_vos_silence",
+    "metadata": {
+      "mode": "overlay",
+      "npc": "t1_inspector_vos"
+    },
+    "lines": [
+      {
+        "speaker": "t1_inspector_vos",
+        "text": "...You don't talk much. That's fine. Smart captains listen more than they speak.",
+        "choices": null
+      },
+      {
+        "speaker": "t1_inspector_vos",
+        "text": "Here's a tip: if someone's tracking your route, it's not T1. We don't have the budget for deep-belt surveillance. Check which Trust corp has a station on your vector.",
+        "choices": null
+      },
+      {
+        "speaker": "player",
+        "text": "",
+        "choices": [
+          {
+            "label": "\"Noted. I'll check.\"",
+            "next": ""
+          },
+          {
+            "label": "\"Why are you helping me?\"",
+            "next": "t1_vos_why"
+          }
+        ]
+      }
+    ]
+  },
+
+  "t1_vos_end": {
+    "id": "t1_vos_end",
+    "metadata": {
+      "mode": "overlay",
+      "npc": "t1_inspector_vos"
+    },
+    "lines": [
+      {
+        "speaker": "t1_inspector_vos",
+        "text": "Good hunting, Captain. The belt doesn't care who you were before. It only cares what you do next.",
+        "choices": null
+      }
+    ]
+  }
+}

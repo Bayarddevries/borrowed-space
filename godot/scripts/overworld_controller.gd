@@ -185,6 +185,12 @@ func _per_hop_encounter(q: int, r: int) -> bool:
 		_status_label.text = "[color=dim]Hop to (%d, %d)... clear.[/color]" % [q, r]
 		return false
 
+	# Check for dialogue_id (Schema C dialogue beat)
+	var dialogue_id: String = str(result.get("dialogue_id", ""))
+	if dialogue_id != "":
+		_start_dialogue(dialogue_id)
+		return true  # stop travel, dialogue consumes the turn
+
 	# Encounters that stop travel (hostile, combat, major events)
 	var stop: bool = result.get("stop_on_encounter", false)
 
@@ -216,8 +222,10 @@ func _on_travel_finished() -> void:
 
 	if sid != "":
 		_track_visit(sid)
-		if _load_station_arrival_beat(sid):
-			return
+		DemoSession.current_station_id = sid
+		# Transition to station hub
+		get_tree().change_scene_to_file("res://scenes/station_hub.tscn")
+		return
 
 	_encounter_label.text = "[b]Arrived.[/b] Docked at station."
 	_end_run_btn.disabled = false

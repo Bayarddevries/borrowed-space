@@ -18,6 +18,7 @@ var run_states: Array = []   # ledger rows from finalised runs
 var ship: Object = null      # ShipState object carried across scenes
 var visited_stations: Dictionary = {}  # station_id -> visit_count, per-run
 var encounter_log: Array = []           # {type, name, outcome} per encounter
+var current_station_id: String = ""     # station_id when docked at hub
 
 func reset() -> void:
 	captain.clear()

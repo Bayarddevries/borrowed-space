@@ -1,0 +1,175 @@
+[gd_scene load_steps=3 format=3 uid="uid://st8h8x7q6f4p"]
+
+[ext_resource type="Script" path="res://scripts/station_hub_controller.gd" id="1_ctrl"]
+[ext_resource type="Texture2D" path="res://assets/sprites/bg_station.png" id="2_bg"]
+
+[node name="StationHub" type="Node"]
+script = ExtResource("1_ctrl")
+
+[node name="Bg" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 1400.0
+offset_bottom = 800.0
+expand_mode = 1
+stretch_mode = 5
+texture = ExtResource("2_bg")
+mouse_filter = 2
+
+[node name="EncounterLabel" type="RichTextLabel" parent="."]
+offset_left = 24.0
+offset_top = 320.0
+offset_right = 1360.0
+offset_bottom = 540.0
+bbcode_enabled = true
+text = ""
+mouse_filter = 2
+add_theme_color_override("default_color", Color(0.85, 0.85, 0.9))
+add_theme_font_size_override("normal_font_size", 16)
+
+# ── Hub Menu ──────────────────────────────────────────────────────
+[node name="HubMenu" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 1400.0
+offset_bottom = 800.0
+color = Color(0, 0, 0, 0)
+mouse_filter = 2
+
+[node name="Panel" type="ColorRect" parent="HubMenu"]
+layout_mode = 0
+offset_left = 400.0
+offset_top = 200.0
+offset_right = 1000.0
+offset_bottom = 600.0
+color = Color(0.08, 0.07, 0.10, 0.92)
+
+[node name="StationLabel" type="Label" parent="HubMenu/Panel"]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 24.0
+offset_right = 560.0
+offset_bottom = 56.0
+text = "Station Name"
+horizontal_alignment = 1
+add_theme_color_override("font_color", Color(0.8, 0.8, 0.9))
+add_theme_font_size_override("font_size", 22)
+
+[node name="FactionLabel" type="Label" parent="HubMenu/Panel"]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 64.0
+offset_right = 560.0
+offset_bottom = 84.0
+text = "Faction: ?"
+horizontal_alignment = 1
+add_theme_color_override("font_color", Color(0.6, 0.65, 0.75))
+add_theme_font_size_override("font_size", 14)
+
+[node name="VisitLabel" type="Label" parent="HubMenu/Panel"]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 86.0
+offset_right = 560.0
+offset_bottom = 106.0
+text = "Visit #1"
+horizontal_alignment = 1
+add_theme_color_override("font_color", Color(0.5, 0.55, 0.65))
+add_theme_font_size_override("font_size", 12)
+
+[node name="BarButton" type="Button" parent="HubMenu/Panel"]
+layout_mode = 0
+offset_left = 80.0
+offset_top = 130.0
+offset_right = 520.0
+offset_bottom = 170.0
+text = "🍺 Bar"
+add_theme_color_override("font_color", Color(0.85, 0.85, 0.9))
+add_theme_color_override("button_normal", Color(0.15, 0.13, 0.20))
+add_theme_color_override("button_hover", Color(0.22, 0.18, 0.28))
+
+[node name="StoreButton" type="Button" parent="HubMenu/Panel"]
+layout_mode = 0
+offset_left = 80.0
+offset_top = 180.0
+offset_right = 520.0
+offset_bottom = 220.0
+text = "🏪 Store"
+add_theme_color_override("font_color", Color(0.85, 0.85, 0.9))
+add_theme_color_override("button_normal", Color(0.15, 0.13, 0.20))
+add_theme_color_override("button_hover", Color(0.22, 0.18, 0.28))
+
+[node name="MissionsButton" type="Button" parent="HubMenu/Panel"]
+layout_mode = 0
+offset_left = 80.0
+offset_top = 230.0
+offset_right = 520.0
+offset_bottom = 270.0
+text = "📋 Missions"
+add_theme_color_override("font_color", Color(0.85, 0.85, 0.9))
+add_theme_color_override("button_normal", Color(0.15, 0.13, 0.20))
+add_theme_color_override("button_hover", Color(0.22, 0.18, 0.28))
+
+[node name="DepartButton" type="Button" parent="HubMenu/Panel"]
+layout_mode = 0
+offset_left = 80.0
+offset_top = 290.0
+offset_right = 520.0
+offset_bottom = 330.0
+text = "🚀 Depart"
+add_theme_color_override("font_color", Color(0.85, 0.85, 0.9))
+add_theme_color_override("button_normal", Color(0.15, 0.13, 0.20))
+add_theme_color_override("button_hover", Color(0.22, 0.18, 0.28))
+
+# ── Bar Sub-Screen ──────────────────────────────────────────────
+[node name="BarScreen" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 1400.0
+offset_bottom = 800.0
+color = Color(0, 0, 0, 0)
+visible = false
+mouse_filter = 2
+
+[node name="BackButton" type="Button" parent="BarScreen"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 740.0
+offset_right = 150.0
+offset_bottom = 770.0
+text = "← Back"
+add_theme_color_override("font_color", Color(0.7, 0.7, 0.8))
+add_theme_color_override("button_normal", Color(0.1, 0.09, 0.14))
+add_theme_color_override("button_hover", Color(0.18, 0.16, 0.22))
+
+# ── Store Sub-Screen ───────────────────────────────────────────
+[node name="StoreScreen" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 1400.0
+offset_bottom = 800.0
+color = Color(0, 0, 0, 0)
+visible = false
+mouse_filter = 2
+
+[node name="BackButton" type="Button" parent="StoreScreen"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 740.0
+offset_right = 150.0
+offset_bottom = 770.0
+text = "← Back"
+add_theme_color_override("font_color", Color(0.7, 0.7, 0.8))
+add_theme_color_override("button_normal", Color(0.1, 0.09, 0.14))
+add_theme_color_override("button_hover", Color(0.18, 0.16, 0.22))
+
+[connection signal="pressed" from="HubMenu/Panel/BarButton" to="." method="_on_bar_pressed"]
+[connection signal="pressed" from="HubMenu/Panel/StoreButton" to="." method="_on_store_pressed"]
+[connection signal="pressed" from="HubMenu/Panel/MissionsButton" to="." method="_on_missions_pressed"]
+[connection signal="pressed" from="HubMenu/Panel/DepartButton" to="." method="_on_depart_pressed"]
+[connection signal="pressed" from="BarScreen/BackButton" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="StoreScreen/BackButton" to="." method="_on_back_pressed"]

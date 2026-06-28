@@ -22,6 +22,7 @@
       "giver_source": "corps",
       "giver_faction": "T1",
       "beat_id": "beat_patrol_license_check",
+      "dialogue_id": "t1_inspector_vos_first",
       "flavor_hook": "A T1 Helios inspector flags you for a transponder audit. Your registration is clean — the audit is the point.",
       "tags": ["corps", "T1", "license", "paperwork-trap"],
       "intensity": "low",
