@@ -77,12 +77,17 @@ Headline achievement: **112/111+1 GUT pass (630+ asserts)**. Full end-to-end nar
 
 | Item                          | Issue/PR                        | Status                                     |
 |--------------------------------|----------------------------------|---------------------------------------------|
-| Phase 4 — Paper art pipeline   | #30 (art)                        | You are drawing a character in Fresco       |
-| Phase 5 — Ship out             | #31 (build)                      | Not started — blocks on art                 |
+|| Phase 4a — Visual hex map     | #30 (art) / 6497fac              | **SHIPPED** — isometric tiles, ship animation, per-hop encounters, clickable station pins, pan/zoom camera |
+|| Phase 4b — Station hub screens | Next                             | Planned                                    |
+|| Phase 4c — Dialogue system     | Next                             | Planned                                    |
+|| Phase 4d — Recurring NPCs      | Next                             | Planned                                    |
+| Phase 5 — Ship out             | #31 (build)                      | Not started                                |
 
 ## Queued (next)
 
-- Phase 4: paper art pass — 1 character + 1 background validates paper pipeline
+- Phase 4b: Station hub screens (bar, store, mission UI with per-station BGs and dialogue)
+- Phase 4c: Dialogue system (speaker portraits, branching, conditions, full-screen takeovers)
+- Phase 4d: Recurring NPCs + relationship tracking
 - Phase 5: ship out — browser build, README
 
 ---

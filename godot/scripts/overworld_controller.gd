@@ -24,6 +24,11 @@ var crew: Array = []
 var _pending_choices: Array = []
 var _cartography_data: Dictionary = {}
 
+# NPC state
+var _npc_rogues: Dictionary = {}
+var _npc_portraits: Dictionary = {}
+var _dialogue_panel: DialogueEngine = null
+
 # Camera drag state
 var _dragging: bool = false
 var _drag_start_mouse: Vector2 = Vector2.ZERO
@@ -55,6 +60,26 @@ func _ready() -> void:
 	# Connect hex map signals
 	_hex_map.station_clicked.connect(_on_station_clicked)
 	_hex_map.travel_finished.connect(_on_travel_finished)
+
+	# Load NPC rogues-gallery
+	var rg_path: String = ProjectSettings.globalize_path("res://") + "/../narrative/data/npc-rogues-gallery.json"
+	if FileAccess.file_exists(rg_path):
+		var f := FileAccess.open(rg_path, FileAccess.READ)
+		if f != null:
+			var parsed = JSON.parse_string(f.get_as_text())
+			if parsed is Dictionary:
+				_npc_rogues = parsed.get("npcs", {})
+				var pm: Dictionary = parsed.get("portrait_map", {})
+				for npc_id: String in pm.keys():
+					var tex_path: String = "res://assets/sprites/" + pm[npc_id]
+					var tex: Texture2D = load(tex_path)
+					if tex != null:
+						_npc_portraits[npc_id] = tex
+
+	# Init dialogue panel (hidden until first dialogue)
+	_dialogue_panel = preload("res://scenes/dialogue_panel.tscn").instantiate()
+	add_child(_dialogue_panel)
+	_dialogue_panel.dialogue_ended.connect(_on_dialogue_ended)
 
 	_populate_station_dropdown()
 	_refresh_view()
@@ -493,6 +518,70 @@ func _load_manifest_beat(beat_id: String) -> bool:
 				_show_beat(display)
 				return true
 	return false
+
+
+# ── Dialogue system ──────────────────────────────────────────────
+
+## Start a dialogue beat by ID. Loads from narrative/dialogues/.
+func _start_dialogue(dialogue_id: String) -> void:
+	var dlg_path: String = ProjectSettings.globalize_path("res://") + "/../narrative/dialogues/%s.json" % dialogue_id
+	if not FileAccess.file_exists(dlg_path):
+		# Try encounter-pool-beats as fallback (Schema B -> Schema C converter)
+		var beat_data: Dictionary = _load_beat_file("/../narrative/beats/encounter-pool-beats.json")
+		if beat_data.has("beats") and beat_data["beats"].has(dialogue_id):
+			var beat: Dictionary = beat_data["beats"][dialogue_id]
+			_show_beat({
+				"text": beat.get("prose", ""),
+				"choices": beat.get("choices", []),
+				"speaker": "narrator",
+			})
+		return
+
+	var f := FileAccess.open(dlg_path, FileAccess.READ)
+	if f == null:
+		return
+	var raw := f.get_as_text()
+	var parsed = JSON.parse_string(raw)
+	if parsed == null or not parsed is Dictionary:
+		return
+
+	var beat: Dictionary = parsed.get(dialogue_id, parsed)
+	if beat.is_empty() or not beat.has("lines"):
+		return
+
+	# Build state for condition evaluation
+	var dlg_state: Dictionary = {
+		"captain": captain,
+		"crew": crew,
+		"ship": ship.to_dict() if ship != null else {},
+		"suspicion": ship.suspicion if ship != null else 0,
+		"fuel": ship.fuel if ship != null else 100,
+		"_npcs": _npc_rogues,
+		"_portraits": _npc_portraits,
+	}
+
+	# Add session state
+	dlg_state["visited_stations"] = DemoSession.visited_stations.duplicate()
+
+	# Add persist state
+	if has_node("/root/Persist"):
+		var pstate: Dictionary = Persist.get_state()
+		dlg_state["run_counts"] = pstate.get("run_counts", {})
+		dlg_state["standing"] = pstate.get("faction_standing", {})
+
+	_dialogue_panel.start_dialogue(beat, dlg_state, _npc_portraits)
+
+
+func _on_dialogue_ended(next_id: String) -> void:
+	# Re-enable buttons
+	_transit_btn.disabled = false
+	_status_label.text = "[color=green]Dialogue complete.[/color]"
+
+	if next_id != "":
+		# Chain to next dialogue or encounter
+		_start_dialogue(next_id)
+	else:
+		_end_run_btn.disabled = false
 
 
 # ── Camera drag-to-pan ──────────────────────────────────────────

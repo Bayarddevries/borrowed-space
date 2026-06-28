@@ -1,0 +1,93 @@
+{
+  "_meta": {
+    "schema": "C-npc",
+    "version": "0.1",
+    "description": "NPC rogues gallery. Each NPC has an id that matches speaker IDs in dialogue beats. Fill in the blanks — name, faction, personality, portrait file.",
+    "instructions": "For each NPC you want to add: give them an id (used in dialogue files), a name, a faction, a short personality tag, and a portrait filename (when drawn). The system looks up portraits by npc_id in the portraits directory."
+  },
+  "npcs": {
+    "t1_inspector_vos": {
+      "name": "Vos",
+      "title": "T1 Helios Inspector",
+      "faction": "T1",
+      "personality": "weary, competent, quietly defiant",
+      "portrait": "npc_t1_officer.png",
+      "greeting": "Another captain. Another override.",
+      "first_meeting_line": "Your transponder's clean. I know. This is theatre.",
+      "notes": "⭐ First NPC template. Replace portrait when drawn."
+    },
+    "bartender_coral": {
+      "name": "",
+      "title": "Bartender",
+      "faction": "independent",
+      "personality": "",
+      "portrait": "npc_bartender.png",
+      "greeting": "",
+      "notes": "Bartender at Coral station. Fill in."
+    },
+    "bartender_kashner": {
+      "name": "",
+      "title": "Bartender",
+      "faction": "independent",
+      "personality": "",
+      "portrait": "npc_bartender.png",
+      "greeting": "",
+      "notes": "Bartender at Kashner Iceworks. Fill in."
+    },
+    "t2_officer": {
+      "name": "",
+      "title": "T2 Voidline Officer",
+      "faction": "T2",
+      "personality": "",
+      "portrait": "npc_t2_voidline.png",
+      "greeting": "",
+      "notes": "T2 checkpoint officer. Aggressive."
+    },
+    "b1_runner": {
+      "name": "",
+      "title": "B1 Dispatch Runner",
+      "faction": "B1",
+      "personality": "",
+      "portrait": "npc_b1_runner.png",
+      "greeting": "",
+      "notes": "Information broker. Speaks in shorthand."
+    },
+    "the_trustee": {
+      "name": "The Trustee",
+      "title": "",
+      "faction": "trustee",
+      "personality": "ancient, precise, obscured",
+      "portrait": "npc_trustee.png",
+      "greeting": "",
+      "notes": "Mysterious figure. Appears on screens. Full-screen takeovers."
+    },
+    "crew_template": {
+      "name": "",
+      "title": "Crew",
+      "faction": "genship",
+      "personality": "",
+      "portrait": "npc_crew_generic.png",
+      "greeting": "",
+      "notes": "Generic crew portrait. Replace per-archetype when drawn."
+    },
+    "merchant": {
+      "name": "",
+      "title": "Station Merchant",
+      "faction": "independent",
+      "personality": "",
+      "portrait": "npc_merchant.png",
+      "greeting": "",
+      "notes": "Shopkeeper. Every station needs one."
+    }
+  },
+  "portrait_map": {
+    "t1_inspector_vos": "npc_t1_officer.png",
+    "bartender_coral": "npc_bartender.png",
+    "bartender_kashner": "npc_bartender.png",
+    "t2_officer": "npc_t2_voidline.png",
+    "b1_runner": "npc_b1_runner.png",
+    "the_trustee": "npc_trustee.png",
+    "crew_template": "npc_crew_generic.png",
+    "merchant": "npc_merchant.png"
+  }
+}
