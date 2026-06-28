@@ -127,8 +127,8 @@ func _ready() -> void:
 	# Encounter label for mission board output
 	_encounter_label = RichTextLabel.new()
 	_encounter_label.bbcode_enabled = true
-	_encounter_label.size = Vector2(1336, 220)
-	_encounter_label.position = Vector2(24, 320)
+	_encounter_label.size = Vector2(1336, 160)
+	_encounter_label.position = Vector2(24, 620)
 	_encounter_label.add_theme_color_override("default_color", Color(0.85, 0.85, 0.9))
 	_encounter_label.add_theme_font_size_override("normal_font_size", 16)
 	_encounter_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
