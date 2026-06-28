@@ -406,15 +406,22 @@ func _load_station_arrival_beat(station_id: String) -> bool:
 	return true
 
 func _load_manifest_beat(beat_id: String) -> bool:
-	var data: Dictionary = _load_beat_file("/../narrative/beats/encounter-pool-beats.json")
-	if data.has("beats") and data["beats"].has(beat_id):
-		var beat: Dictionary = data["beats"][beat_id]
-		var display: Dictionary = {
-			"text": beat.get("prose", beat.get("text", "")),
-			"choices": beat.get("choices", []),
-			"speaker": "narrator",
-		}
-		if str(display["text"]) != "":
-			_show_beat(display)
-			return true
+	# Check all cached beat files for the next beat ID
+	var sources := [
+		"/../narrative/beats/encounter-pool-beats.json",
+		"/../narrative/beats/cqb-ink-beats.json",
+		"/../narrative/beats/station_arrival_beats.json",
+	]
+	for src in sources:
+		var data: Dictionary = _load_beat_file(src)
+		if data.has("beats") and data["beats"].has(beat_id):
+			var beat: Dictionary = data["beats"][beat_id]
+			var display: Dictionary = {
+				"text": beat.get("prose", beat.get("text", "")),
+				"choices": beat.get("choices", []),
+				"speaker": "narrator",
+			}
+			if str(display["text"]) != "":
+				_show_beat(display)
+				return true
 	return false
