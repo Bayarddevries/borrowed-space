@@ -16,10 +16,15 @@ class_name StationHubController
 
 var _station_data: Dictionary = {}
 var _dialogue_panel = null
+var _session = null  # DemoSession autoload, resolved at runtime
 
 func _ready() -> void:
-	# Get station data from DemoSession
-	var sid: String = DemoSession.current_station_id
+	# Get station data from DemoSession (runtime-resolved to avoid compile fails on stale cache)
+	_session = get_node_or_null("/root/DemoSession")
+	if _session == null:
+		_encounter_label.text = "[b]Error:[/b] DemoSession not available."
+		return
+	var sid: String = _session.current_station_id
 	if sid == "":
 		_encounter_label.text = "[b]Error:[/b] No station data."
 		return
@@ -38,7 +43,7 @@ func _ready() -> void:
 	# Display station info
 	var name_str: String = str(_station_data.get("name", sid))
 	var faction_str: String = str(_station_data.get("faction_id", "?"))
-	var visit_count: int = DemoSession.visited_stations.get(sid, 1)
+	var visit_count: int = _session.visited_stations.get(sid, 1)
 	_station_label.text = name_str
 	_faction_label.text = "Faction: %s" % faction_str
 	_visit_label.text = "Visit #%d" % visit_count
@@ -51,8 +56,8 @@ func _ready() -> void:
 	_dialogue_panel = null
 
 	# Update stat panel
-	var ship_dict: Dictionary = DemoSession.ship.to_dict() if DemoSession.ship != null else {}
-	_stat_panel.update(ship_dict, DemoSession.crew.size())
+	var ship_dict: Dictionary = _session.ship.to_dict() if _session.ship != null else {}
+	_stat_panel.update(ship_dict, _session.crew.size())
 
 
 # ── Hub menu buttons ────────────────────────────────────────────
@@ -61,14 +66,14 @@ func _on_bar_pressed() -> void:
 	_hub_menu.visible = false
 	_bar_screen.visible = true
 	# Show bartender dialogue
-	_start_hub_dialogue("bartender_greeting_%s" % DemoSession.current_station_id.to_lower())
+	_start_hub_dialogue("bartender_greeting_%s" % _session.current_station_id.to_lower())
 
 
 func _on_store_pressed() -> void:
 	_hub_menu.visible = false
 	_store_screen.visible = true
 	# Show merchant dialogue
-	_start_hub_dialogue("merchant_greeting_%s" % DemoSession.current_station_id.to_lower())
+	_start_hub_dialogue("merchant_greeting_%s" % _session.current_station_id.to_lower())
 
 
 func _on_missions_pressed() -> void:
@@ -76,7 +81,7 @@ func _on_missions_pressed() -> void:
 	var state: Dictionary = Persist.get_state()
 	var ledger: Dictionary = state.get("ledger", {})
 	var run_count: int = state.get("run_counts", {}).get("started", 1)
-	var ship_dict: Dictionary = DemoSession.ship.to_dict() if DemoSession.ship != null else {}
+	var ship_dict: Dictionary = _session.ship.to_dict() if _session.ship != null else {}
 	var offers: Array = MissionBoard.generate(ship_dict, ledger, run_count)
 
 	var text := "[b]Mission Board[/b]\n\n"
@@ -136,9 +141,9 @@ func _start_hub_dialogue(dialogue_id: String) -> void:
 		return
 
 	# Build state
-	var captain: Dictionary = DemoSession.captain
-	var crew: Array = DemoSession.crew
-	var ship_dict: Dictionary = DemoSession.ship.to_dict() if DemoSession.ship != null else {}
+	var captain: Dictionary = _session.captain
+	var crew: Array = _session.crew
+	var ship_dict: Dictionary = _session.ship.to_dict() if _session.ship != null else {}
 
 	var dlg_state: Dictionary = {
 		"captain": captain,
@@ -146,8 +151,8 @@ func _start_hub_dialogue(dialogue_id: String) -> void:
 		"ship": ship_dict,
 		"suspicion": ship_dict.get("suspicion", 0),
 		"fuel": ship_dict.get("fuel", 100),
-		"current_station": DemoSession.current_station_id,
-		"visit_count": DemoSession.visited_stations.get(DemoSession.current_station_id, 1),
+		"current_station": _session.current_station_id,
+		"visit_count": _session.visited_stations.get(_session.current_station_id, 1),
 	}
 
 	# Load portraits from NPC rogues-gallery
