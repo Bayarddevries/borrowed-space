@@ -47,7 +47,7 @@ func test_suspicion_modifier_adds_chance() -> void:
 func test_low_fuel_reduces_encounter_chance() -> void:
 	var low_total: int = 0
 	var full_total: int = 0
-	for seed in range(400):
+	for seed in range(800):
 		if _roll_with_seed(_make_ship({"fuel": 10}), "deep_belt", [], seed):
 			low_total += 1
 		if _roll_with_seed(_make_ship({"fuel": 100}), "deep_belt", [], seed):
@@ -73,7 +73,7 @@ func test_weighted_selection_respects_weight() -> void:
 		"enc_crew_resource_tension_05",
 	]
 	var counts: Dictionary = {}
-	for seed in range(400):
+	for seed in range(800):
 		var r: Variant = _roll_with_seed(_make_ship(), "deep_belt", [], seed)
 		if r != null:
 			var vid: String = str(r.get("variant_id", ""))

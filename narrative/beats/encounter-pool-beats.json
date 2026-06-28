@@ -426,6 +426,114 @@
         { "text": "Log the coordinates. Research first.", "next_beat": "run_end_summary", "delta": { "discoveries": ["trustee_beacon_coordinates"] } },
         { "text": "Ignore it. Trustee programs cost more than they pay.", "next_beat": "run_end_summary", "delta": { "bond_score": 1 } }
       ]
+    },
+    "enc_patrol_t8_customs_board": {
+      "_id": "enc_patrol_t8_customs_board",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Patrol",
+      "prose": "T8 customs doesn't knock. They cycle your airlock from the outside, step through in pairs, and fan out across your deck without being invited. The lead officer holds a warrant tablet at chest height — the document is real, the seal is real, and the name on the form is close enough to your registration to survive a challenge. One of your crew has a genship record that doesn't match your declared affiliation. The officer notices.",
+      "choices": [
+        { "text": "Co-operate. Present the crew. Answer questions.", "next_beat": "run_end_summary", "delta": { "suspicion_delta": -1, "bond_score": -1, "fuel_delta": -3 } },
+        { "text": "Challenge the warrant breadth. Demand specifics.", "next_beat": "run_end_summary", "delta": { "suspicion_delta": 2 } },
+        { "text": "Trigger a decoy system. Buy confusion time.", "next_beat": "run_end_summary", "delta": { "suspicion_delta": 3, "discoveries": ["t8_decoy_triggered"] } }
+      ]
+    },
+    "enc_patrol_b1_dispatch_runner": {
+      "_id": "enc_patrol_b1_dispatch_runner",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Patrol",
+      "prose": "The B1 runner matches your vector at three hundred metres and holds — a short-range skiff with a single pilot, no weapons visible, transponder broadcasting a standard dispatch transit code. They're holding a data cylinder to the viewport. The cylinder has a B1 Dispatch seal, but the routing code is scratched out. Whoever sent this doesn't want it logged.",
+      "choices": [
+        { "text": "Match velocity. Take the cylinder.", "next_beat": "run_end_summary", "delta": { "discoveries": ["b1_dispatch_cylinder"], "suspicion_delta": 1 } },
+        { "text": "Wave them off. No physical handoffs.", "next_beat": "run_end_summary", "delta": { "bond_score": -1 } },
+        { "text": "Scan the cylinder remotely. Don't take it.", "next_beat": "run_end_summary", "delta": { "discoveries": ["b1_cylinder_remote_scan"] } }
+      ]
+    },
+    "enc_distress_t2_medical_evac": {
+      "_id": "enc_distress_t2_medical_evac",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Distress",
+      "prose": "The T2 medical transport drifts with its running lights on emergency cycle — a heartbeat blink that says 'we're alive but not for long.' The docking collar is standard. The airlock cycles open to reveal a medic holding an oxygen mask to a patient strapped into a transit chair. The classified manifest container is in plain sight behind them, unsealed, its contents under a cloth.",
+      "choices": [
+        { "text": "Transfer oxygen. Don't look at the cargo.", "next_beat": "run_end_summary", "delta": { "bond_score": 2, "fuel_delta": -2 } },
+        { "text": "Transfer oxygen. Note the manifest numbers.", "next_beat": "run_end_summary", "delta": { "bond_score": 1, "discoveries": ["t2_medical_manifest_numbers"], "suspicion_delta": 1 } },
+        { "text": "Offer a tow to station. Request payment.", "next_beat": "run_end_summary", "delta": { "credit_delta": 20, "fuel_delta": -8 } }
+      ]
+    },
+    "enc_distress_ac_electrical_fire": {
+      "_id": "enc_distress_ac_electrical_fire",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Distress",
+      "prose": "Smoke vents from the AC freighter's engine bay vents in measured pulses — the fire is contained but the suppression foam has shorted the power bus. The engineer has isolated the damaged section and is holding a weld torch, waiting for a second pair of hands. The replacement relay is on the bulkhead, still in its packing. The captain is already calculating the cost of the tow.",
+      "choices": [
+        { "text": "Weld the bus. Quick fix, no payment.", "next_beat": "run_end_summary", "delta": { "bond_score": 2, "fuel_delta": -1 } },
+        { "text": "Supply the relay. Let them do the work.", "next_beat": "run_end_summary", "delta": { "credit_delta": -15, "bond_score": 1 } },
+        { "text": "Offer a tow. Full rate.", "next_beat": "run_end_summary", "delta": { "credit_delta": 30, "fuel_delta": -10 } }
+      ]
+    },
+    "enc_discovery_nac_data_cache": {
+      "_id": "enc_discovery_nac_data_cache",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Discovery",
+      "prose": "The B2 team has the cache open — a sealed NAC alloy case that took them six hours to crack. Inside: a data stack with military-grade port shielding and a hand-written logbook in standard NAC procurement notation. The log covers maintenance schedules for a ship class that doesn't match any known registry. The dates are from before the exodus.",
+      "choices": [
+        { "text": "Share your genship codes. Read the data together.", "next_beat": "run_end_summary", "delta": { "discoveries": ["nac_cache_full_contents"], "bond_score": 2 } },
+        { "text": "Buy the cache outright. Take it.", "next_beat": "run_end_summary", "delta": { "credit_delta": -60, "discoveries": ["nac_cache_purchased"] } },
+        { "text": "Copy the logbook. Leave the stack.", "next_beat": "run_end_summary", "delta": { "discoveries": ["nac_logbook_transcript"], "bond_score": -1 } }
+      ]
+    },
+    "enc_discovery_saa_cooperative_wreck": {
+      "_id": "enc_discovery_saa_cooperative_wreck",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Discovery",
+      "prose": "The Coalition scout party has strung work lights along the derelict's hull. It's an old genship-provisioning tender — a class designed to carry spare parts and supplies between construction orbits. The hull markings are NAC, but the interior fittings are from three different genship manufacturers, which suggests it was refitted mid-voyage. The log room is intact.",
+      "choices": [
+        { "text": "Lead the survey. First access to the log room.", "next_beat": "run_end_summary", "delta": { "discoveries": ["pre_exodus_tender_log"], "bond_score": 2 } },
+        { "text": "Provide equipment. Take an equal share of findings.", "next_beat": "run_end_summary", "delta": { "credit_delta": -10, "discoveries": ["tender_shared_findings"] } },
+        { "text": "Record the coordinates. Report to the Trustee network.", "next_beat": "run_end_summary", "delta": { "discoveries": ["tender_coordinates_to_trustee"], "suspicion_delta": 1 } }
+      ]
+    },
+    "enc_crew_t5_payroll_test": {
+      "_id": "enc_crew_t5_payroll_test",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Crew",
+      "prose": "The inquiry arrives as a sealed message, routed through three relay stations to hide its origin. It asks for confirmation of one crew member's identity — just name and genship — to verify a prior wage record. If you confirm, the inquiry closes. If you don't, T5 payroll will flag the crew member as unreachable, which triggers a different kind of attention. The crew member hasn't mentioned any prior T5 contract.",
+      "choices": [
+        { "text": "Confirm the identity. Clear the record.", "next_beat": "run_end_summary", "delta": { "bond_score": -1, "suspicion_delta": -1 } },
+        { "text": "Ask the crew member first. Let them decide.", "next_beat": "run_end_summary", "delta": { "bond_score": 2 } },
+        { "text": "Ignore the inquiry. Let it time out.", "next_beat": "run_end_summary", "delta": { "suspicion_delta": 1 } }
+      ]
+    },
+    "enc_faction_ed_transport_dispute": {
+      "_id": "enc_faction_ed_transport_dispute",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Faction",
+      "prose": "The ED transport officer has a tablet, a manifest, and a fixed expression. The scale at the station gate reads 240 kg over the declared cargo mass. The impounded ship's captain insists the cargo was weighed before departure. The officer says the station scale is certified. The difference is exactly the weight of a standard life-support canister — the kind that's not on any manifest.",
+      "choices": [
+        { "text": "Witness for the impounded captain. Scrutinise the scale.", "next_beat": "run_end_summary", "delta": { "bond_score": 1, "discoveries": ["ed_scale_discrepancy"] } },
+        { "text": "Side with the ED officer. Protocol matters.", "next_beat": "run_end_summary", "delta": { "suspicion_delta": -1 } },
+        { "text": "Offer to carry an independent measurement.", "next_beat": "run_end_summary", "delta": { "credit_delta": -10, "discoveries": ["ed_transport_arbitration"] } }
+      ]
+    },
+    "enc_faction_rra_antipiracy_exercise": {
+      "_id": "enc_faction_rra_antipiracy_exercise",
+      "_type": "beat",
+      "_schema": "manifest-v1",
+      "category": "Faction",
+      "prose": "RRA tactical command broadcasts the exercise parameters on an open channel: a four-hour window in the lanes, simulated interdiction by two RRA corvettes, a civilian hull playing the role of a smuggler running a blockade. Your ship fits the profile. The pay is credited on completion. The tracking data — course, speed, transponder response — becomes part of RRA's permanent traffic archive.",
+      "choices": [
+        { "text": "Accept. Play the smuggler. Collect hazard pay.", "next_beat": "run_end_summary", "delta": { "credit_delta": 80, "bond_score": -1, "suspicion_delta": 1 } },
+        { "text": "Accept but feed false course data. Limit exposure.", "next_beat": "run_end_summary", "delta": { "credit_delta": 60, "suspicion_delta": 2, "discoveries": ["rra_exercise_countertracking"] } },
+        { "text": "Decline. Don't put your ship on RRA's tracking grid.", "next_beat": "run_end_summary", "delta": { "bond_score": 1 } }
+      ]
     }
   }
 }
