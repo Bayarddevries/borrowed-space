@@ -16,7 +16,7 @@ class_name OverworldController
 @onready var _mission_btn: Button               = $MissionButton
 @onready var _hex_map: HexMap = $MapContainer/HexMap
 @onready var _camera: Camera2D = $Camera2D
-@onready var _stat_panel: StatPanel = $StatPanel
+@onready var _stat_panel = $StatPanel
 
 var ship: ShipState = null
 var stations: Array = []
@@ -28,7 +28,7 @@ var _cartography_data: Dictionary = {}
 # NPC state
 var _npc_rogues: Dictionary = {}
 var _npc_portraits: Dictionary = {}
-var _dialogue_panel: DialogueEngine = null
+var _dialogue_panel = null
 
 # Camera drag state
 var _dragging: bool = false

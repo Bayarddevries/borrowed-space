@@ -12,10 +12,10 @@ class_name StationHubController
 @onready var _faction_label: Label       = $HubMenu/FactionLabel
 @onready var _visit_label: Label         = $HubMenu/VisitLabel
 @onready var _encounter_label: RichTextLabel = $EncounterLabel
-@onready var _stat_panel: StatPanel = $StatPanel
+@onready var _stat_panel = $StatPanel
 
 var _station_data: Dictionary = {}
-var _dialogue_panel: DialogueEngine = null
+var _dialogue_panel = null
 
 func _ready() -> void:
 	# Get station data from DemoSession
