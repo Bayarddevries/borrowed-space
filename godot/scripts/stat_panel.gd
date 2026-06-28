@@ -1,6 +1,5 @@
 extends ColorRect
 ## StatPanel — visual ship stats overlay (fuel, hull, suspicion, crew).
-class_name StatPanel
 
 @onready var _fuel_bar: ColorRect        = $FuelBar/Fill
 @onready var _fuel_label: Label          = $FuelBar/Label

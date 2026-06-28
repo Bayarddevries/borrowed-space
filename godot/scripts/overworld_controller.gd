@@ -14,7 +14,7 @@ class_name OverworldController
 @onready var _proceed_btn: Button               = $ProceedButton
 @onready var _choice_btns: Array[Button]        = [$Choice1Button, $Choice2Button, $Choice3Button]
 @onready var _mission_btn: Button               = $MissionButton
-@onready var _hex_map: HexMap = $MapContainer/HexMap
+@onready var _hex_map = $MapContainer/HexMap
 @onready var _camera: Camera2D = $Camera2D
 @onready var _stat_panel = $StatPanel
 

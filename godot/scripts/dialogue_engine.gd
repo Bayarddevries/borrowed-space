@@ -1,16 +1,5 @@
 extends ColorRect
 ## DialogueEngine — drives the dialogue panel scene.
-##
-## Loads dialogue beats (Schema C), manages conversation state,
-## evaluates conditions, and signals back when dialogue ends.
-##
-## Usage:
-##   var dp = preload("res://scenes/dialogue_panel.tscn").instantiate()
-##   add_child(dp)
-##   dp.start_dialogue(beat_dict, state_dict)
-##   dp.dialogue_ended.connect(_on_dialogue_done)
-
-class_name DialogueEngine
 
 signal dialogue_ended(next_beat_id: String)
 signal advance_requested()  # for the overworld controller to process next
