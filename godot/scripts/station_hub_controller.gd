@@ -1,35 +1,28 @@
 extends Node
 ## StationHubController — station docked hub screen.
 ##
-## Shows a hub menu (Bar, Store, Missions, Depart) when the player
-## docks at a station. Sub-screens open on top with NPC dialogue.
+## Builds UI from code to avoid Godot 4's sub-scene instantiation
+## issues. Shows hub menu (Bar, Store, Missions, Depart) when docked.
 class_name StationHubController
-
-@onready var _hub_menu: ColorRect        = $HubMenu
-@onready var _bar_screen: ColorRect      = $BarScreen
-@onready var _store_screen: ColorRect    = $StoreScreen
-@onready var _station_label: Label       = $HubMenu/StationLabel
-@onready var _faction_label: Label       = $HubMenu/FactionLabel
-@onready var _visit_label: Label         = $HubMenu/VisitLabel
-@onready var _encounter_label: RichTextLabel = $EncounterLabel
-@onready var _stat_panel = $StatPanel
 
 var _station_data: Dictionary = {}
 var _dialogue_panel = null
-var _session = null  # DemoSession autoload, resolved at runtime
+var _session = null
+var _hub_menu: ColorRect = null
+var _bar_screen: ColorRect = null
+var _store_screen: ColorRect = null
+var _encounter_label: RichTextLabel = null
+var _station_label: Label = null
 
 func _ready() -> void:
-	# Get station data from DemoSession (runtime-resolved to avoid compile fails on stale cache)
 	_session = get_node_or_null("/root/DemoSession")
 	if _session == null:
-		_encounter_label.text = "[b]Error:[/b] DemoSession not available."
-		return
-	var sid: String = _session.current_station_id
-	if sid == "":
-		_encounter_label.text = "[b]Error:[/b] No station data."
 		return
 
-	# Load station from NarrativeData
+	var sid: String = _session.current_station_id
+	if sid == "":
+		return
+
 	var stations: Array = Cartography.load_stations()
 	for s in stations:
 		if str(s.get("id", "")) == sid:
@@ -37,47 +30,100 @@ func _ready() -> void:
 			break
 
 	if _station_data.is_empty():
-		_encounter_label.text = "[b]Error:[/b] Station '%s' not found in data." % sid
 		return
 
-	# Display station info
 	var name_str: String = str(_station_data.get("name", sid))
 	var faction_str: String = str(_station_data.get("faction_id", "?"))
 	var visit_count: int = _session.visited_stations.get(sid, 1)
+
+	# Build UI in code
+	var panel := ColorRect.new()
+	panel.color = Color(0.08, 0.07, 0.10, 0.92)
+	panel.size = Vector2(600, 400)
+	panel.position = Vector2(400, 200)
+	add_child(panel)
+	_hub_menu = panel
+
+	# Station name
+	_station_label = Label.new()
 	_station_label.text = name_str
-	_faction_label.text = "Faction: %s" % faction_str
-	_visit_label.text = "Visit #%d" % visit_count
+	_station_label.add_theme_color_override("font_color", Color(0.8, 0.8, 0.9))
+	_station_label.add_theme_font_size_override("font_size", 22)
+	_station_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_station_label.position = Vector2(40, 24)
+	_station_label.size = Vector2(520, 32)
+	panel.add_child(_station_label)
 
-	# Hide sub-screens by default
-	_bar_screen.visible = false
-	_store_screen.visible = false
+	# Faction
+	var faction_label := Label.new()
+	faction_label.text = "Faction: %s" % faction_str
+	faction_label.add_theme_color_override("font_color", Color(0.6, 0.65, 0.75))
+	faction_label.add_theme_font_size_override("font_size", 14)
+	faction_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	faction_label.position = Vector2(40, 64)
+	faction_label.size = Vector2(520, 20)
+	panel.add_child(faction_label)
 
-	# Init dialogue panel (hidden until first dialogue)
+	# Visit count
+	var visit_label := Label.new()
+	visit_label.text = "Visit #%d" % visit_count
+	visit_label.add_theme_color_override("font_color", Color(0.5, 0.55, 0.65))
+	visit_label.add_theme_font_size_override("font_size", 12)
+	visit_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	visit_label.position = Vector2(40, 86)
+	visit_label.size = Vector2(520, 20)
+	panel.add_child(visit_label)
+
+	# Buttons
+	var btn_data := [
+		["Bar", 130, "_on_bar_pressed"],
+		["Store", 180, "_on_store_pressed"],
+		["Missions", 230, "_on_missions_pressed"],
+		["Depart", 290, "_on_depart_pressed"],
+	]
+	for b in btn_data:
+		var btn := Button.new()
+		btn.text = b[0]
+		btn.position = Vector2(80, b[1])
+		btn.size = Vector2(440, 40)
+		btn.add_theme_color_override("font_color", Color(0.85, 0.85, 0.9))
+		btn.add_theme_color_override("button_normal", Color(0.15, 0.13, 0.20))
+		btn.add_theme_color_override("button_hover", Color(0.22, 0.18, 0.28))
+		btn.pressed.connect(_on_button.bind(b[2]))
+		panel.add_child(btn)
+
+	# Encounter label for mission board output
+	_encounter_label = RichTextLabel.new()
+	_encounter_label.bbcode_enabled = true
+	_encounter_label.size = Vector2(1336, 220)
+	_encounter_label.position = Vector2(24, 320)
+	_encounter_label.add_theme_color_override("default_color", Color(0.85, 0.85, 0.9))
+	_encounter_label.add_theme_font_size_override("normal_font_size", 16)
+	_encounter_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(_encounter_label)
+	_encounter_label.text = ""
+
+	# Init dialogue panel
 	_dialogue_panel = null
 
-	# Update stat panel
-	var ship_dict: Dictionary = _session.ship.to_dict() if _session.ship != null else {}
-	_stat_panel.update(ship_dict, _session.crew.size())
+
+func _on_button(method_name: String) -> void:
+	call(method_name)
 
 
 # ── Hub menu buttons ────────────────────────────────────────────
 
 func _on_bar_pressed() -> void:
-	_hub_menu.visible = false
-	_bar_screen.visible = true
-	# Show bartender dialogue
+	_encounter_label.text = "The bar is quiet. No bartender here yet."
 	_start_hub_dialogue("bartender_greeting_%s" % _session.current_station_id.to_lower())
 
 
 func _on_store_pressed() -> void:
-	_hub_menu.visible = false
-	_store_screen.visible = true
-	# Show merchant dialogue
+	_encounter_label.text = "The store shelves are bare. No merchant here yet."
 	_start_hub_dialogue("merchant_greeting_%s" % _session.current_station_id.to_lower())
 
 
 func _on_missions_pressed() -> void:
-	# Re-use existing mission board display from overworld controller
 	var state: Dictionary = Persist.get_state()
 	var ledger: Dictionary = state.get("ledger", {})
 	var run_count: int = state.get("run_counts", {}).get("started", 1)
@@ -100,31 +146,22 @@ func _on_missions_pressed() -> void:
 
 
 func _on_depart_pressed() -> void:
-	# Return to overworld
 	get_tree().change_scene_to_file("res://scenes/overworld.tscn")
-
-
-func _on_back_pressed() -> void:
-	_bar_screen.visible = false
-	_store_screen.visible = false
-	_hub_menu.visible = true
 
 
 # ── Hub dialogue ────────────────────────────────────────────────
 
 func _start_hub_dialogue(dialogue_id: String) -> void:
-	# Lazy-init dialogue panel
 	if _dialogue_panel == null:
 		var scene = load("res://scenes/dialogue_panel.tscn")
 		if scene == null:
-			push_error("Failed to load dialogue_panel.tscn")
 			return
 		_dialogue_panel = scene.instantiate()
 		add_child(_dialogue_panel)
 		_dialogue_panel.dialogue_ended.connect(_on_hub_dialogue_ended)
+
 	var dlg_path: String = ProjectSettings.globalize_path("res://") + "/../narrative/dialogues/%s.json" % dialogue_id
 	if not FileAccess.file_exists(dlg_path):
-		# Fallback: generic greeting
 		_encounter_label.text = "[b]Station NPC[/b]\n\"Welcome to %s.\"" % _station_data.get("name", "station")
 		return
 
@@ -140,7 +177,6 @@ func _start_hub_dialogue(dialogue_id: String) -> void:
 	if beat.is_empty() or not beat.has("lines"):
 		return
 
-	# Build state
 	var captain: Dictionary = _session.captain
 	var crew: Array = _session.crew
 	var ship_dict: Dictionary = _session.ship.to_dict() if _session.ship != null else {}
@@ -155,7 +191,6 @@ func _start_hub_dialogue(dialogue_id: String) -> void:
 		"visit_count": _session.visited_stations.get(_session.current_station_id, 1),
 	}
 
-	# Load portraits from NPC rogues-gallery
 	var npc_portraits: Dictionary = {}
 	var rg_path: String = ProjectSettings.globalize_path("res://") + "/../narrative/data/npc-rogues-gallery.json"
 	if FileAccess.file_exists(rg_path):
@@ -178,6 +213,3 @@ func _start_hub_dialogue(dialogue_id: String) -> void:
 func _on_hub_dialogue_ended(next_id: String) -> void:
 	if next_id != "":
 		_start_hub_dialogue(next_id)
-	else:
-		# Return to sub-screen
-		pass
