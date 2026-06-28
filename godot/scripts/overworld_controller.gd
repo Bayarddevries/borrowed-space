@@ -186,6 +186,31 @@ func _show_beat(beat_dict: Dictionary) -> void:
 			_choice_btns[i].hide()
 	_status_label.text = "[color=yellow]Make a choice.[/color]"
 
+## Convert a delta dict to a human-readable string like "-5 fuel, +1 suspicion"
+func _describe_delta(delta: Dictionary) -> String:
+	var parts: Array = []
+	if delta.has("fuel_delta"):
+		var v: int = int(delta["fuel_delta"])
+		parts.append("%+d fuel" % v)
+	if delta.has("suspicion_delta"):
+		var v: int = int(delta["suspicion_delta"])
+		parts.append("%+d suspicion" % v)
+	if delta.has("bond_score"):
+		var v: int = int(delta["bond_score"])
+		parts.append("%+d bond" % v)
+	if delta.has("credit_delta"):
+		var v: int = int(delta["credit_delta"])
+		parts.append("%+d credits" % v)
+	if delta.has("crew_xp"):
+		var v: int = int(delta["crew_xp"])
+		parts.append("%+d crew XP" % v)
+	if delta.has("discoveries"):
+		var d: Array = delta["discoveries"]
+		parts.append("discovery: %s" % ", ".join(d))
+	if parts.is_empty():
+		return "No immediate effect."
+	return "Effects: " + ", ".join(parts)
+
 # ── Choice button clicked ────────────────────────────────────────
 func _on_choice_pressed(index: int) -> void:
 	if index < 0 or index >= _pending_choices.size():
@@ -209,6 +234,8 @@ func _on_choice_pressed(index: int) -> void:
 	# Terminal choice — return to overworld
 	_transit_btn.disabled = false
 	var choice_text: String = picked.get("text", picked.get("label", "Chosen"))
+	var delta_text: String = _describe_delta(picked.get("delta", {}))
+	_encounter_label.text = "[b]You chose:[/b] %s\n%s\n\n[b]Result:[/b] You can now transit to another station." % [choice_text, delta_text]
 	_status_label.text = "[color=green]%s[/color]" % choice_text
 	_end_run_btn.disabled = false
 
