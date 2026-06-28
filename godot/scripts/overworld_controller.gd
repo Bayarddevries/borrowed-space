@@ -18,12 +18,10 @@ var ship: ShipState = null
 var stations: Array = []
 var captain: Dictionary = {}
 var crew: Array = []
-var _beat_manifest: Dictionary = {}
 var _pending_choices: Array = []
 
 # ── Beat-file cache ──────────────────────────────────────────────
 var _beat_cache: Dictionary = {}
-var _last_beat_id: String = ""
 
 func _ready() -> void:
 	captain = DemoSession.captain.duplicate(true)
@@ -112,12 +110,28 @@ func _on_transit_pressed() -> void:
 			_fallback_encounter_display(rolled)
 			_transit_btn.disabled = false
 	else:
-		# Routine station arrival — show station arrival beat if available
+		# Routine station arrival — show station arrival beat if available,
+		# using visit count to pick the right variant (_01, _11, or _12)
 		var sid: String = str(target.get("id", ""))
-		if sid != "" and _load_station_arrival_beat(sid):
-			return
+		if sid != "":
+			_track_visit(sid)
+			if _load_station_arrival_beat(sid):
+				return
 		_encounter_label.text = "[b]Arrived.[/b] No encounter."
 		_end_run_btn.disabled = false
+
+func _track_visit(station_id: String) -> void:
+	var count: int = DemoSession.visited_stations.get(station_id, 0) + 1
+	DemoSession.visited_stations[station_id] = count
+
+func _visit_suffix(station_id: String) -> String:
+	var count: int = DemoSession.visited_stations.get(station_id, 0)
+	if count <= 1:
+		return "_" + station_id.replace("STATION_", "")
+	elif count == 2:
+		return "_11"
+	else:
+		return "_12"
 
 func _fallback_encounter_display(rolled: Variant) -> void:
 	if rolled is Dictionary:
@@ -138,13 +152,11 @@ func _on_proceed_pressed() -> void:
 	var cqb: Dictionary = ai.step_X_meet_aliens(ship)
 	var fired: bool = cqb.get("combat_fired", false)
 
-	# Check if the CQB flow returned a rich beat with prose + choices
 	var beat_result: Dictionary = cqb.get("beat_result", {})
 	if beat_result.has("text") and str(beat_result.get("text", "")) != "":
 		_show_beat(beat_result)
 		return
 
-	# Fallback: hardcoded outcome labels
 	var outcome: String = cqb.get("outcome", "unknown")
 	var outcome_labels := {"pass-clean": "You pass through cleanly.", "pass-rough": "You squeeze through — someone noticed.", "fail-soft": "CQB combat breaks out.", "fail-hard": "Detained. No combat this run.", "won": "Combat won. Crew battered but alive.", "lost": "Combat lost. The aliens take the field.", "fled": "You retreat under fire.", "casualty": "A crew member falls."}
 	if fired:
@@ -169,8 +181,6 @@ func _on_end_run_pressed() -> void:
 
 # ── Shared beat display ──────────────────────────────────────────
 
-## Display a beat dict with prose text + up to 3 choice buttons.
-## beat_dict must have `text` (prose string) and optionally `choices` (Array).
 func _show_beat(beat_dict: Dictionary) -> void:
 	var prose: String = str(beat_dict.get("text", ""))
 	var choices: Array = beat_dict.get("choices", [])
@@ -219,7 +229,6 @@ func _on_choice_pressed(index: int) -> void:
 	for b in _choice_btns:
 		b.hide()
 
-	# Apply delta to Persist
 	if picked.has("delta") and not picked["delta"].is_empty():
 		Persist.patch(picked["delta"])
 		Persist.save()
@@ -227,11 +236,10 @@ func _on_choice_pressed(index: int) -> void:
 	var next_beat_id: String = picked.get("next_beat", picked.get("to", ""))
 	_pending_choices = []
 
-	# If the choice chains to a known beat in a loaded manifest, advance.
 	if next_beat_id != "" and next_beat_id != "run_end_summary" and _load_manifest_beat(next_beat_id):
-		return  # multi-turn encounter — next beat now showing
+		return
 
-	# Terminal choice — return to overworld
+	# Terminal choice — show result and return to overworld
 	_transit_btn.disabled = false
 	var choice_text: String = picked.get("text", picked.get("label", "Chosen"))
 	var delta_text: String = _describe_delta(picked.get("delta", {}))
@@ -241,8 +249,6 @@ func _on_choice_pressed(index: int) -> void:
 
 # ── Beat-file loaders ────────────────────────────────────────────
 
-## Load a beat file relative to repo root and return its data dict.
-## Caches by path to avoid re-parsing.
 func _load_beat_file(relative_path: String) -> Dictionary:
 	if _beat_cache.has(relative_path):
 		return _beat_cache[relative_path]
@@ -262,7 +268,6 @@ func _load_beat_file(relative_path: String) -> Dictionary:
 	_beat_cache[relative_path] = data
 	return data
 
-## Load and display an encounter beat from encounter-pool-beats.json.
 func _load_encounter_beat(beat_id: String) -> bool:
 	var data: Dictionary = _load_beat_file("/../narrative/beats/encounter-pool-beats.json")
 	if data.is_empty() or not data.has("beats"):
@@ -273,8 +278,6 @@ func _load_encounter_beat(beat_id: String) -> bool:
 	var beat: Dictionary = beats[beat_id]
 	if beat.is_empty() or not beat.has("prose"):
 		return false
-
-	# Build a display dict in BeatRunner-compatible shape
 	var display: Dictionary = {
 		"text": beat.get("prose", ""),
 		"choices": beat.get("choices", []),
@@ -283,37 +286,55 @@ func _load_encounter_beat(beat_id: String) -> bool:
 	_show_beat(display)
 	return true
 
-## Load and display a station arrival beat from station_arrival_beats.json.
-## Station IDs like STATION_01 map to beat keys like station_arrival_KASHNER_01.
+## Load the correct station arrival beat based on visit count.
+## First visit: _01/_02/..._10 suffix. Second: _11 suffix. Third+: _12 suffix.
 func _load_station_arrival_beat(station_id: String) -> bool:
 	var data: Dictionary = _load_beat_file("/../narrative/beats/station_arrival_beats.json")
 	if data.is_empty() or not data.has("beats"):
 		return false
 	var beats: Dictionary = data["beats"]
-	# Match on the full _NN suffix to avoid ambiguity (e.g. _01 vs _11)
+
+	# First, find the base beat (the _01 variant for this station)
 	var num_part: String = station_id.replace("STATION_", "")
-	var beat_key: String = ""
+	var base_key: String = ""
 	for key in beats.keys():
 		if key.to_upper().ends_with("_" + num_part):
-			beat_key = key
+			base_key = key
 			break
-	if beat_key == "":
+	if base_key == "":
 		return false
+
+	# Extract the station name from the base key (e.g. "KASHNER" from "station_arrival_KASHNER_01")
+	var prefix := "station_arrival_"
+	var name_part: String = base_key.replace(prefix, "")
+	# Strip the _NN suffix to get just the name
+	var last_underscore: int = name_part.rfind("_")
+	if last_underscore < 0:
+		return false
+	var station_name: String = name_part.left(last_underscore)
+
+	# Determine visit variant suffix
+	var visit_suffix: String = _visit_suffix(station_id)
+	var visit_key: String = prefix + station_name + visit_suffix
+
+	# Try the visit-specific beat; fall back to the base beat
+	var beat_key: String = visit_key if beats.has(visit_key) else base_key
 	var beat: Dictionary = beats[beat_key]
 	if beat.is_empty():
 		return false
+
 	var display: Dictionary = {
 		"text": beat.get("text", ""),
 		"choices": beat.get("choices", []),
 		"speaker": beat.get("speaker", "narrator"),
 	}
+	var visit_num: int = DemoSession.visited_stations.get(station_id, 1)
+	if visit_num > 1:
+		display["text"] = "[b](Visit %d)[/b]\n\n%s" % [visit_num, beat.get("text", "")]
 	_show_beat(display)
 	return true
 
-## Load a beat by ID from the currently cached manifest (used for multi-turn chains).
 func _load_manifest_beat(beat_id: String) -> bool:
-	# Check if we already have encounter-pool-beats.json cached — it's the most
-	# likely source for chain beats not using the run_end_summary terminal.
 	var data: Dictionary = _load_beat_file("/../narrative/beats/encounter-pool-beats.json")
 	if data.has("beats") and data["beats"].has(beat_id):
 		var beat: Dictionary = data["beats"][beat_id]
