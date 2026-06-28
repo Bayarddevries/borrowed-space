@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://c7c2xvk9q8o3b"]
+[gd_scene load_steps=6 format=3 uid="uid://c7c2xvk9q8o3b"]
 
 [ext_resource type="Script" path="res://scripts/overworld_controller.gd" id="1_ow"]
 [ext_resource type="Texture2D" path="res://assets/sprites/bg_space.png" id="2_bg"]
 [ext_resource type="Texture2D" path="res://assets/sprites/ship_placeholder.png" id="3_ship"]
 [ext_resource type="Script" path="res://scripts/hex_map.gd" id="4_hexmap"]
+[ext_resource type="PackedScene" path="res://scenes/stat_panel.tscn" id="5_stat"]
 
 [node name="Overworld" type="Node"]
 script = ExtResource("1_ow")
@@ -37,6 +38,9 @@ offset_bottom = 200.0
 bbcode_enabled = true
 text = "Belt Map — loading..."
 mouse_filter = 2
+visible = false
+
+[node name="StatPanel" parent="." instance=ExtResource("5_stat")]
 
 [node name="EncounterLabel" type="RichTextLabel" parent="."]
 offset_left = 24.0

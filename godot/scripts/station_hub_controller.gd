@@ -12,6 +12,7 @@ class_name StationHubController
 @onready var _faction_label: Label       = $HubMenu/FactionLabel
 @onready var _visit_label: Label         = $HubMenu/VisitLabel
 @onready var _encounter_label: RichTextLabel = $EncounterLabel
+@onready var _stat_panel: StatPanel = $StatPanel
 
 var _station_data: Dictionary = {}
 var _dialogue_panel: DialogueEngine = null
@@ -46,10 +47,14 @@ func _ready() -> void:
 	_bar_screen.visible = false
 	_store_screen.visible = false
 
-	# Init dialogue panel
+	# Init dialogue panel (hidden until first dialogue)
 	_dialogue_panel = preload("res://scenes/dialogue_panel.tscn").instantiate()
 	add_child(_dialogue_panel)
 	_dialogue_panel.dialogue_ended.connect(_on_hub_dialogue_ended)
+
+	# Update stat panel
+	var ship_dict: Dictionary = DemoSession.ship.to_dict() if DemoSession.ship != null else {}
+	_stat_panel.update(ship_dict, DemoSession.crew.size())
 
 
 # ── Hub menu buttons ────────────────────────────────────────────

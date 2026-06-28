@@ -1,0 +1,124 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/stat_panel.gd" id="1_sp"]
+
+[node name="StatPanel" type="ColorRect"]
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 200.0
+offset_bottom = 220.0
+color = Color(0.08, 0.07, 0.10, 0.85)
+script = ExtResource("1_sp")
+
+[node name="ShipIcon" type="TextureRect" parent="."]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 56.0
+offset_bottom = 40.0
+expand_mode = 1
+stretch_mode = 5
+
+[node name="PosLabel" type="Label" parent="."]
+offset_left = 60.0
+offset_top = 8.0
+offset_right = 160.0
+offset_bottom = 24.0
+text = "(0, 0)"
+
+[node name="CrewLabel" type="Label" parent="."]
+offset_left = 60.0
+offset_top = 24.0
+offset_right = 160.0
+offset_bottom = 40.0
+text = "Crew: 0"
+
+[node name="FuelBar" type="ColorRect" parent="."]
+offset_left = 8.0
+offset_top = 48.0
+offset_right = 168.0
+offset_bottom = 76.0
+color = Color(0.15, 0.13, 0.18, 1.0)
+
+[node name="Bg" type="ColorRect" parent="FuelBar"]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 156.0
+offset_bottom = 24.0
+color = Color(0.05, 0.04, 0.07, 1.0)
+
+[node name="Fill" type="ColorRect" parent="FuelBar/Bg"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 120.0
+offset_bottom = 20.0
+color = Color(0.4, 0.7, 0.9, 1.0)
+
+[node name="Label" type="Label" parent="FuelBar"]
+offset_left = 8.0
+offset_top = 6.0
+offset_right = 152.0
+offset_bottom = 22.0
+text = "Fuel: 100/100"
+
+[node name="HullBar" type="ColorRect" parent="."]
+offset_left = 8.0
+offset_top = 84.0
+offset_right = 168.0
+offset_bottom = 112.0
+color = Color(0.15, 0.13, 0.18, 1.0)
+
+[node name="Bg" type="ColorRect" parent="HullBar"]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 156.0
+offset_bottom = 24.0
+color = Color(0.05, 0.04, 0.07, 1.0)
+
+[node name="Fill" type="ColorRect" parent="HullBar/Bg"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 120.0
+offset_bottom = 20.0
+color = Color(0.6, 0.8, 0.5, 1.0)
+
+[node name="Label" type="Label" parent="HullBar"]
+offset_left = 8.0
+offset_top = 6.0
+offset_right = 152.0
+offset_bottom = 22.0
+text = "Hull: 100/100"
+
+[node name="SuspicionBar" type="ColorRect" parent="."]
+offset_left = 8.0
+offset_top = 120.0
+offset_right = 168.0
+offset_bottom = 148.0
+color = Color(0.15, 0.13, 0.18, 1.0)
+
+[node name="Bg" type="ColorRect" parent="SuspicionBar"]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 156.0
+offset_bottom = 24.0
+color = Color(0.05, 0.04, 0.07, 1.0)
+
+[node name="Fill" type="ColorRect" parent="SuspicionBar/Bg"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 60.0
+offset_bottom = 20.0
+color = Color(0.9, 0.8, 0.3, 1.0)
+
+[node name="Label" type="Label" parent="SuspicionBar"]
+offset_left = 8.0
+offset_top = 6.0
+offset_right = 152.0
+offset_bottom = 22.0
+text = "Suspicion: 0"
+
+[node name="TimeLabel" type="Label" parent="."]
+offset_left = 8.0
+offset_top = 156.0
+offset_right = 168.0
+offset_bottom = 172.0
+text = "Day 0"

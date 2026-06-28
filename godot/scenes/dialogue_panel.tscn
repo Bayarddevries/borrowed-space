@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://dp3x6q9f8k2g"]
+[gd_scene load_steps=2 format=3]
 
 [ext_resource type="Script" path="res://scripts/dialogue_engine.gd" id="1_engine"]
 

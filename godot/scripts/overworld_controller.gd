@@ -16,6 +16,7 @@ class_name OverworldController
 @onready var _mission_btn: Button               = $MissionButton
 @onready var _hex_map: HexMap = $MapContainer/HexMap
 @onready var _camera: Camera2D = $Camera2D
+@onready var _stat_panel: StatPanel = $StatPanel
 
 var ship: ShipState = null
 var stations: Array = []
@@ -105,12 +106,8 @@ func _populate_station_dropdown() -> void:
 
 func _refresh_view() -> void:
 	if ship == null: return
-	var msg := "[b]Belt Map — Sector View[/b]\n"
-	msg += "Position: (%d, %d)\n" % [ship.current_q, ship.current_r]
-	msg += "Fuel: %d / 100\n" % ship.fuel
-	msg += "Hull: %d / 100\n" % ship.hull
-	msg += "Time: %d days\n" % ship.time_elapsed
-	_hex_label.text = msg
+	# Update visual stat panel
+	_stat_panel.update(ship.to_dict(), crew.size())
 
 
 # ── Station clicked on hex map ──────────────────────────────────

@@ -183,3 +183,63 @@ func _deep_merge(target: Dictionary, source: Dictionary) -> void:
 			_deep_merge(target[key], src_val)
 		else:
 			target[key] = src_val
+
+
+# ── NPC persistence helpers ──────────────────────────────────────
+
+## Get persisted state for a specific NPC. Returns dict with defaults.
+func get_npc_state(npc_id: String) -> Dictionary:
+	var npcs: Dictionary = state.get("npc_state", {}).get("npcs", {})
+	if npcs.has(npc_id):
+		return npcs[npc_id].duplicate()
+	# Return defaults
+	return {
+		"met": false,
+		"relationship": 0,
+		"last_run": 0,
+		"dialogue_flags": {},
+		"total_encounters": 0,
+	}
+
+
+## Mark an NPC as met and optionally update relationship.
+func meet_npc(npc_id: String, relationship_delta: int = 0) -> void:
+	var npc: Dictionary = get_npc_state(npc_id)
+	npc["met"] = true
+	npc["relationship"] = npc.get("relationship", 0) + relationship_delta
+	npc["total_encounters"] = npc.get("total_encounters", 0) + 1
+	npc["last_run"] = state.get("run_counts", {}).get("started", 0)
+	_set_npc(npc_id, npc)
+
+
+## Set a dialogue flag for an NPC (e.g. "heard_about_conspiracy": true)
+func set_npc_flag(npc_id: String, flag_key: String, value) -> void:
+	var npc: Dictionary = get_npc_state(npc_id)
+	npc["dialogue_flags"][flag_key] = value
+	_set_npc(npc_id, npc)
+
+
+## Get a dialogue flag for an NPC. Returns null if not set.
+func get_npc_flag(npc_id: String, flag_key: String):
+	var npc: Dictionary = get_npc_state(npc_id)
+	if npc.get("dialogue_flags", {}).has(flag_key):
+		return npc["dialogue_flags"][flag_key]
+	return null
+
+
+## Has the player ever met this NPC?
+func has_met_npc(npc_id: String) -> bool:
+	return get_npc_state(npc_id).get("met", false)
+
+
+## Get relationship score for an NPC (default 0).
+func get_npc_relationship(npc_id: String) -> int:
+	return get_npc_state(npc_id).get("relationship", 0)
+
+
+func _set_npc(npc_id: String, npc_data: Dictionary) -> void:
+	if not state.has("npc_state"):
+		state["npc_state"] = {"npcs": {}}
+	if not state["npc_state"].has("npcs"):
+		state["npc_state"]["npcs"] = {}
+	state["npc_state"]["npcs"][npc_id] = npc_data
