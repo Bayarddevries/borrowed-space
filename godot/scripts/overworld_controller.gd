@@ -17,6 +17,7 @@ class_name OverworldController
 @onready var _hex_map = $MapContainer/HexMap
 @onready var _camera: Camera2D = $Camera2D
 @onready var _stat_panel = $StatPanel
+@onready var _dialogue_panel = $DialoguePanel
 
 var ship: ShipState = null
 var stations: Array = []
@@ -28,7 +29,6 @@ var _cartography_data: Dictionary = {}
 # NPC state
 var _npc_rogues: Dictionary = {}
 var _npc_portraits: Dictionary = {}
-var _dialogue_panel = null
 
 # Camera drag state
 var _dragging: bool = false
@@ -78,8 +78,7 @@ func _ready() -> void:
 						_npc_portraits[npc_id] = tex
 
 	# Init dialogue panel (hidden until first dialogue)
-	_dialogue_panel = preload("res://scenes/dialogue_panel.tscn").instantiate()
-	add_child(_dialogue_panel)
+	_dialogue_panel.visible = false
 	_dialogue_panel.dialogue_ended.connect(_on_dialogue_ended)
 
 	_populate_station_dropdown()

@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/station_hub_controller.gd" id="1_ctrl"]
 [ext_resource type="Texture2D" path="res://assets/sprites/bg_station.png" id="2_bg"]
 [ext_resource type="PackedScene" path="res://scenes/stat_panel.tscn" id="3_stat"]
+[ext_resource type="PackedScene" path="res://scenes/dialogue_panel.tscn" id="4_dialogue"]
 
 [node name="StationHub" type="Node"]
 script = ExtResource("1_ctrl")
@@ -20,6 +21,8 @@ mouse_filter = 2
 
 [node name="StatPanel" parent="." instance=ExtResource("3_stat")]
 
+[node name="DialoguePanel" parent="." instance=ExtResource("4_dialogue")]
+visible = false
 [node name="EncounterLabel" type="RichTextLabel" parent="."]
 offset_left = 24.0
 offset_top = 320.0

@@ -13,9 +13,9 @@ class_name StationHubController
 @onready var _visit_label: Label         = $HubMenu/VisitLabel
 @onready var _encounter_label: RichTextLabel = $EncounterLabel
 @onready var _stat_panel = $StatPanel
+@onready var _dialogue_panel = $DialoguePanel
 
 var _station_data: Dictionary = {}
-var _dialogue_panel = null
 
 func _ready() -> void:
 	# Get station data from DemoSession
@@ -48,8 +48,7 @@ func _ready() -> void:
 	_store_screen.visible = false
 
 	# Init dialogue panel (hidden until first dialogue)
-	_dialogue_panel = preload("res://scenes/dialogue_panel.tscn").instantiate()
-	add_child(_dialogue_panel)
+	_dialogue_panel.visible = false
 	_dialogue_panel.dialogue_ended.connect(_on_hub_dialogue_ended)
 
 	# Update stat panel
