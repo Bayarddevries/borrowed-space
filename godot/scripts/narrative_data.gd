@@ -32,18 +32,42 @@ const RELATIVE_PATHS := {
 	"captains_journal": "/../narrative/data/captains_journal.json",
 }
 
+# Bundle path prefix: res://assets/data/ — populated by scripts/bundle-narrative.sh
+const BUNDLE_PREFIX := "res://assets/data/"
+
 # Cache so we don't re-parse every call.
 static var _cache := {}
 
-static func _resolve_dev_path(key: String) -> String:
+## Resolve a data file path. Tries the production bundled path first
+## (res://assets/data/<filename>.json), falls back to dev-mode repo-root path.
+static func _resolve_path(key: String) -> String:
+	var bundled: String = BUNDLE_PREFIX + key + ".json"
+	if FileAccess.file_exists(bundled):
+		return bundled
+	# Dev-mode fallback: map filename to RELATIVE_PATHS entry
+	var rel_key := _dev_key_for(key)
 	var godot_root := ProjectSettings.globalize_path("res://")
-	var rel: String = RELATIVE_PATHS[key]
-	# godot/ ends with "/", so we want /<rel> with no extra slash.
+	var rel: String = RELATIVE_PATHS[rel_key]
 	return godot_root + rel.lstrip("/")
 
-static func _read_json(key: String, path: String) -> Variant:
+## Map a filename (e.g. "captain-origins") to its RELATIVE_PATHS key ("origins").
+static func _dev_key_for(key: String) -> String:
+	var mapping := {
+		"captain-origins": "origins",
+		"npc-archetypes": "npcs",
+		"ledger": "ledger",
+		"cartography": "cartography",
+		"aliens": "aliens",
+		"die_in_throes": "die_in_throes",
+		"captains_journal": "captains_journal",
+		"encounter-pool": "encounter_pool",
+	}
+	return mapping.get(key, key)
+
+static func _read_json(key: String) -> Variant:
 	if _cache.has(key):
 		return _cache[key]
+	var path: String = _resolve_path(key)
 	if not FileAccess.file_exists(path):
 		push_error("NarrativeData: file not found at %s" % path)
 		return null
@@ -61,25 +85,25 @@ static func _read_json(key: String, path: String) -> Variant:
 	return data
 
 static func origins() -> Variant:
-	return _read_json("origins", _resolve_dev_path("origins"))
+	return _read_json("captain-origins")
 
 static func npc_archetypes() -> Variant:
-	return _read_json("npcs", _resolve_dev_path("npcs"))
+	return _read_json("npc-archetypes")
 
 static func ledger_template() -> Variant:
-	return _read_json("ledger", _resolve_dev_path("ledger"))
+	return _read_json("ledger")
 
 static func aliens() -> Variant:
-	return _read_json("aliens", _resolve_dev_path("aliens"))
+	return _read_json("aliens")
 
 static func die_in_throes() -> Variant:
-	return _read_json("die_in_throes", _resolve_dev_path("die_in_throes"))
+	return _read_json("die_in_throes")
 
 static func captains_journal_frags() -> Variant:
-	return _read_json("captains_journal", _resolve_dev_path("captains_journal"))
+	return _read_json("captains_journal")
 
 static func encounter_pool() -> Variant:
-	return _read_json("encounter_pool", _resolve_dev_path("encounter_pool"))
+	return _read_json("encounter-pool")
 
 # Returns a list of {id, label, ship_class, fragments_count} per genship.
 static func list_genships() -> Array:

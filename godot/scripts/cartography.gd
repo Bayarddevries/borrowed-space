@@ -107,7 +107,7 @@ static func load_stations() -> Array:
 	if not paths.has(_DATA_KEY):
 		# Late-bind if not yet registered; defensive default.
 		paths[_DATA_KEY] = "/../narrative/data/cartography.json"
-	var path: String = NarrativeData._resolve_dev_path(_DATA_KEY)
+	var path: String = NarrativeData._resolve_path("cartography")
 	if not FileAccess.file_exists(path):
 		push_error("Cartography: file not found at %s" % path)
 		return []

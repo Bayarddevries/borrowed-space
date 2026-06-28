@@ -22,16 +22,42 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) but adapted for s
 
 ---
 
-## [Unreleased] — Phase 3 fully done, Phase 4 next
+## [2026-06-28] — Phase 4 start, deep polish pass
 
-### Phase 3g — Voice corpus split (this session)
-- `voice_fragments.json` split into `narrative/data/die_in_throes.json` (52 entries) + `narrative/data/captains_journal.json` (52 entries)
-- `godot/scripts/narrative_data.gd` — added `die_in_throes()` and `captains_journal_frags()` static loaders + RELATIVE_PATHS entries; removed `voice_fragments()`
-- `godot/scripts/casualty_pipeline.gd` — `_resolve_tribute` now calls `NarrativeData.die_in_throes()` instead of `NarrativeData.voice_fragments()`
-- `godot/test/test_voice_fragments.gd` — rewritten for split loaders (4 tests: both load, content count)
-- `godot/test/verify_demo_loop_fixes_2026_06_26.gd` — updated for new loader API
-- **91/90+1 GUT pass, 576 asserts** (was 89/88/574)
-- **Phase 3 formally complete — all sub-phases 3a-3g shipped**
+### This session (2026-06-27/28)
+- `feat(ui): multi-turn encounter chaining — checks all beat file caches`
+  - `_load_manifest_beat` now searches all 3 beat sources (encounter pool, CQB, station arrival)
+  - Enables multi-turn encounter chains via `next_beat` field
+- `feat(content): expand encounter pool to 44 entries (+10 new encounters)`
+  - 10 new beats: T8 customs, B1 dispatch, T2 medical, AC fire, NAC cache, SAA wreck, T5 test, ED dispute, RRA exercise
+  - Pool: 44 total (Patrol 9, Distress 9, Discovery 9, Crew 8, Faction 9)
+  - Probabilistic test seed range increased 400→800
+- `feat(ui): add run summary screen — captain, crew roster, encounters, timeline`
+  - Shows captain name/genship, duration, fuel consumed, crew roster, encounter log, remaining fuel
+  - 4-second display before returning to briefing
+- `feat(ui): add mission board button to overworld when docked at station`
+  - MissionButton visible on docking; calls `MissionBoard.generate()` showing offers
+- `feat(ui): wire station visit tracking — _01/_11/_12 beats now fire correctly`
+  - `DemoSession.visited_stations` tracks per-run station visits
+  - First visit: `_01` beat, second: `_11`, third+: `_12`
+- `feat(ui): show choice result text with delta effects after clicking`
+  - Encounter label updates to show choice text + effects description
+- `fix(ui): increase window to 1400x800, widen encounter text + choice buttons`
+  - Choice3Button was cut off at 720px; window now maximized at 1400×800
+- `chore(tooling): add data-validation script + fix station beat matching`
+  - `scripts/validate-data.py` checks all 14 JSON files; 0 errors
+  - Station beat matching fixed from `endswith("1")` to `_NN` suffix
+- `fix(docs): correct encounter-pool meta count (35, not 36)`
+- `feat(content): expand encounter pool to 36 entries + 10 third-visit station beats`
+  - Pool 30→35; station beats 20→30 (10 third-visit `_12` variants)
+  - Act-gate test made deterministic
+- `test(prose): add 21-test suite for overworld prose display + transit state`
+  - Covers beat file loading, station matching, fallback paths, choice resolution
+- `fix(ui): keep transit enabled on routine arrival (string fallback)`
+- `feat(ui): wire encounter prose + CQB beats + station arrival beats into overworld demo`
+  - Full prose display with choice buttons for all 3 beat file types
+- `feat(narrative): split voice corpus into die_in_throes + captains_journal (Phase 3g)`
+- **Suite: 112 tests / 111 passing / 630+ asserts** (was 91/90/577)
 
 ### Paid agent — #21 CQB integration shipped (PR #28)
 - `godot/scripts/cqb_engagement.gd` — full grid turn-loop orchestrator (CqbEngagement.run())
