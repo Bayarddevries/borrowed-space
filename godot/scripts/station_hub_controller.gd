@@ -37,6 +37,15 @@ func _ready() -> void:
 	var visit_count: int = _session.visited_stations.get(sid, 1)
 
 	# Build UI in code
+	var bg := TextureRect.new()
+	bg.texture = preload("res://assets/sprites/bg_station.png")
+	bg.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	bg.stretch_mode = TextureRect.STRETCH_SCALE
+	bg.size = Vector2(1400, 800)
+	bg.position = Vector2(0, 0)
+	bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(bg)
+
 	var panel := ColorRect.new()
 	panel.color = Color(0.08, 0.07, 0.10, 0.92)
 	panel.size = Vector2(600, 400)
@@ -75,22 +84,45 @@ func _ready() -> void:
 	panel.add_child(visit_label)
 
 	# Buttons
-	var btn_data := [
-		["Bar", 130, "_on_bar_pressed"],
-		["Store", 180, "_on_store_pressed"],
-		["Missions", 230, "_on_missions_pressed"],
-		["Depart", 290, "_on_depart_pressed"],
-	]
-	for b in btn_data:
-		var btn := Button.new()
-		btn.text = b[0]
-		btn.position = Vector2(80, b[1])
-		btn.size = Vector2(440, 40)
-		btn.add_theme_color_override("font_color", Color(0.85, 0.85, 0.9))
-		btn.add_theme_color_override("button_normal", Color(0.15, 0.13, 0.20))
-		btn.add_theme_color_override("button_hover", Color(0.22, 0.18, 0.28))
-		btn.pressed.connect(_on_button.bind(b[2]))
-		panel.add_child(btn)
+	var bar_btn := Button.new()
+	bar_btn.text = "Bar"
+	bar_btn.position = Vector2(80, 130)
+	bar_btn.size = Vector2(440, 40)
+	bar_btn.add_theme_color_override("font_color", Color(0.85, 0.85, 0.9))
+	bar_btn.add_theme_color_override("button_normal", Color(0.15, 0.13, 0.20))
+	bar_btn.add_theme_color_override("button_hover", Color(0.22, 0.18, 0.28))
+	bar_btn.pressed.connect(_on_bar_pressed)
+	panel.add_child(bar_btn)
+
+	var store_btn := Button.new()
+	store_btn.text = "Store"
+	store_btn.position = Vector2(80, 180)
+	store_btn.size = Vector2(440, 40)
+	store_btn.add_theme_color_override("font_color", Color(0.85, 0.85, 0.9))
+	store_btn.add_theme_color_override("button_normal", Color(0.15, 0.13, 0.20))
+	store_btn.add_theme_color_override("button_hover", Color(0.22, 0.18, 0.28))
+	store_btn.pressed.connect(_on_store_pressed)
+	panel.add_child(store_btn)
+
+	var missions_btn := Button.new()
+	missions_btn.text = "Missions"
+	missions_btn.position = Vector2(80, 230)
+	missions_btn.size = Vector2(440, 40)
+	missions_btn.add_theme_color_override("font_color", Color(0.85, 0.85, 0.9))
+	missions_btn.add_theme_color_override("button_normal", Color(0.15, 0.13, 0.20))
+	missions_btn.add_theme_color_override("button_hover", Color(0.22, 0.18, 0.28))
+	missions_btn.pressed.connect(_on_missions_pressed)
+	panel.add_child(missions_btn)
+
+	var depart_btn := Button.new()
+	depart_btn.text = "Depart"
+	depart_btn.position = Vector2(80, 290)
+	depart_btn.size = Vector2(440, 40)
+	depart_btn.add_theme_color_override("font_color", Color(0.85, 0.85, 0.9))
+	depart_btn.add_theme_color_override("button_normal", Color(0.15, 0.13, 0.20))
+	depart_btn.add_theme_color_override("button_hover", Color(0.22, 0.18, 0.28))
+	depart_btn.pressed.connect(_on_depart_pressed)
+	panel.add_child(depart_btn)
 
 	# Encounter label for mission board output
 	_encounter_label = RichTextLabel.new()
@@ -105,10 +137,6 @@ func _ready() -> void:
 
 	# Init dialogue panel
 	_dialogue_panel = null
-
-
-func _on_button(method_name: String) -> void:
-	call(method_name)
 
 
 # ── Hub menu buttons ────────────────────────────────────────────
